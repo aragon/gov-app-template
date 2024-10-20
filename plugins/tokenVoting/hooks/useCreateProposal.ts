@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ProposalMetadata, RawAction } from "@/utils/types";
 import { useAlerts } from "@/context/Alerts";
 import { PUB_APP_NAME, PUB_CHAIN, PUB_TOKEN_VOTING_PLUGIN_ADDRESS, PUB_PROJECT_URL } from "@/constants";
-import { uploadToPinata } from "@/utils/ipfs";
+import { uploadToWeb3Storage } from "@/utils/ipfs";
 import { TokenVotingAbi } from "../artifacts/TokenVoting.sol";
 import { URL_PATTERN } from "@/utils/input-values";
 import { toHex } from "viem";
@@ -75,7 +75,8 @@ export function useCreateProposal() {
         resources,
       };
 
-      const ipfsPin = await uploadToPinata(JSON.stringify(proposalMetadataJsonObject));
+      console.log(proposalMetadataJsonObject);
+      const ipfsPin = await uploadToWeb3Storage(JSON.stringify(proposalMetadataJsonObject));
       const startDate = BigInt(0);
       const endDate = BigInt(0);
 
@@ -85,11 +86,14 @@ export function useCreateProposal() {
         abi: TokenVotingAbi,
         address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
         functionName: "createProposal",
-        args: [toHex(ipfsPin), actions, BigInt(0), startDate, endDate, VotingMode.Standard, tryEarlyExecution],
+        //args: [toHex(ipfsPin), actions, BigInt(0), startDate, endDate, VotingMode.Standard, tryEarlyExecution],
+        args: [toHex(ipfsPin), actions, BigInt(0), startDate, endDate, VotingMode.Standard],
       });
     } catch (err) {
+      console.error(err);
       setIsCreating(false);
     }
+    console.log("at the end");
   };
 
   return {

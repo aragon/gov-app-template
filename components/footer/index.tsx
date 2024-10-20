@@ -45,19 +45,24 @@ export const Footer = () => {
         <ul className="divide-y divide-neutral-100 md:order-1 md:flex md:items-center md:justify-center md:gap-x-6 md:divide-y-0 xl:justify-start">
           <li className="group py-4 md:py-0">
             <a className="overflow-hidden" href={PUB_PROJECT_URL} target="_blank">
-              <span className="line-clamp-1 leading-tight text-neutral-500 group-hover:text-neutral-800">
-                {PUB_APP_NAME}
-              </span>
+              <span className="line-clamp-1 leading-tight text-neutral-500 group-hover:text-neutral-800">PWN UI</span>
             </a>
           </li>
           <li className="group py-4 md:py-0">
-            <a className="overflow-hidden" href={PUB_BLOG_URL} target="_blank">
-              <span className="line-clamp-1 leading-tight text-neutral-500 group-hover:text-neutral-800">Blog</span>
+            <a className="overflow-hidden" href="https://staking.pwn.xyz" target="_blank">
+              <span className="line-clamp-1 leading-tight text-neutral-500 group-hover:text-neutral-800">
+                Staking UI
+              </span>
             </a>
           </li>
           <li className="group py-4 md:py-0">
             <a className="overflow-hidden" href={PUB_FORUM_URL} target="_blank">
               <span className="line-clamp-1 leading-tight text-neutral-500 group-hover:text-neutral-800">Forum</span>
+            </a>
+          </li>
+          <li className="group py-4 md:py-0">
+            <a className="overflow-hidden" href="https://linktr.ee/pwndao" target="_blank">
+              <span className="line-clamp-1 leading-tight text-neutral-500 group-hover:text-neutral-800">Links</span>
             </a>
           </li>
         </ul>

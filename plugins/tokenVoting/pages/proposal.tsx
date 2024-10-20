@@ -88,7 +88,7 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
       id: "1",
       type: ProposalStages.TOKEN_VOTING,
       variant: "majorityVoting",
-      title: "Token voting",
+      title: "Community voting",
       status: proposalStatus!,
       disabled: false,
       proposalId: proposalIdx.toString(),
@@ -124,7 +124,7 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
         censusTimestamp: Number(proposal?.parameters.snapshotBlock || 0) || 0,
         startDate,
         endDate,
-        strategy: "Token voting",
+        strategy: "Community voting",
         options: "Vote",
       },
       votes: votes.map(
