@@ -101,7 +101,7 @@ git remote set-url --push upstream DISABLE
 
 ## Need Help? 🆘
 
-Stuck on something? Our community is here to help! Join our [Discord channel](https://discord.com/invite/eqQJkdp) for support, advice, or just to share your awesome plugin creations with fellow Aragon enthusiasts.
+Stuck on something? Our community is here to help! Join our [Discord channel](https://discord.gg/aragonorg) for support, advice, or just to share your awesome plugin creations with fellow Aragon enthusiasts.
 
 ## License 📜
 
