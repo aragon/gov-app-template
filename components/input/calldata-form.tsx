@@ -1,7 +1,15 @@
 import { type RawAction } from "@/utils/types";
 import { type FC, useEffect, useState } from "react";
 import { InputText, InputNumber, TextArea, AlertInline } from "@aragon/ods";
-import { type Address, parseEther, isHex, decodeFunctionData, Hex, toFunctionSelector, AbiFunction } from "viem";
+import {
+  type Address,
+  parseEther,
+  isHex,
+  decodeFunctionData,
+  type Hex,
+  toFunctionSelector,
+  type AbiFunction,
+} from "viem";
 import { isAddress } from "@/utils/evm";
 import { If } from "../if";
 import { PUB_CHAIN } from "@/constants";

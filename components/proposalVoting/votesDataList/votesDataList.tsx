@@ -3,7 +3,7 @@ import { isAddressEqual } from "viem";
 import { useAccount } from "wagmi";
 import { VotesDataListItemSkeleton } from "./votesDataListItemSkeleton";
 import { VotesDataListItemStructure } from "./votesDataListItemStructure";
-import { IVote } from "@/utils/types";
+import { type IVote } from "@/utils/types";
 
 const DEFAULT_PAGE_SIZE = 6;
 

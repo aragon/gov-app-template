@@ -1,7 +1,7 @@
 import { Else, ElseIf, If, Then } from "@/components/if";
 import { AddressText } from "@/components/text/address";
 import { DefinitionList, Heading, IconType, Link } from "@aragon/ods";
-import { Address } from "viem";
+import { type Address } from "viem";
 
 export interface IVotingDetailsProps {
   startDate?: string;

@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 type Booleanish = any;
 type SimpleValue = string | number | bigint | boolean;

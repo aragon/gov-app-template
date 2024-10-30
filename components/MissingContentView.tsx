@@ -1,5 +1,5 @@
 import { Button, IllustrationHuman } from "@aragon/ods";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 export const MissingContentView = ({
   children,

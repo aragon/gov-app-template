@@ -1,6 +1,6 @@
 import { modulesCopy } from "@aragon/ods";
 import NextLink from "next/link";
-import { ComponentProps } from "react";
+import { type ComponentProps } from "react";
 
 export const customModulesCopy = {
   ...modulesCopy,

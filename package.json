@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "lint-fix": "bun run lint --fix",
     "format": "prettier --check .; echo 'To write the changes: bun run format:fix'",
     "format:fix": "prettier -w . --list-different",
     "deploy-dao": "bun ./scripts/deploy.ts",

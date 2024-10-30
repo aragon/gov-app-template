@@ -1,4 +1,4 @@
-import { Icon, IconType } from "@aragon/ods";
+import { Icon, type IconType } from "@aragon/ods";
 
 export const AddActionCard = ({
   title,

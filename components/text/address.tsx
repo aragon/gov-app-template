@@ -19,11 +19,11 @@ export const AddressText = ({ children, bold }: { children: ReactNode; bold?: bo
 
   const formattedAddress = formatHexString(address.trim());
   if (!link) {
-    return <span className={(useBold ? "font-semibold" : "") + " text-primary-400 underline"}>{formattedAddress}</span>;
+    return <span className={`${useBold ? "font-semibold" : ""} text-primary-400 underline`}>{formattedAddress}</span>;
   }
   return (
     <>
-      <a href={link} target="_blank" className={(useBold ? "font-semibold" : "") + " text-primary-400 underline"}>
+      <a href={link} target="_blank" className={`${useBold ? "font-semibold" : ""} text-primary-400 underline`}>
         {formattedAddress}
       </a>
     </>

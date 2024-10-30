@@ -11,7 +11,7 @@ export default function StandardHome() {
   const { open } = useWeb3Modal();
 
   return (
-    <MainSection narrow>
+    <MainSection narrow={true}>
       <Card>
         <h1 className="line-clamp-1 flex flex-1 shrink-0 text-2xl font-normal leading-tight text-neutral-800 md:text-3xl">
           Welcome to {PUB_APP_NAME}

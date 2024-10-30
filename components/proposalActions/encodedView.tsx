@@ -38,7 +38,7 @@ function getEncodedArgs(action: RawAction) {
     if (key === "value") {
       return {
         title: capitalizeFirstLetter(key),
-        value: formatEther(value as bigint, "wei") + " " + PUB_CHAIN.nativeCurrency.symbol,
+        value: `${formatEther(value as bigint, "wei")} ${PUB_CHAIN.nativeCurrency.symbol}`,
       };
     }
     return { title: capitalizeFirstLetter(key), value: value.toString() };

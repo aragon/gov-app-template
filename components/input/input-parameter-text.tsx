@@ -36,7 +36,7 @@ export const InputParameterText = ({ abi, idx, onChange }: IInputParameterTextPr
         alert={
           value === null || isValidStringValue(value, abi.type)
             ? undefined
-            : { message: "The given value is not a valid " + abi.type, variant: "critical" }
+            : { message: `The given value is not a valid ${abi.type}`, variant: "critical" }
         }
         value={value ?? ""}
         onChange={(e) => handleValue(e.target.value)}

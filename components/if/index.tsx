@@ -1,5 +1,5 @@
-import React, { ReactElement, ReactNode } from "react";
-import { IfProps } from "./types";
+import React, { type ReactElement, type ReactNode } from "react";
+import { type IfProps } from "./types";
 
 /**
  * Renders the inner children or the first Then child when the condition evaluates to true

@@ -8,15 +8,15 @@ This project is the combination of a host UI including common tools and services
 
 This section displays all the proposals which need to be ratified by the community of token holders. Proposals follow an optimistic governance flow. They created by the Council and token holders have the chance to veto them for a certain amount of time.
 
-This flow attempts to find a good balance between efficiency, agility, prevent spam or attacks and decentralization. 
+This flow attempts to find a good balance between efficiency, agility, prevent spam or attacks and decentralization.
 
 ### Multisig Council
 
-This section features a multisig plugin which is only visible to the Council members. It allows to create, approve and eventually relay proposals to the community section described above. 
+This section features a multisig plugin which is only visible to the Council members. It allows to create, approve and eventually relay proposals to the community section described above.
 
 ### Security Council
 
-This section is also a multisig plugin, with the difference that a super majority of the Security Council can approve and execute proposals that are time critical. This plugin may be disabled in future iterations of the DAO but for the time being, it allows respond to potential security threats in a much quicker way. 
+This section is also a multisig plugin, with the difference that a super majority of the Security Council can approve and execute proposals that are time critical. This plugin may be disabled in future iterations of the DAO but for the time being, it allows respond to potential security threats in a much quicker way.
 
 The metadata and the actions of the proposal are encrypted until the proposal has been executed. See [Encryption and decryption flows](#encryption-and-decryption-flows) below.
 
@@ -29,6 +29,7 @@ This section shows a recap of the delegates who publish an announcement, as well
 In proposals where metadata needs to be kept private until the end, we implement a two-layer encryption model which combines symmetric and asymmetric keys.
 
 The data that we need to encrypt includes:
+
 - **Human readable data**, explaining why the proposal should be approved
 - The **actions to execute** if the proposal passes
 
@@ -39,11 +40,14 @@ The data that we need to encrypt includes:
 3. The member fetches the public keys corresponding to the current Security Council members
 4. For each member's public key, he uses it to encrypt the key from step (1)
 5. This generates a payload with:
-  - The (symmetrically) encrypted metadata and proposals
-  - The (asymmetrically) encrypted keys that only each member can recover
+
+- The (symmetrically) encrypted metadata and proposals
+- The (asymmetrically) encrypted keys that only each member can recover
+
 6. The payload is pinned on IPFS
-  - The IPFS URI is published as the proposal metadata
-  - The hash of the unencrypted metadata is also published as part of the proposal
+
+- The IPFS URI is published as the proposal metadata
+- The hash of the unencrypted metadata is also published as part of the proposal
 
 ![](./readme-encryption-flow.png)
 
