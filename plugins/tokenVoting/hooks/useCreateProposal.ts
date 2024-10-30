@@ -90,7 +90,6 @@ export function useCreateProposal() {
       console.error(err);
       setIsCreating(false);
     }
-    console.log("at the end");
   };
 
   return {

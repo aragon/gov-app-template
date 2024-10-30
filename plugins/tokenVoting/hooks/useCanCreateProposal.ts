@@ -32,10 +32,6 @@ export function useCanCreateProposal() {
   });
 
   useEffect(() => {
-    console.log(contractReads);
-    console.log("balance");
-    console.log(balance);
-
     if (!contractReads?.length || contractReads?.length < 2) return;
 
     setMinProposerVotingPower(contractReads[0].result as bigint);

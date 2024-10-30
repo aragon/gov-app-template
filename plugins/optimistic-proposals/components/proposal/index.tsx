@@ -30,18 +30,6 @@ export default function ProposalCard(props: ProposalInputs) {
 
   const { minVetoRatio } = useGovernanceSettings();
 
-  console.log("props.proposalIndex");
-  console.log(props.proposalIndex);
-
-  console.log("proposal");
-  console.log(proposal);
-
-  console.log("proposalStatus");
-  console.log(proposalStatus);
-
-  console.log("showLoading");
-  console.log(showLoading);
-
   if (!proposal && showLoading) {
     return (
       <section className="mb-4 w-full">

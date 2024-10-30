@@ -59,8 +59,9 @@ export function useProposal(proposalId: number, autoRefresh = false) {
         args: {
           proposalId: BigInt(proposalId),
         },
-        fromBlock: proposalData.parameters.snapshotBlock,
-        toBlock: proposalData.parameters.startDate,
+        // TODO can we somehow easier narrow down the range of blocks where to search?
+        fromBlock: BigInt(0),
+        toBlock: "latest",
       })
       .then((logs) => {
         if (!logs || !logs.length) throw new Error("No creation logs");
@@ -70,7 +71,7 @@ export function useProposal(proposalId: number, autoRefresh = false) {
         setMetadataUri(fromHex(log.args.metadata as Hex, "string"));
       })
       .catch((err) => {
-        console.error("Could not fetch the proposal details", err);
+        console.error(`Could not fetch the proposal details for proposal id == ${proposalId}.`, err);
       });
   }, [proposalData?.tally.yes, proposalData?.tally.no, proposalData?.tally.abstain, !!publicClient]);
 

@@ -39,13 +39,7 @@ export async function uploadToWeb3Storage(strBody: string) {
   const blob = new Blob([strBody], { type: "text/plain" });
   const file = new File([blob], UPLOAD_FILE_NAME);
 
-  console.log(file);
-
   const uploadedFile = await client.uploadFile(file);
-  console.log("uploadedFile");
-  console.log(uploadedFile);
-  console.log("uploadedFile cid v1");
-  console.log(uploadedFile.toString());
   return `ipfs://${uploadedFile.toString()}`;
 }
 

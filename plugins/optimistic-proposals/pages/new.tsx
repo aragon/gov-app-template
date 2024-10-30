@@ -77,8 +77,6 @@ export default function Create() {
   const config = useConfig();
   const debug = async () => {
     const blockDetail = await getBlock(config, { blockTag: "latest" });
-    console.log("blockDetail");
-    console.log(blockDetail);
   };
 
   return (

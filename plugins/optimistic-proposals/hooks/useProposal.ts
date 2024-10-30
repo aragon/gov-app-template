@@ -57,11 +57,6 @@ export function useProposal(proposalId?: bigint, autoRefresh = false) {
 
   // Creation event
   useEffect(() => {
-    console.log("[[ proposalId");
-    console.log(proposalId);
-    console.log("[[ proposalData");
-    console.log(proposalData);
-
     if (proposalId === undefined || !proposalData || !publicClient) return;
 
     publicClient
@@ -97,9 +92,6 @@ export function useProposal(proposalId?: bigint, autoRefresh = false) {
   } = useMetadata<ProposalMetadata>(metadataUri);
 
   const proposal = arrangeProposalData(proposalId, proposalData, proposalCreationEvent, metadataContent);
-  console.log("xxxxxxxxxx proposal");
-  console.log(proposal);
-
   return {
     proposal,
     refetch: proposalRefetch,

@@ -29,8 +29,6 @@ export function useCanCreateProposal() {
   });
 
   useEffect(() => {
-    console.log("hasCreatePermission");
-    console.log(hasCreatePermission);
     setHasCreatePermission(!!hasCreatePermissionData);
   }, [hasCreatePermissionStatus]);
 
