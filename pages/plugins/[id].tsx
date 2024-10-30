@@ -24,8 +24,8 @@ const PluginLoader: FC = () => {
         setPageComponent(() => mod.default);
       })
       .catch((err) => {
+        // eslint-disable-next-line no-console
         console.error("Failed to load the page component", err);
-
         setComponentLoading(false);
       });
   }, [pluginId]);

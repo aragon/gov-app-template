@@ -8,7 +8,7 @@ import { VotingBreakdown, type IBreakdownMajorityVotingResult, type ProposalType
 import { type IBreakdownApprovalThresholdResult } from "../votingBreakdown/approvalThresholdResult";
 import { VotingDetails } from "../votingDetails";
 import { VotingStageStatus } from "./votingStageStatus";
-import type { IVote, IVotingStageDetails, ProposalStages } from "@/utils/types";
+import type { IVote, IVotingStageDetails } from "@/utils/types";
 import { VotesDataList } from "../votesDataList/votesDataList";
 
 export interface IVotingStageProps<TType extends ProposalType = ProposalType> {
@@ -18,14 +18,13 @@ export interface IVotingStageProps<TType extends ProposalType = ProposalType> {
   status: "accepted" | "rejected" | "active";
 
   variant: TType;
-  proposalId?: string;
   result?: TType extends "approvalThreshold" ? IBreakdownApprovalThresholdResult : IBreakdownMajorityVotingResult;
   details?: IVotingStageDetails;
   votes?: IVote[];
 }
 
 export const VotingStage: React.FC<IVotingStageProps> = (props) => {
-  const { details, disabled, title, number, result, proposalId = "", status, variant, votes } = props;
+  const { details, disabled, title, number, result, status, variant, votes } = props;
 
   const [node, setNode] = useState<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -107,7 +106,7 @@ export const VotingStage: React.FC<IVotingStageProps> = (props) => {
           </Tabs.Content>
           <Tabs.Content value="votes">
             <div className="py-4 pb-8">
-              <VotesDataList votes={votes || []} />
+              <VotesDataList votes={votes ?? []} />
             </div>
           </Tabs.Content>
           <Tabs.Content value="details">

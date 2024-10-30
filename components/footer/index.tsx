@@ -1,4 +1,4 @@
-import { PUB_APP_NAME, PUB_BLOG_URL, PUB_FORUM_URL, PUB_PROJECT_URL } from "@/constants";
+import { PUB_APP_NAME, PUB_FORUM_URL, PUB_PROJECT_URL } from "@/constants";
 
 export const Footer = () => {
   return (

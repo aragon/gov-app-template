@@ -1,33 +1,20 @@
 import { useAccount, useBlockNumber, useReadContract } from "wagmi";
 import { type ReactNode, useEffect } from "react";
 import ProposalCard from "../components/proposal";
-import {
-  Button,
-  AlertCard,
-  DataList,
-  Link,
-  IconType,
-  ProposalDataListItemSkeleton,
-  type DataListState,
-} from "@aragon/ods";
-import { Else, ElseIf, If, Then } from "@/components/if";
+import { Button, DataList, Link, IconType, ProposalDataListItemSkeleton, type DataListState } from "@aragon/ods";
+import { Else, If, Then } from "@/components/if";
 import { PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS, PUB_CHAIN } from "@/constants";
 import { MainSection } from "@/components/layout/main-section";
 import { MissingContentView } from "@/components/MissingContentView";
-import { ADDRESS_ZERO } from "@/utils/evm";
-import { useTokenVotes } from "@/hooks/useTokenVotes";
-import { AddressText } from "@/components/text/address";
-import { Address } from "viem";
 import { useCanCreateProposal } from "../hooks/useCanCreateProposal";
 import { OptimisticTokenVotingPluginAbi } from "../artifacts/OptimisticTokenVotingPlugin.sol";
 
 const DEFAULT_PAGE_SIZE = 6;
 
 export default function Proposals() {
-  const { address, isConnected } = useAccount();
+  const { isConnected } = useAccount();
   const canCreateProposal = useCanCreateProposal();
   const { data: blockNumber } = useBlockNumber({ watch: true });
-  const { balance, delegatesTo } = useTokenVotes(address);
 
   const {
     data: proposalCountResponse,
@@ -43,9 +30,6 @@ export default function Proposals() {
   });
   const proposalCount = Number(proposalCountResponse);
 
-  console.log("proposalCount");
-  console.log(proposalCount);
-
   useEffect(() => {
     refetch();
   }, [blockNumber]);
@@ -60,10 +44,6 @@ export default function Proposals() {
   } else if (isFetchingNextPage) {
     dataListState = "fetchingNextPage";
   }
-
-  const hasBalance = !!balance && balance > BigInt(0);
-  const delegatingToSomeoneElse = !!delegatesTo && delegatesTo !== address && delegatesTo !== ADDRESS_ZERO;
-  const delegatedToZero = !!delegatesTo && delegatesTo === ADDRESS_ZERO;
 
   return (
     <MainSection narrow>
@@ -82,14 +62,6 @@ export default function Proposals() {
         </div>
       </SectionView>
 
-      <If true={hasBalance && (delegatingToSomeoneElse || delegatedToZero)}>
-        <NoVetoPowerWarning
-          delegatingToSomeoneElse={delegatingToSomeoneElse}
-          delegatesTo={delegatesTo}
-          delegatedToZero={delegatedToZero}
-          address={address}
-        />
-      </If>
       <If true={proposalCount}>
         <Then>
           <DataList.Root
@@ -117,46 +89,6 @@ export default function Proposals() {
     </MainSection>
   );
 }
-
-const NoVetoPowerWarning = ({
-  delegatingToSomeoneElse,
-  delegatesTo,
-  delegatedToZero,
-  address,
-}: {
-  delegatingToSomeoneElse: boolean;
-  delegatesTo: Address | undefined;
-  delegatedToZero: boolean;
-  address: Address | undefined;
-}) => {
-  return (
-    <AlertCard
-      description={
-        <span className="text-sm">
-          <If true={delegatingToSomeoneElse}>
-            <Then>
-              You are currently delegating your voting power to <AddressText bold={false}>{delegatesTo}</AddressText>.
-              If you wish to participate by yourself in future proposals,
-            </Then>
-            <ElseIf true={delegatedToZero}>
-              You have not self delegated your voting power to participate in the DAO. If you wish to participate in
-              future proposals,
-            </ElseIf>
-          </If>
-          &nbsp;make sure that{" "}
-          <Link href={"/plugins/members/#/delegates/" + address} className="!text-sm text-primary-400 hover:underline">
-            your voting power is self delegated
-          </Link>
-          .
-        </span>
-      }
-      message={
-        delegatingToSomeoneElse ? "Your voting power is currently delegated" : "You cannot veto on new proposals"
-      }
-      variant="info"
-    />
-  );
-};
 
 function SectionView({ children }: { children: ReactNode }) {
   return <div className="flex w-full flex-row content-center justify-between">{children}</div>;

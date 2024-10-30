@@ -11,23 +11,14 @@ import { useProposalStatus } from "../hooks/useProposalVariantStatus";
 import dayjs from "dayjs";
 import { ProposalActions } from "@/components/proposalActions/proposalActions";
 import { CardResources } from "@/components/proposal/cardResources";
-import { Address, formatEther } from "viem";
+import { formatEther } from "viem";
 import { useToken } from "../hooks/useToken";
 import { usePastSupply } from "../hooks/usePastSupply";
-import { ElseIf, If, Then } from "@/components/if";
-import { AlertCard, ProposalStatus } from "@aragon/ods";
+import { ProposalStatus } from "@aragon/ods";
 import { PUB_TOKEN_SYMBOL } from "@/constants";
-import { useAccount } from "wagmi";
-import { useTokenVotes } from "@/hooks/useTokenVotes";
-import { ADDRESS_ZERO } from "@/utils/evm";
-import { AddressText } from "@/components/text/address";
-import Link from "next/link";
 import { useGovernanceSettings } from "../hooks/useGovernanceSettings";
 
-const ZERO = BigInt(0);
-
 export default function ProposalDetail({ index: proposalIdx }: { index: number }) {
-  const { address } = useAccount();
   const {
     proposal,
     proposalFetchStatus,
@@ -38,7 +29,6 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
   } = useProposalVeto(proposalIdx);
   const pastSupply = usePastSupply(proposal);
   const { symbol: tokenSymbol } = useToken();
-  const { balance, delegatesTo } = useTokenVotes(address);
   const { minVetoRatio } = useGovernanceSettings();
 
   const { executeProposal, canExecute, isConfirming: isConfirmingExecution } = useProposalExecute(proposalIdx);
@@ -112,10 +102,6 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
     },
   ];
 
-  const hasBalance = !!balance && balance > ZERO;
-  const delegatingToSomeoneElse = !!delegatesTo && delegatesTo !== address && delegatesTo !== ADDRESS_ZERO;
-  const delegatedToZero = !!delegatesTo && delegatesTo === ADDRESS_ZERO;
-
   if (!proposal || showProposalLoading) {
     return (
       <section className="justify-left items-left flex w-screen min-w-full max-w-full">
@@ -132,15 +118,6 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
         <div className="flex w-full flex-col gap-x-12 gap-y-6 md:flex-row">
           <div className="flex flex-col gap-y-6 md:w-[63%] md:shrink-0">
             <BodySection body={proposal.description || "No description was provided"} />
-            <If true={hasBalance && (delegatingToSomeoneElse || delegatedToZero)}>
-              <NoVetoPowerWarning
-                delegatingToSomeoneElse={delegatingToSomeoneElse}
-                delegatesTo={delegatesTo}
-                delegatedToZero={delegatedToZero}
-                address={address}
-                canVeto={canVeto}
-              />
-            </If>
             <ProposalVoting
               stages={proposalStage}
               description="Proposals approved by the Security Council become eventually executable, unless the community reaches the veto threshold during the community veto stage."
@@ -155,52 +132,6 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
     </section>
   );
 }
-
-const NoVetoPowerWarning = ({
-  delegatingToSomeoneElse,
-  delegatesTo,
-  delegatedToZero,
-  address,
-  canVeto,
-}: {
-  delegatingToSomeoneElse: boolean;
-  delegatesTo: Address | undefined;
-  delegatedToZero: boolean;
-  address: Address | undefined;
-  canVeto: boolean;
-}) => {
-  return (
-    <AlertCard
-      description={
-        <span className="text-sm">
-          <If true={delegatingToSomeoneElse}>
-            <Then>
-              You are currently delegating your voting power to <AddressText bold={false}>{delegatesTo}</AddressText>.
-              If you wish to participate by yourself in future proposals,
-            </Then>
-            <ElseIf true={delegatedToZero}>
-              You have not self delegated your voting power to participate in the DAO. If you wish to participate in
-              future proposals,
-            </ElseIf>
-          </If>
-          &nbsp;make sure that{" "}
-          <Link href={"/plugins/members/#/delegates/" + address} className="!text-sm text-primary-400 hover:underline">
-            your voting power is self delegated
-          </Link>
-          .
-        </span>
-      }
-      message={
-        delegatingToSomeoneElse
-          ? "Your voting power is currently delegated"
-          : canVeto
-            ? "You cannot veto on new proposals"
-            : "You cannot veto"
-      }
-      variant="info"
-    />
-  );
-};
 
 function getShowProposalLoading(
   proposal: ReturnType<typeof useProposal>["proposal"],

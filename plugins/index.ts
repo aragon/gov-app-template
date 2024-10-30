@@ -1,8 +1,4 @@
-import {
-  PUB_DELEGATION_WALL_CONTRACT_ADDRESS,
-  PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
-  PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
-} from "@/constants";
+import { PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS, PUB_TOKEN_VOTING_PLUGIN_ADDRESS } from "@/constants";
 import { IconType } from "@aragon/ods";
 
 type PluginItem = {
@@ -30,12 +26,5 @@ export const plugins: PluginItem[] = [
     title: "Stewards",
     // icon: IconType.APP_MEMBERS,
     pluginAddress: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
-  },
-  {
-    id: "members",
-    folderName: "members",
-    title: "Members",
-    // icon: IconType.BLOCKCHAIN_BLOCKCHAIN,
-    pluginAddress: PUB_DELEGATION_WALL_CONTRACT_ADDRESS,
   },
 ];

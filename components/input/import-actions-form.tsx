@@ -19,7 +19,7 @@ export const ImportActionsForm: FC<IImportActionsFormProps> = ({ onChange }) => 
       const actions = decodeStrJson(strJson);
       setActions(actions);
       onChange(actions);
-    } catch (_) {
+    } catch {
       //
       setActions([]);
       onChange([]);
@@ -56,7 +56,7 @@ function resolveCalldataAlert(strJson: string): { message: string; variant: "cri
   try {
     decodeStrJson(strJson);
     return undefined;
-  } catch (_) {
+  } catch {
     return { message: "The given JSON data contains invalid entries", variant: "critical" };
   }
 }

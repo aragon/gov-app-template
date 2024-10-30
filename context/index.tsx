@@ -8,7 +8,6 @@ import { PUB_WALLET_CONNECT_PROJECT_ID } from "@/constants";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
-import { UseDerivedWalletProvider } from "../hooks/useDerivedWallet";
 import { OdsModulesProvider } from "@aragon/ods";
 import { customModulesCopy, odsCoreProviderValues } from "@/components/ods-customizations";
 
@@ -52,9 +51,7 @@ export function RootContextProvider({ children }: { children: ReactNode }) {
         values={{ copy: customModulesCopy }}
       >
         <PersistQueryClientProvider client={queryClient} persistOptions={{ persister }}>
-          <AlertProvider>
-            <UseDerivedWalletProvider>{children}</UseDerivedWalletProvider>
-          </AlertProvider>
+          <AlertProvider>{children}</AlertProvider>
         </PersistQueryClientProvider>
       </OdsModulesProvider>
     </WagmiProvider>

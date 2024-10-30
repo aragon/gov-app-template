@@ -2,22 +2,15 @@ import { useState, useEffect } from "react";
 import { OptimisticProposal } from "../utils/types";
 import { ProposalStatus } from "@aragon/ods";
 import { useToken } from "./useToken";
-import { PUB_BRIDGE_ADDRESS } from "@/constants";
-import { useTokenPastVotes } from "./useTokenPastVotes";
 import { useGovernanceSettings } from "./useGovernanceSettings";
 
 export const useProposalVariantStatus = (proposal: OptimisticProposal) => {
   const [status, setStatus] = useState({ variant: "", label: "" });
   const { tokenSupply: totalSupply } = useToken();
-  const { votes: bridgedBalance } = useTokenPastVotes(
-    PUB_BRIDGE_ADDRESS,
-    proposal?.parameters.snapshotEpoch || BigInt(0)
-  );
   const { minVetoRatio } = useGovernanceSettings();
 
   useEffect(() => {
-    if (!minVetoRatio || !proposal || !proposal?.parameters || !totalSupply || typeof bridgedBalance === "undefined")
-      return;
+    if (!minVetoRatio || !proposal || !proposal?.parameters || !totalSupply) return;
 
     const effectiveSupply = totalSupply;
     // TODO is this correct?
@@ -32,7 +25,7 @@ export const useProposalVariantStatus = (proposal: OptimisticProposal) => {
     } else {
       setStatus({ variant: "success", label: "Executable" });
     }
-  }, [proposal?.vetoTally, proposal?.active, proposal?.executed, minVetoRatio, totalSupply, bridgedBalance]);
+  }, [proposal?.vetoTally, proposal?.active, proposal?.executed, minVetoRatio, totalSupply]);
 
   return status;
 };
@@ -40,15 +33,10 @@ export const useProposalVariantStatus = (proposal: OptimisticProposal) => {
 export const useProposalStatus = (proposal: OptimisticProposal) => {
   const [status, setStatus] = useState<ProposalStatus>();
   const { tokenSupply: totalSupply } = useToken();
-  const { votes: bridgedBalance } = useTokenPastVotes(
-    PUB_BRIDGE_ADDRESS,
-    proposal?.parameters.snapshotEpoch || BigInt(0)
-  );
   const { minVetoRatio } = useGovernanceSettings();
 
   useEffect(() => {
-    if (!minVetoRatio || !proposal || !proposal?.parameters || !totalSupply || typeof bridgedBalance === "undefined")
-      return;
+    if (!minVetoRatio || !proposal || !proposal?.parameters || !totalSupply) return;
 
     const effectiveSupply = totalSupply;
     const minVetoVotingPower = (effectiveSupply * BigInt(minVetoRatio)) / BigInt(1_000_000);
@@ -62,7 +50,7 @@ export const useProposalStatus = (proposal: OptimisticProposal) => {
     } else {
       setStatus(ProposalStatus.ACCEPTED);
     }
-  }, [proposal?.vetoTally, proposal?.active, proposal?.executed, minVetoRatio, totalSupply, bridgedBalance]);
+  }, [proposal?.vetoTally, proposal?.active, proposal?.executed, minVetoRatio, totalSupply]);
 
   return status;
 };

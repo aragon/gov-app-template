@@ -31,7 +31,7 @@ export const NewActionDialog: React.FC<INewActionDialogProps> = (props) => {
   const handleSubmit = () => {
     if (!stagedActions) return;
 
-    onClose(stagedActions, abi || null);
+    onClose(stagedActions, abi ?? null);
     setStagedActions(null);
   };
   const dismiss = () => {

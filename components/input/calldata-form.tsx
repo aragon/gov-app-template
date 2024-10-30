@@ -1,6 +1,6 @@
 import { type RawAction } from "@/utils/types";
 import { type FC, useEffect, useState } from "react";
-import { InputText, InputNumber, TextArea, AlertInline } from "@aragon/ods";
+import { InputText, InputNumber, TextArea } from "@aragon/ods";
 import {
   type Address,
   parseEther,
@@ -29,7 +29,7 @@ export const CalldataForm: FC<ICalldataFormProps> = ({ onChange, onSubmit }) => 
   const [calldata, setCalldata] = useState<string>("");
   const [value, setValue] = useState<string>("");
   const { isContract, isLoading, error: isContractError } = useIsContract(to);
-  const { abi, isLoading: isLoadingAbi } = useAbi((to || "") as Address);
+  const { abi } = useAbi((to ?? "") as Address);
 
   useEffect(() => {
     if (!isAddress(to)) return;
@@ -56,7 +56,7 @@ export const CalldataForm: FC<ICalldataFormProps> = ({ onChange, onSubmit }) => 
         matchingAbiFunction = item;
       }
     }
-  } catch (_) {
+  } catch {
     //
   }
 

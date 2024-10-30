@@ -11,35 +11,24 @@ import { useProposalStatus } from "../hooks/useProposalVariantStatus";
 import dayjs from "dayjs";
 import { ProposalActions } from "@/components/proposalActions/proposalActions";
 import { CardResources } from "@/components/proposal/cardResources";
-import { Address, formatEther } from "viem";
+import { formatEther } from "viem";
 import { useToken } from "../hooks/useToken";
-// import { usePastSupply } from "../hooks/usePastSupply";
-import { ElseIf, If, Then } from "@/components/if";
-import { AlertCard, Button, DialogContent, DialogFooter, DialogHeader, DialogRoot, ProposalStatus } from "@aragon/ods";
-import { useAccount } from "wagmi";
-import { useTokenVotes } from "@/hooks/useTokenVotes";
-import { ADDRESS_ZERO } from "@/utils/evm";
-import { AddressText } from "@/components/text/address";
-import Link from "next/link";
+import { Button, DialogContent, DialogFooter, DialogHeader, DialogRoot, ProposalStatus } from "@aragon/ods";
 import { useCanVote } from "../hooks/useCanVote";
 import { useState } from "react";
 import { PUB_TOKEN_SYMBOL } from "@/constants";
 import { useProposalVoteList } from "../hooks/useProposalVoteList";
 
-const ZERO = BigInt(0);
 const ABSTAIN_VALUE = 1;
 const VOTE_YES_VALUE = 2;
 const VOTE_NO_VALUE = 3;
 
 export default function ProposalDetail({ index: proposalIdx }: { index: number }) {
-  const { address } = useAccount();
   const { voteProposal, isConfirming: isConfirmingVote } = useProposalVoting(proposalIdx);
   const { proposal, status: proposalFetchStatus } = useProposal(proposalIdx);
   const canVote = useCanVote(proposalIdx);
-  // const pastSupply = usePastSupply(proposal?.parameters.snapshotBlock);
   const votes = useProposalVoteList(proposalIdx, proposal);
   const { symbol: tokenSymbol } = useToken();
-  const { balance, delegatesTo } = useTokenVotes(address);
   const [showVotingModal, setShowVotingModal] = useState(false);
   const { executeProposal, canExecute, isConfirming: isConfirmingExecution } = useProposalExecute(proposalIdx);
   const showProposalLoading = getShowProposalLoading(proposal, proposalFetchStatus);
@@ -137,10 +126,6 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
     },
   ];
 
-  const hasBalance = !!balance && balance > ZERO;
-  const delegatingToSomeoneElse = !!delegatesTo && delegatesTo !== address && delegatesTo !== ADDRESS_ZERO;
-  const delegatedToZero = !!delegatesTo && delegatesTo === ADDRESS_ZERO;
-
   if (!proposal || showProposalLoading) {
     return (
       <section className="justify-left items-left flex w-screen min-w-full max-w-full">
@@ -157,15 +142,6 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
         <div className="flex w-full flex-col gap-x-12 gap-y-6 md:flex-row">
           <div className="flex flex-col gap-y-6 md:w-[63%] md:shrink-0">
             <BodySection body={proposal.description || "No description was provided"} />
-            <If all={[hasBalance, delegatingToSomeoneElse || delegatedToZero]}>
-              <NoVotePowerWarning
-                delegatingToSomeoneElse={delegatingToSomeoneElse}
-                delegatesTo={delegatesTo}
-                delegatedToZero={delegatedToZero}
-                address={address}
-                canVote={!!canVote}
-              />
-            </If>
             <ProposalVoting
               stages={proposalStage}
               description="Proposals approved by the community become executable when the support ratio is above the threshold and the minimum participation is met."
@@ -214,52 +190,6 @@ export const VoteOptionDialog: React.FC<{ show: boolean; onClose: (voteOption: n
       </DialogContent>
       <DialogFooter />
     </DialogRoot>
-  );
-};
-
-const NoVotePowerWarning = ({
-  delegatingToSomeoneElse,
-  delegatesTo,
-  delegatedToZero,
-  address,
-  canVote,
-}: {
-  delegatingToSomeoneElse: boolean;
-  delegatesTo: Address | undefined;
-  delegatedToZero: boolean;
-  address: Address | undefined;
-  canVote: boolean;
-}) => {
-  return (
-    <AlertCard
-      description={
-        <span className="text-sm">
-          <If true={delegatingToSomeoneElse}>
-            <Then>
-              You are currently delegating your voting power to <AddressText bold={false}>{delegatesTo}</AddressText>.
-              If you wish to participate by yourself in future proposals,
-            </Then>
-            <ElseIf true={delegatedToZero}>
-              You have not self delegated your voting power to participate in the DAO. If you wish to participate in
-              future proposals,
-            </ElseIf>
-          </If>
-          &nbsp;make sure that{" "}
-          <Link href={"/plugins/members/#/delegates/" + address} className="!text-sm text-primary-400 hover:underline">
-            your voting power is self delegated
-          </Link>
-          .
-        </span>
-      }
-      message={
-        delegatingToSomeoneElse
-          ? "Your voting power is currently delegated"
-          : canVote
-            ? "You cannot vote on new proposals"
-            : "You cannot vote"
-      }
-      variant="info"
-    />
   );
 };
 
