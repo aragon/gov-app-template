@@ -1,20 +1,13 @@
 import { useRouter } from "next/router";
-import { useEncryptedData } from "./useEncryptedData";
 import { useState } from "react";
 import { ProposalMetadata, RawAction } from "@/utils/types";
 import { useAlerts } from "@/context/Alerts";
-import {
-  PUB_APP_NAME,
-  PUB_CHAIN,
-  PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
-  PUB_EMERGENCY_MULTISIG_PLUGIN_ADDRESS,
-  PUB_PROJECT_URL,
-} from "@/constants";
-import { uploadToPinata } from "@/utils/ipfs";
-import { EmergencyMultisigPluginAbi } from "../artifacts/EmergencyMultisigPlugin";
+import { PUB_APP_NAME, PUB_CHAIN, PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS, PUB_PROJECT_URL } from "@/constants";
 import { URL_PATTERN } from "@/utils/input-values";
 import { toHex } from "viem";
 import { useTransactionManager } from "@/hooks/useTransactionManager";
+import { uploadToWeb3Storage } from "@/utils/ipfs";
+import { OptimisticTokenVotingPluginAbi } from "../artifacts/OptimisticTokenVotingPlugin.sol";
 
 const UrlRegex = new RegExp(URL_PATTERN);
 
@@ -29,7 +22,6 @@ export function useCreateProposal() {
   const [resources, setResources] = useState<{ name: string; url: string }[]>([
     { name: PUB_APP_NAME, url: PUB_PROJECT_URL },
   ]);
-  const { encryptProposalData } = useEncryptedData();
 
   const { writeContract: createProposalWrite, isConfirming } = useTransactionManager({
     onSuccessMessage: "Proposal created",
@@ -75,26 +67,26 @@ export function useCreateProposal() {
 
     try {
       setIsCreating(true);
-      const privateMetadata: ProposalMetadata = {
+      const proposalMetadataJsonObject: ProposalMetadata = {
         title,
         summary,
         description,
         resources,
       };
 
-      // Encrypt the proposal data
-      const { payload: publicMetadataJson, hashed } = await encryptProposalData(privateMetadata, actions);
+      const ipfsPin = await uploadToWeb3Storage(JSON.stringify(proposalMetadataJsonObject));
 
-      const publicMetadataUri = await uploadToPinata(JSON.stringify(publicMetadataJson));
-
+      const startDate = BigInt(0); // equals "start right now"
+      const endDate = BigInt(0); // equals "minDuration"
       createProposalWrite({
         chainId: PUB_CHAIN.id,
-        abi: EmergencyMultisigPluginAbi,
-        address: PUB_EMERGENCY_MULTISIG_PLUGIN_ADDRESS,
+        abi: OptimisticTokenVotingPluginAbi,
+        address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
         functionName: "createProposal",
-        args: [toHex(publicMetadataUri), hashed.metadataUri, hashed.actions, PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS, false],
+        args: [toHex(ipfsPin), actions, BigInt(0), startDate, endDate],
       });
     } catch (err) {
+      console.error(err);
       setIsCreating(false);
     }
   };

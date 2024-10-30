@@ -8,6 +8,9 @@ export function useMetadata<T = JsonValue>(ipfsUri?: string) {
     queryFn: () => {
       if (!ipfsUri) return Promise.resolve("");
 
+      console.log("ipfsUriii");
+      console.log(ipfsUri);
+
       return fetchIpfsAsJson(ipfsUri);
     },
     retry: true,

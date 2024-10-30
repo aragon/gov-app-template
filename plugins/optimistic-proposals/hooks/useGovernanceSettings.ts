@@ -1,41 +1,53 @@
-import { PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
-import { useConfig } from "wagmi";
-import { MyOptimisticTokenVotingPluginAbi } from "../artifacts/MyOptimisticTokenVotingPlugin.sol";
-import { useQuery } from "@tanstack/react-query";
-import { readContract } from "@wagmi/core";
+import { PUB_CHAIN, PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
+import { useReadContracts } from "wagmi";
+import { OptimisticTokenVotingPluginAbi } from "../artifacts/OptimisticTokenVotingPlugin.sol";
+import { useEffect, useState } from "react";
 
 export function useGovernanceSettings() {
-  const config = useConfig();
+  const [minVetoRatio, setMinVetoRatio] = useState<number>();
+  const [minDuration, setMinDuration] = useState<bigint>();
 
   const {
-    data: governanceSettings,
+    data: contractReads,
     isLoading,
     error,
     refetch,
-  } = useQuery({
-    queryKey: ["governance-settings", PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS],
-    queryFn: () => {
-      return readContract(config, {
-        abi: MyOptimisticTokenVotingPluginAbi,
+  } = useReadContracts({
+    contracts: [
+      {
+        chainId: PUB_CHAIN.id,
         address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
-        functionName: "governanceSettings",
-        args: [],
-      });
+        abi: OptimisticTokenVotingPluginAbi,
+        functionName: "minDuration",
+      },
+      {
+        chainId: PUB_CHAIN.id,
+        address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
+        abi: OptimisticTokenVotingPluginAbi,
+        functionName: "minVetoRatio",
+      },
+    ],
+    query: {
+      staleTime: 1000 * 60 * 60,
+      retry: true,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      retryOnMount: true,
     },
-    retry: true,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    retryOnMount: true,
-    staleTime: 1000 * 60 * 60,
   });
 
+  useEffect(() => {
+    if (!contractReads?.length || contractReads?.length < 2) {
+      return;
+    }
+
+    setMinDuration(contractReads[0].result);
+    setMinVetoRatio(contractReads[1].result);
+  }, [contractReads?.[0]?.status, contractReads?.[1]?.status]);
+
   return {
-    governanceSettings: {
-      minVetoRatio: governanceSettings?.[0],
-      minDuration: governanceSettings?.[1],
-      l2InactivityPeriod: governanceSettings?.[2],
-      l2AggregationGracePeriod: governanceSettings?.[3],
-    },
+    minDuration,
+    minVetoRatio,
     isLoading,
     error,
     refetch,

@@ -9,6 +9,7 @@ import { useAccount } from "wagmi";
 import { formatEther } from "viem";
 import { usePastSupply } from "../../hooks/usePastSupply";
 import { useToken } from "../../hooks/useToken";
+import { useGovernanceSettings } from "../../hooks/useGovernanceSettings";
 
 const DEFAULT_PROPOSAL_METADATA_TITLE = "(No proposal title)";
 const DEFAULT_PROPOSAL_METADATA_SUMMARY = "(The metadata of the proposal is not available)";
@@ -26,6 +27,20 @@ export default function ProposalCard(props: ProposalInputs) {
   const proposalStatus = useProposalStatus(proposal!);
   const showLoading = getShowProposalLoading(proposal, proposalFetchStatus);
   const hasVetoed = vetoes?.some((veto) => veto.voter === address);
+
+  const { minVetoRatio } = useGovernanceSettings();
+
+  console.log("props.proposalIndex");
+  console.log(props.proposalIndex);
+
+  console.log("proposal");
+  console.log(proposal);
+
+  console.log("proposalStatus");
+  console.log(proposalStatus);
+
+  console.log("showLoading");
+  console.log(showLoading);
 
   if (!proposal && showLoading) {
     return (
@@ -64,9 +79,9 @@ export default function ProposalCard(props: ProposalInputs) {
   }
 
   let vetoPercentage = 0;
-  if (proposal?.vetoTally && pastSupply && proposal.parameters.minVetoRatio) {
+  if (proposal?.vetoTally && pastSupply && minVetoRatio) {
     vetoPercentage = Number(
-      (BigInt(1000) * proposal.vetoTally) / ((pastSupply * BigInt(proposal.parameters.minVetoRatio)) / BigInt(10000000))
+      (BigInt(1000) * proposal.vetoTally) / ((pastSupply * BigInt(minVetoRatio)) / BigInt(10000000))
     );
   }
 
@@ -77,8 +92,8 @@ export default function ProposalCard(props: ProposalInputs) {
       href={`#/proposals/${props.proposalIndex}`}
       voted={hasVetoed}
       date={
-        [ProposalStatus.ACTIVE, ProposalStatus.ACCEPTED].includes(proposalStatus!) && proposal.parameters.vetoEndDate
-          ? Number(proposal.parameters.vetoEndDate) * 1000
+        [ProposalStatus.ACTIVE, ProposalStatus.ACCEPTED].includes(proposalStatus!) && proposal.parameters.endDate
+          ? Number(proposal.parameters.endDate) * 1000
           : undefined
       }
       result={{

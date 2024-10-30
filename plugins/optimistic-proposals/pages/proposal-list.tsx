@@ -1,21 +1,31 @@
 import { useAccount, useBlockNumber, useReadContract } from "wagmi";
-import { useEffect } from "react";
+import { type ReactNode, useEffect } from "react";
 import ProposalCard from "../components/proposal";
-import { AlertCard, DataList, Link, ProposalDataListItemSkeleton, type DataListState } from "@aragon/ods";
+import {
+  Button,
+  AlertCard,
+  DataList,
+  Link,
+  IconType,
+  ProposalDataListItemSkeleton,
+  type DataListState,
+} from "@aragon/ods";
 import { Else, ElseIf, If, Then } from "@/components/if";
 import { PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS, PUB_CHAIN } from "@/constants";
-import { MyOptimisticTokenVotingPluginAbi } from "../artifacts/MyOptimisticTokenVotingPlugin.sol";
 import { MainSection } from "@/components/layout/main-section";
 import { MissingContentView } from "@/components/MissingContentView";
 import { ADDRESS_ZERO } from "@/utils/evm";
 import { useTokenVotes } from "@/hooks/useTokenVotes";
 import { AddressText } from "@/components/text/address";
 import { Address } from "viem";
+import { useCanCreateProposal } from "../hooks/useCanCreateProposal";
+import { OptimisticTokenVotingPluginAbi } from "../artifacts/OptimisticTokenVotingPlugin.sol";
 
 const DEFAULT_PAGE_SIZE = 6;
 
 export default function Proposals() {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
+  const canCreateProposal = useCanCreateProposal();
   const { data: blockNumber } = useBlockNumber({ watch: true });
   const { balance, delegatesTo } = useTokenVotes(address);
 
@@ -27,11 +37,14 @@ export default function Proposals() {
     refetch,
   } = useReadContract({
     address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
-    abi: MyOptimisticTokenVotingPluginAbi,
+    abi: OptimisticTokenVotingPluginAbi,
     functionName: "proposalCount",
     chainId: PUB_CHAIN.id,
   });
   const proposalCount = Number(proposalCountResponse);
+
+  console.log("proposalCount");
+  console.log(proposalCount);
 
   useEffect(() => {
     refetch();
@@ -54,11 +67,21 @@ export default function Proposals() {
 
   return (
     <MainSection narrow>
-      <div className="flex w-full flex-row content-center justify-between">
+      <SectionView>
         <h1 className="line-clamp-1 flex flex-1 shrink-0 text-2xl font-normal leading-tight text-neutral-800 md:text-3xl">
           Proposals
         </h1>
-      </div>
+        <div className="justify-self-end">
+          <If true={isConnected && canCreateProposal}>
+            <Link href="#/new">
+              <Button iconLeft={IconType.PLUS} size="md" variant="primary">
+                Submit Proposal
+              </Button>
+            </Link>
+          </If>
+        </div>
+      </SectionView>
+
       <If true={hasBalance && (delegatingToSomeoneElse || delegatedToZero)}>
         <NoVetoPowerWarning
           delegatingToSomeoneElse={delegatingToSomeoneElse}
@@ -134,3 +157,7 @@ const NoVetoPowerWarning = ({
     />
   );
 };
+
+function SectionView({ children }: { children: ReactNode }) {
+  return <div className="flex w-full flex-row content-center justify-between">{children}</div>;
+}

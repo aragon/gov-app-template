@@ -11,7 +11,8 @@
     "format:fix": "prettier -w . --list-different",
     "deploy-dao": "bun ./scripts/deploy.ts",
     "prepare": "husky",
-    "test": "bun test"
+    "test": "bun test",
+    "ts-check": "tsc --noEmit"
   },
   "lint-staged": {
     "*.{js, jsx,ts,tsx}": [
@@ -30,6 +31,7 @@
     "@tanstack/query-sync-storage-persister": "^5.52.0",
     "@tanstack/react-query": "^5.52.0",
     "@tanstack/react-query-persist-client": "^5.52.0",
+    "@web3-storage/w3up-client": "^16.2.0",
     "@web3modal/wagmi": "^4.2.3",
     "classnames": "^2.5.1",
     "dayjs": "^1.11.13",

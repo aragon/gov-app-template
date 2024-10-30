@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useBlockNumber, usePublicClient, useReadContract } from "wagmi";
 import { Hex, fromHex, getAbiItem } from "viem";
-import { TokenVotingAbi } from "@/plugins/tokenVoting/artifacts/TokenVoting.sol";
+import { TokenVotingPluginAbi } from "@/plugins/tokenVoting/artifacts/TokenVoting.sol";
 import { RawAction, ProposalMetadata } from "@/utils/types";
 import { Proposal, ProposalParameters, Tally } from "../utils/types";
 import { PUB_TOKEN_VOTING_PLUGIN_ADDRESS } from "@/constants";
@@ -20,7 +20,7 @@ type ProposalCreatedLogResponse = {
 };
 
 const ProposalCreatedEvent = getAbiItem({
-  abi: TokenVotingAbi,
+  abi: TokenVotingPluginAbi,
   name: "ProposalCreated",
 });
 
@@ -38,7 +38,7 @@ export function useProposal(proposalId: number, autoRefresh = false) {
     refetch: proposalRefetch,
   } = useReadContract({
     address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
-    abi: TokenVotingAbi,
+    abi: TokenVotingPluginAbi,
     functionName: "getProposal",
     args: [BigInt(proposalId)],
   });

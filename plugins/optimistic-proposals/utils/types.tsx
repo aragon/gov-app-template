@@ -1,4 +1,4 @@
-import type { Address, Hex } from "viem";
+import type { Address } from "viem";
 import type { IProposalResource, RawAction } from "@/utils/types";
 
 export type ProposalInputs = {
@@ -8,19 +8,18 @@ export type ProposalInputs = {
 export type OptimisticProposalResultType = readonly [
   boolean,
   boolean,
+  boolean,
   OptimisticProposalParameters,
   bigint,
-  Hex,
   readonly RawAction[],
   bigint,
 ];
 
 export type OptimisticProposalParameters = {
-  snapshotTimestamp: bigint;
-  vetoStartDate?: number | bigint;
-  vetoEndDate: number | bigint;
-  minVetoRatio: number;
-  skipL2: boolean;
+  snapshotEpoch: bigint;
+  minVetoVotingPower: bigint;
+  startDate: bigint;
+  endDate: bigint;
 };
 
 export type OptimisticProposal = {

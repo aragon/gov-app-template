@@ -1,7 +1,7 @@
 import { useAccount, useBlockNumber, useReadContract } from "wagmi";
 import { type ReactNode, useEffect } from "react";
 import ProposalCard from "../components/proposal";
-import { TokenVotingAbi } from "../artifacts/TokenVoting.sol";
+import { TokenVotingPluginAbi } from "../artifacts/TokenVoting.sol";
 import { Button, DataList, IconType, ProposalDataListItemSkeleton, type DataListState } from "@aragon/ods";
 import { useCanCreateProposal } from "../hooks/useCanCreateProposal";
 import Link from "next/link";
@@ -25,7 +25,7 @@ export default function Proposals() {
     refetch,
   } = useReadContract({
     address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
-    abi: TokenVotingAbi,
+    abi: TokenVotingPluginAbi,
     functionName: "proposalCount",
     chainId: PUB_CHAIN.id,
   });

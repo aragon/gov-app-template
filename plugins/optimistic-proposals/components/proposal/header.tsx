@@ -6,7 +6,6 @@ import { Else, ElseIf, If, Then } from "@/components/if";
 import { getSimpleRelativeTimeFromDate } from "@/utils/dates";
 import dayjs from "dayjs";
 import { HeaderSection } from "@/components/layout/header-section";
-import { useGovernanceSettings } from "../../hooks/useGovernanceSettings";
 import { getTagVariantFromStatus } from "@/utils/ui-variants";
 import { capitalizeFirstLetter } from "@/utils/text";
 
@@ -21,19 +20,9 @@ interface ProposalHeaderProps {
 const ProposalHeader: React.FC<ProposalHeaderProps> = ({ proposalIdx, proposal }) => {
   const proposalStatus = useProposalStatus(proposal);
   const tagVariant = getTagVariantFromStatus(proposalStatus);
-  const { governanceSettings } = useGovernanceSettings();
 
   const breadcrumbs: IBreadcrumbsLink[] = [{ label: "Proposals", href: "#/" }, { label: proposalIdx.toString() }];
-  const isEmergency = proposal.parameters.vetoStartDate === 0n;
-  const endDateIsInThePast = Number(proposal.parameters.vetoEndDate) * 1000 < Date.now();
-
-  let isL2GracePeriod = false;
-  if (!proposal.parameters.skipL2 && governanceSettings.l2AggregationGracePeriod) {
-    const gracePeriodEnd =
-      (Number(proposal.parameters.vetoEndDate) + Number(governanceSettings.l2AggregationGracePeriod)) * 1000;
-
-    isL2GracePeriod = endDateIsInThePast && Date.now() < gracePeriodEnd;
-  }
+  const endDateIsInThePast = Number(proposal.parameters.endDate) * 1000 < Date.now();
 
   return (
     <div className="flex w-full justify-center bg-neutral-0">
@@ -52,7 +41,6 @@ const ProposalHeader: React.FC<ProposalHeaderProps> = ({ proposalIdx, proposal }
         <div className="flex w-full flex-col gap-y-2">
           <div className="flex w-full items-center gap-x-4">
             <Heading size="h1">{proposal.title || DEFAULT_PROPOSAL_TITLE}</Heading>
-            {isEmergency && <Tag label="Emergency" variant="critical" />}
           </div>
           <p className="text-lg leading-normal text-neutral-500">{proposal.summary || DEFAULT_PROPOSAL_SUMMARY}</p>
         </div>
@@ -69,16 +57,13 @@ const ProposalHeader: React.FC<ProposalHeaderProps> = ({ proposalIdx, proposal }
                 <Then>
                   <span className="text-neutral-500">The proposal has been defeated</span>
                 </Then>
-                <ElseIf true={isL2GracePeriod}>
-                  <span className="text-neutral-500">The veto period is over, waiting for L2 vetoes</span>
-                </ElseIf>
                 <ElseIf true={endDateIsInThePast}>
                   <span className="text-neutral-500">The veto period is over</span>
                 </ElseIf>
                 <Else>
                   <span className="text-neutral-500">Active for </span>
                   <span className="text-neutral-800">
-                    {getSimpleRelativeTimeFromDate(dayjs(Number(proposal.parameters.vetoEndDate) * 1000))}
+                    {getSimpleRelativeTimeFromDate(dayjs(Number(proposal.parameters.endDate) * 1000))}
                   </span>
                 </Else>
               </If>

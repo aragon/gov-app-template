@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { getAbiItem } from "viem";
-import { TokenVotingAbi } from "../artifacts/TokenVoting.sol";
+import { TokenVotingPluginAbi } from "../artifacts/TokenVoting.sol";
 import { Proposal, VoteCastEvent } from "../utils/types";
 import { usePublicClient } from "wagmi";
 import { PUB_TOKEN_VOTING_PLUGIN_ADDRESS } from "@/constants";
 
-const event = getAbiItem({ abi: TokenVotingAbi, name: "VoteCast" });
+const event = getAbiItem({ abi: TokenVotingPluginAbi, name: "VoteCast" });
 
 export function useProposalVoteList(proposalId: number, proposal: Proposal | null) {
   const publicClient = usePublicClient();

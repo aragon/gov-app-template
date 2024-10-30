@@ -2,7 +2,7 @@ import { DelegateAnnouncerAbi } from "../artifacts/DelegationWall.sol";
 import { PUB_DELEGATION_WALL_CONTRACT_ADDRESS } from "@/constants";
 import { toHex } from "viem";
 import { useAlerts } from "@/context/Alerts";
-import { uploadToPinata } from "@/utils/ipfs";
+import { uploadToWeb3Storage } from "@/utils/ipfs";
 import { useCallback, useState } from "react";
 import { type IAnnouncementMetadata } from "../utils/types";
 import { useDelegates } from "./useDelegates";
@@ -30,7 +30,7 @@ export function useAnnounceDelegation(onSuccess?: () => void) {
       setUploading(true);
 
       try {
-        const ipfsUrl = await uploadToPinata(JSON.stringify(metadata));
+        const ipfsUrl = await uploadToWeb3Storage(JSON.stringify(metadata));
 
         if (!ipfsUrl) throw new Error("Empty IPFS URL");
         setTimeout(() => setUploading(false), 1000);

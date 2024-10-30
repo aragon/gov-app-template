@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useBlockNumber, usePublicClient, useReadContract } from "wagmi";
-import { Address, Hex, getAbiItem } from "viem";
+import { Address, Hex, fromHex, getAbiItem } from "viem";
 import { ProposalMetadata, type RawAction, type DecodedAction } from "@/utils/types";
 import {
   type OptimisticProposal,
@@ -9,7 +9,7 @@ import {
 } from "@/plugins/optimistic-proposals/utils/types";
 import { PUB_CHAIN, PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
 import { useMetadata } from "@/hooks/useMetadata";
-import { MyOptimisticTokenVotingPluginAbi } from "../artifacts/MyOptimisticTokenVotingPlugin.sol";
+import { OptimisticTokenVotingPluginAbi } from "../artifacts/OptimisticTokenVotingPlugin.sol";
 import { parseProposalId } from "../utils/proposal-id";
 
 type ProposalCreatedLogResponse = {
@@ -25,13 +25,14 @@ type ProposalCreatedLogResponse = {
 };
 
 const ProposalCreatedEvent = getAbiItem({
-  abi: MyOptimisticTokenVotingPluginAbi,
+  abi: OptimisticTokenVotingPluginAbi,
   name: "ProposalCreated",
 });
 
 export function useProposal(proposalId?: bigint, autoRefresh = false) {
   const publicClient = usePublicClient();
   const [proposalCreationEvent, setProposalCreationEvent] = useState<ProposalCreatedLogResponse["args"]>();
+  const [metadataUri, setMetadataUri] = useState<string>();
   const { data: blockNumber } = useBlockNumber({ watch: true });
 
   // Proposal onchain data
@@ -42,7 +43,7 @@ export function useProposal(proposalId?: bigint, autoRefresh = false) {
     refetch: proposalRefetch,
   } = useReadContract({
     address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
-    abi: MyOptimisticTokenVotingPluginAbi,
+    abi: OptimisticTokenVotingPluginAbi,
     functionName: "getProposal",
     args: [proposalId ?? BigInt(0)],
     chainId: PUB_CHAIN.id,
@@ -56,29 +57,35 @@ export function useProposal(proposalId?: bigint, autoRefresh = false) {
 
   // Creation event
   useEffect(() => {
-    if (!proposalData || !publicClient) return;
+    console.log("[[ proposalId");
+    console.log(proposalId);
+    console.log("[[ proposalData");
+    console.log(proposalData);
+
+    if (proposalId === undefined || !proposalData || !publicClient) return;
 
     publicClient
       .getLogs({
         address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
         event: ProposalCreatedEvent,
         args: {
-          proposalId,
+          proposalId: BigInt(proposalId),
         },
+        //fromBlock: proposalData.parameters.snapshotBlock,
+        // TODO can we somehow get the from/to blocks from the proposalData?
         fromBlock: BigInt(0),
+        // toBlock: proposalData.parameters.startDate,
         toBlock: "latest",
       })
-      .then((logs: any) => {
+      .then((logs) => {
         if (!logs || !logs.length) throw new Error("No creation logs");
 
-        const event = logs.find((item: any) => item.args.proposalId === proposalId);
-
-        if (!event) return;
-        setProposalCreationEvent((event as any).args);
+        const log: ProposalCreatedLogResponse = logs[0] as any;
+        setProposalCreationEvent(log.args);
+        setMetadataUri(fromHex(log.args.metadata as Hex, "string"));
       })
       .catch((err) => {
         console.error("Could not fetch the proposal details", err);
-        return null;
       });
   }, [proposalId, !!proposalData, publicClient?.chain.id]);
 
@@ -87,9 +94,11 @@ export function useProposal(proposalId?: bigint, autoRefresh = false) {
     data: metadataContent,
     isLoading: metadataLoading,
     error: metadataError,
-  } = useMetadata<ProposalMetadata>(proposalData?.metadataUri);
+  } = useMetadata<ProposalMetadata>(metadataUri);
 
   const proposal = arrangeProposalData(proposalId, proposalData, proposalCreationEvent, metadataContent);
+  console.log("xxxxxxxxxx proposal");
+  console.log(proposal);
 
   return {
     proposal,
@@ -113,9 +122,10 @@ function decodeProposalResultData(data?: OptimisticProposalResultType) {
   return {
     active: data[0] as boolean,
     executed: data[1] as boolean,
-    parameters: data[2] as OptimisticProposalParameters,
-    vetoTally: data[3] as bigint,
-    metadataUri: data[4] as string,
+    parameters: data[3] as OptimisticProposalParameters,
+    vetoTally: data[4] as bigint,
+    // TODO what about this metadataUri?
+    // metadataUri: data[4] as string,
     actions: data[5] as Array<RawAction>,
     allowFailureMap: data[6] as bigint,
   };
@@ -127,7 +137,7 @@ function arrangeProposalData(
   creationEvent?: ProposalCreatedLogResponse["args"],
   metadata?: ProposalMetadata
 ): OptimisticProposal | null {
-  if (!proposalData || !proposalId) return null;
+  if (!proposalData || proposalId === undefined) return null;
 
   const { index, startDate: vetoStartDate, endDate: vetoEndDate } = parseProposalId(proposalId);
 
@@ -136,13 +146,14 @@ function arrangeProposalData(
     actions: proposalData.actions,
     active: proposalData.active,
     executed: proposalData.executed,
-    parameters: {
-      minVetoRatio: proposalData.parameters.minVetoRatio,
-      skipL2: proposalData.parameters.skipL2,
-      snapshotTimestamp: proposalData.parameters.snapshotTimestamp,
-      vetoStartDate,
-      vetoEndDate,
-    },
+    parameters: proposalData.parameters,
+    //  {
+    //   minVetoRatio: proposalData.parameters.minVetoRatio,
+    //   skipL2: proposalData.parameters.skipL2,
+    //   snapshotTimestamp: proposalData.parameters.snapshotTimestamp,
+    //   vetoStartDate,
+    //   vetoEndDate,
+    // },
     vetoTally: proposalData.vetoTally,
     allowFailureMap: proposalData.allowFailureMap,
     creator: creationEvent?.creator ?? "",

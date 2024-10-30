@@ -22,6 +22,7 @@ import { useTokenVotes } from "@/hooks/useTokenVotes";
 import { ADDRESS_ZERO } from "@/utils/evm";
 import { AddressText } from "@/components/text/address";
 import Link from "next/link";
+import { useGovernanceSettings } from "../hooks/useGovernanceSettings";
 
 const ZERO = BigInt(0);
 
@@ -38,18 +39,19 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
   const pastSupply = usePastSupply(proposal);
   const { symbol: tokenSymbol } = useToken();
   const { balance, delegatesTo } = useTokenVotes(address);
+  const { minVetoRatio } = useGovernanceSettings();
 
   const { executeProposal, canExecute, isConfirming: isConfirmingExecution } = useProposalExecute(proposalIdx);
 
-  const startDate = dayjs(Number(proposal?.parameters.vetoStartDate) * 1000).toString();
-  const endDate = dayjs(Number(proposal?.parameters.vetoEndDate) * 1000).toString();
+  const startDate = dayjs(Number(proposal?.parameters.startDate) * 1000).toString();
+  const endDate = dayjs(Number(proposal?.parameters.endDate) * 1000).toString();
 
   const showProposalLoading = getShowProposalLoading(proposal, proposalFetchStatus);
   const proposalStatus = useProposalStatus(proposal!);
   let vetoPercentage = 0;
-  if (proposal?.vetoTally && pastSupply && proposal.parameters.minVetoRatio) {
+  if (proposal?.vetoTally && pastSupply && minVetoRatio) {
     vetoPercentage = Number(
-      (BigInt(1000) * proposal.vetoTally) / ((pastSupply * BigInt(proposal.parameters.minVetoRatio)) / BigInt(10000000))
+      (BigInt(1000) * proposal.vetoTally) / ((pastSupply * BigInt(minVetoRatio)) / BigInt(10000000))
     );
   }
 
@@ -80,7 +82,7 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
       id: "1",
       type: ProposalStages.OPTIMISTIC_EXECUTION,
       variant: "majorityVoting",
-      title: "Optimistic voting",
+      title: "Stewards voting",
       status: proposalStatus!,
       disabled: false,
       proposalId: proposalIdx.toString(),
@@ -98,10 +100,12 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
         proposalId: proposalIdx.toString(),
       },
       details: {
-        censusTimestamp: Number(proposal?.parameters.snapshotTimestamp || 0) || 0,
+        // TODO ?
+        // TODO rather show epoch in which this started?
+        // censusTimestamp: Number(proposal?.parameters.snapshotTimestamp || 0) || 0,
         startDate,
         endDate,
-        strategy: "Optimistic voting",
+        strategy: "Stewards voting",
         options: "Veto",
       },
       votes: vetoes.map(({ voter }) => ({ address: voter, variant: "no" }) as IVote),

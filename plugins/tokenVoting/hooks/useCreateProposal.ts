@@ -3,8 +3,8 @@ import { useState } from "react";
 import { ProposalMetadata, RawAction } from "@/utils/types";
 import { useAlerts } from "@/context/Alerts";
 import { PUB_APP_NAME, PUB_CHAIN, PUB_TOKEN_VOTING_PLUGIN_ADDRESS, PUB_PROJECT_URL } from "@/constants";
-import { uploadToPinata } from "@/utils/ipfs";
-import { TokenVotingAbi } from "../artifacts/TokenVoting.sol";
+import { uploadToWeb3Storage } from "@/utils/ipfs";
+import { TokenVotingPluginAbi } from "../artifacts/TokenVoting.sol";
 import { URL_PATTERN } from "@/utils/input-values";
 import { toHex } from "viem";
 import { VotingMode } from "../utils/types";
@@ -75,19 +75,19 @@ export function useCreateProposal() {
         resources,
       };
 
-      const ipfsPin = await uploadToPinata(JSON.stringify(proposalMetadataJsonObject));
-      const startDate = BigInt(0);
-      const endDate = BigInt(0);
+      const ipfsPin = await uploadToWeb3Storage(JSON.stringify(proposalMetadataJsonObject));
+      const startDate = BigInt(0); // equals "start right now"
+      const endDate = BigInt(0); // equals "minDuration"
 
-      const tryEarlyExecution = false;
       createProposalWrite({
         chainId: PUB_CHAIN.id,
-        abi: TokenVotingAbi,
+        abi: TokenVotingPluginAbi,
         address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
         functionName: "createProposal",
-        args: [toHex(ipfsPin), actions, BigInt(0), startDate, endDate, VotingMode.Standard, tryEarlyExecution],
+        args: [toHex(ipfsPin), actions, BigInt(0), startDate, endDate, VotingMode.Standard],
       });
     } catch (err) {
+      console.error(err);
       setIsCreating(false);
     }
   };

@@ -1,4 +1,4 @@
-import { PUB_ALCHEMY_API_KEY, PUB_CHAIN } from "@/constants";
+import { PUB_CHAIN, PUB_RPC_URL } from "@/constants";
 import { formatHexString } from "@/utils/evm";
 import { MemberAvatar } from "@aragon/ods";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
@@ -10,12 +10,12 @@ import { createConfig, useAccount, useEnsAvatar, useEnsName, useSwitchChain } fr
 import { mainnet } from "wagmi/chains";
 
 const config = createConfig({
-  chains: [mainnet],
+  chains: [PUB_CHAIN],
   ssr: true,
   client({ chain }) {
     return createClient({
       chain,
-      transport: http(`https://eth-mainnet.g.alchemy.com/v2/${PUB_ALCHEMY_API_KEY}`, { batch: true }),
+      transport: http(PUB_RPC_URL, { batch: true }),
     });
   },
 });

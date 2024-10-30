@@ -3,14 +3,12 @@ import { useProposalVetoes } from "@/plugins/optimistic-proposals/hooks/usePropo
 import { useUserCanVeto } from "@/plugins/optimistic-proposals/hooks/useUserCanVeto";
 import { OptimisticTokenVotingPluginAbi } from "@/plugins/optimistic-proposals/artifacts/OptimisticTokenVotingPlugin.sol";
 import { PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
-import { useProposalId } from "./useProposalId";
 import { useTransactionManager } from "@/hooks/useTransactionManager";
 
-export function useProposalVeto(index: number) {
-  const { proposalId } = useProposalId(index);
-  const { proposal, status: proposalFetchStatus, refetch: refetchProposal } = useProposal(proposalId, true);
-  const vetoes = useProposalVetoes(proposalId);
-  const { canVeto, refetch: refetchCanVeto } = useUserCanVeto(proposalId);
+export function useProposalVeto(proposalIndex: number) {
+  const { proposal, status: proposalFetchStatus, refetch: refetchProposal } = useProposal(BigInt(proposalIndex), true);
+  const vetoes = useProposalVetoes(BigInt(proposalIndex));
+  const { canVeto, refetch: refetchCanVeto } = useUserCanVeto(BigInt(proposalIndex));
 
   const {
     writeContract,
@@ -31,7 +29,7 @@ export function useProposalVeto(index: number) {
       abi: OptimisticTokenVotingPluginAbi,
       address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
       functionName: "veto",
-      args: [proposalId ?? BigInt(0)],
+      args: [BigInt(proposalIndex) ?? BigInt(0)],
     });
   };
 

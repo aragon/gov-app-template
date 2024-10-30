@@ -10,7 +10,7 @@ export function usePastSupply(proposal: OptimisticProposal | null) {
     address: PUB_TOKEN_ADDRESS,
     abi: erc20Votes,
     functionName: "getPastTotalSupply",
-    args: [proposal?.parameters.snapshotTimestamp || BigInt(0)],
+    args: [proposal?.parameters.snapshotEpoch || BigInt(0)],
   });
 
   return pastSupply || BigInt(0);

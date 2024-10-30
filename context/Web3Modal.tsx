@@ -6,11 +6,10 @@ import {
   PUB_APP_NAME,
   PUB_CHAIN,
   PUB_PROJECT_URL,
+  PUB_RPC_URL,
   PUB_WALLET_CONNECT_PROJECT_ID,
   PUB_WALLET_ICON,
-  PUB_WEB3_ENDPOINT,
 } from "@/constants";
-import { mainnet } from "viem/chains";
 
 // wagmi config
 const metadata = {
@@ -21,11 +20,13 @@ const metadata = {
 };
 
 export const config = createConfig({
-  chains: [PUB_CHAIN, mainnet],
+  // TODO do we need to have mainnet enabled here?
+  //chains: [PUB_CHAIN, mainnet],
+  chains: [PUB_CHAIN],
   ssr: true,
   transports: {
-    [PUB_CHAIN.id]: http(PUB_WEB3_ENDPOINT, { batch: true }),
-    [mainnet.id]: http(PUB_WEB3_ENDPOINT, { batch: true }),
+    [PUB_CHAIN.id]: http(PUB_RPC_URL, { batch: true }),
+    //[mainnet.id]: http(TODO, { batch: true }),
   },
   connectors: [
     walletConnect({

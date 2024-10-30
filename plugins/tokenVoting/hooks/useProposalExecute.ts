@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useReadContract } from "wagmi";
-import { TokenVotingAbi } from "../artifacts/TokenVoting.sol";
+import { TokenVotingPluginAbi } from "../artifacts/TokenVoting.sol";
 import { useRouter } from "next/router";
 import { PUB_CHAIN, PUB_TOKEN_VOTING_PLUGIN_ADDRESS } from "@/constants";
 import { useTransactionManager } from "@/hooks/useTransactionManager";
@@ -15,7 +15,7 @@ export function useProposalExecute(proposalId: number) {
     isLoading: isCanVoteLoading,
   } = useReadContract({
     address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
-    abi: TokenVotingAbi,
+    abi: TokenVotingPluginAbi,
     chainId: PUB_CHAIN.id,
     functionName: "canExecute",
     args: [BigInt(proposalId)],
@@ -41,7 +41,7 @@ export function useProposalExecute(proposalId: number) {
 
     writeContract({
       chainId: PUB_CHAIN.id,
-      abi: TokenVotingAbi,
+      abi: TokenVotingPluginAbi,
       address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
       functionName: "execute",
       args: [BigInt(proposalId)],

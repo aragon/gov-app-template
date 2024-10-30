@@ -1,8 +1,12 @@
-import { PUB_IPFS_ENDPOINTS, PUB_PINATA_JWT, PUB_APP_NAME } from "@/constants";
+import { PUB_IPFS_ENDPOINTS, PUB_APP_NAME } from "@/constants";
 import { Hex, fromHex, toBytes } from "viem";
 import { CID } from "multiformats/cid";
 import * as raw from "multiformats/codecs/raw";
 import { sha256 } from "multiformats/hashes/sha2";
+import { create as createWeb3StorageClient } from "@web3-storage/w3up-client";
+import * as Signer from "@ucanto/principal/ed25519";
+import { StoreMemory } from "@web3-storage/access/stores/store-memory";
+import * as Proof from "@web3-storage/w3up-client/proof";
 
 const IPFS_FETCH_TIMEOUT = 1000; // 1 second
 const UPLOAD_FILE_NAME = PUB_APP_NAME.toLowerCase().trim().replaceAll(" ", "-") + ".json";
@@ -19,6 +23,31 @@ export function fetchIpfsAsBlob(ipfsUri: string) {
   return fetchRawIpfs(ipfsUri).then((res) => res.blob());
 }
 
+export async function uploadToWeb3Storage(strBody: string) {
+  // TODO this most likely needs to happen only once
+  const client = await createWeb3StorageClient({
+    principal: Signer.parse(process.env.NEXT_PUBLIC_WEB3_STORAGE_KEY!),
+    store: new StoreMemory(),
+  });
+
+  const proof = await Proof.parse(process.env.NEXT_PUBLIC_WEB3_STORAGE_PROOF!);
+  const space = await client.addSpace(proof);
+  await client.setCurrentSpace(space.did());
+
+  const blob = new Blob([strBody], { type: "text/plain" });
+  const file = new File([blob], UPLOAD_FILE_NAME);
+
+  console.log(file);
+
+  const uploadedFile = await client.uploadFile(file);
+  console.log("uploadedFile");
+  console.log(uploadedFile);
+  console.log("uploadedFile cid v1");
+  console.log(uploadedFile.toString());
+  return `ipfs://${uploadedFile.toString()}`;
+}
+
+/*
 export async function uploadToPinata(strBody: string) {
   const blob = new Blob([strBody], { type: "text/plain" });
   const file = new File([blob], UPLOAD_FILE_NAME);
@@ -41,6 +70,7 @@ export async function uploadToPinata(strBody: string) {
   else if (!resData.IpfsHash) throw new Error("Could not pin the metadata");
   return "ipfs://" + resData.IpfsHash;
 }
+  */
 
 export async function getContentCid(strMetadata: string) {
   const bytes = raw.encode(toBytes(strMetadata));

@@ -15,7 +15,7 @@ export function useProposalVetoes(proposalId?: bigint) {
   const [proposalLogs, setLogs] = useState<VetoCastEvent[]>([]);
 
   useEffect(() => {
-    if (!proposalId || !publicClient) return;
+    if (proposalId === undefined || !publicClient) return;
 
     publicClient
       .getLogs({

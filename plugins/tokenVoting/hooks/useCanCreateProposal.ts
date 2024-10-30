@@ -1,7 +1,7 @@
 import { Address } from "viem";
 import { useState, useEffect } from "react";
 import { useBalance, useAccount, useReadContracts } from "wagmi";
-import { TokenVotingAbi } from "../artifacts/TokenVoting.sol";
+import { TokenVotingPluginAbi } from "../artifacts/TokenVoting.sol";
 import { PUB_CHAIN, PUB_TOKEN_VOTING_PLUGIN_ADDRESS } from "@/constants";
 
 export function useCanCreateProposal() {
@@ -19,13 +19,13 @@ export function useCanCreateProposal() {
       {
         chainId: PUB_CHAIN.id,
         address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
-        abi: TokenVotingAbi,
+        abi: TokenVotingPluginAbi,
         functionName: "minProposerVotingPower",
       },
       {
         chainId: PUB_CHAIN.id,
         address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
-        abi: TokenVotingAbi,
+        abi: TokenVotingPluginAbi,
         functionName: "getVotingToken",
       },
     ],

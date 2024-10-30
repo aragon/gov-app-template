@@ -1,16 +1,12 @@
 import { useState } from "react";
 import { useReadContract } from "wagmi";
 import { OptimisticTokenVotingPluginAbi } from "../artifacts/OptimisticTokenVotingPlugin.sol";
-import { AlertContextProps, useAlerts } from "@/context/Alerts";
 import { useRouter } from "next/router";
 import { PUB_CHAIN, PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
-import { useProposalId } from "./useProposalId";
 import { useTransactionManager } from "@/hooks/useTransactionManager";
 
 export function useProposalExecute(index: number) {
   const { reload } = useRouter();
-  const { addAlert } = useAlerts() as AlertContextProps;
-  const { proposalId } = useProposalId(index);
   const [isExecuting, setIsExecuting] = useState(false);
 
   const {
@@ -22,7 +18,7 @@ export function useProposalExecute(index: number) {
     abi: OptimisticTokenVotingPluginAbi,
     chainId: PUB_CHAIN.id,
     functionName: "canExecute",
-    args: [proposalId ?? BigInt("0")],
+    args: [index ? BigInt(index) : BigInt("0")],
   });
 
   const { writeContract, isConfirming, isConfirmed } = useTransactionManager({
@@ -39,7 +35,7 @@ export function useProposalExecute(index: number) {
 
   const executeProposal = () => {
     if (!canExecute) return;
-    else if (typeof proposalId === "undefined") return;
+    else if (typeof index === "undefined") return;
 
     setIsExecuting(true);
 
@@ -48,7 +44,7 @@ export function useProposalExecute(index: number) {
       abi: OptimisticTokenVotingPluginAbi,
       address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
       functionName: "execute",
-      args: [BigInt(proposalId)],
+      args: [BigInt(index)],
     });
   };
 

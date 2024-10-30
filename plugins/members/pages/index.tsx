@@ -11,8 +11,7 @@ import { Else, ElseIf, If, Then } from "@/components/if";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import { useDelegates } from "../hooks/useDelegates";
 import { useDelegateAnnounce } from "../hooks/useDelegateAnnounce";
-import { MultisigMemberList } from "../components/MultisigMemberList";
-import { useMultisigMembers } from "../hooks/useMultisigMembers";
+// import { MultisigMemberList } from "../components/MultisigMemberList";
 
 const DELEGATION_DESCRIPTION =
   "Proposals submitted to the community can be vetoed by token holders. Additionally, token holders can opt to delegate their voting power to delegates.";
@@ -25,7 +24,8 @@ export default function MembersList() {
   const { address, isConnected } = useAccount();
   const { delegates } = useDelegates();
   const delegateCount = delegates?.length || 0;
-  const { members: multisigMembers, isLoading: isLoadingMultisigMembers } = useMultisigMembers();
+
+  // TODO also show here the members of the optimistic Safe{Wallet} multisig?
 
   const [toggleValue, setToggleValue] = useState<"all" | "verified" | "multisig">("all");
   const onToggleChange = (value: string | undefined) => {
@@ -63,9 +63,9 @@ export default function MembersList() {
             <Then>
               <DelegateMemberList verifiedOnly={toggleValue === "verified"} />
             </Then>
-            <Else>
+            {/*<Else>
               <MultisigMemberList />
-            </Else>
+            </Else>*/}
           </If>
         </div>
         <aside className="flex w-full flex-col gap-y-4 lg:max-w-[280px] lg:gap-y-6">
@@ -110,7 +110,7 @@ export default function MembersList() {
                   </dd>
                 </div>
               </Then>
-              <Else>
+              {/*<Else>
                 <If not={isLoadingMultisigMembers}>
                   <div className="flex flex-col items-baseline gap-y-2 py-3 lg:gap-x-6 lg:py-4">
                     <dt className="line-clamp-1 shrink-0 text-lg leading-tight text-neutral-800 lg:line-clamp-6 lg:w-40">
@@ -121,7 +121,7 @@ export default function MembersList() {
                     </dd>
                   </div>
                 </If>
-              </Else>
+              </Else>*/}
             </If>
           </dl>
           <If not={isConnected}>

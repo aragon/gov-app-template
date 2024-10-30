@@ -1,29 +1,25 @@
-import React, { ReactNode, useState } from "react";
 import { Button, IconType, InputText, Tag, TextAreaRichText } from "@aragon/ods";
-import { useAccount } from "wagmi";
+import React, { ReactNode, useState } from "react";
+import { RawAction } from "@/utils/types";
 import { Else, ElseIf, If, Then } from "@/components/if";
-import { PleaseWaitSpinner } from "@/components/please-wait";
+import { MainSection } from "@/components/layout/main-section";
+import { useAccount, useConfig } from "wagmi";
+import { getBlock } from "@wagmi/core";
+import { useCanCreateProposal } from "../hooks/useCanCreateProposal";
 import { MissingContentView } from "@/components/MissingContentView";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
-import { useDerivedWallet } from "../../../hooks/useDerivedWallet";
-import { MainSection } from "@/components/layout/main-section";
-import { useCreateProposal } from "../hooks/useCreateProposal";
-import { useCanCreateProposal } from "../hooks/useCanCreateProposal";
-import { usePublicKeyRegistry } from "../hooks/usePublicKeyRegistry";
-import { useMultisigMembers } from "@/plugins/members/hooks/useMultisigMembers";
-import { RawAction } from "@/utils/types";
-import { NewActionDialog, NewActionType } from "@/components/dialogs/NewActionDialog";
 import { Address } from "viem";
+import { NewActionDialog, NewActionType } from "@/components/dialogs/NewActionDialog";
 import { AddActionCard } from "@/components/cards/AddActionCard";
 import { ProposalActions } from "@/components/proposalActions/proposalActions";
 import { downloadAsFile } from "@/utils/download-as-file";
 import { encodeActionsAsJson } from "@/utils/json-actions";
+import { useCreateProposal } from "../hooks/useCreateProposal";
 
 export default function Create() {
   const { address: selfAddress, isConnected } = useAccount();
-  const { canCreate } = useCanCreateProposal();
+  const canCreateProposal = useCanCreateProposal();
   const [addActionType, setAddActionType] = useState<NewActionType>("");
-  const { data: registeredSigners } = usePublicKeyRegistry();
   const {
     title,
     summary,
@@ -38,7 +34,6 @@ export default function Create() {
     isCreating,
     submitProposal,
   } = useCreateProposal();
-  const { members: multisigMembers } = useMultisigMembers();
 
   const handleTitleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event?.target?.value);
@@ -72,16 +67,18 @@ export default function Create() {
     setResources([].concat(resources as any));
   };
 
-  const filteredSignerItems = registeredSigners.filter((signer) => {
-    return multisigMembers.includes(signer.address);
-  });
-  const signersWithPubKey = filteredSignerItems.length;
-
   const exportAsJson = () => {
     if (!actions.length) return;
 
     const strResult = encodeActionsAsJson(actions);
     downloadAsFile("actions.json", strResult, "text/json");
+  };
+
+  const config = useConfig();
+  const debug = async () => {
+    const blockDetail = await getBlock(config, { blockTag: "latest" });
+    console.log("blockDetail");
+    console.log(blockDetail);
   };
 
   return (
@@ -90,7 +87,10 @@ export default function Create() {
         <h1 className="mb-8 line-clamp-1 flex flex-1 shrink-0 text-2xl font-normal leading-tight text-neutral-800 md:text-3xl">
           Create Proposal
         </h1>
-        <PlaceHolderOr selfAddress={selfAddress} canCreate={canCreate} isConnected={isConnected}>
+
+        <Button onClick={debug}>SDADASDASD</Button>
+
+        <PlaceHolderOr selfAddress={selfAddress} canCreate={canCreateProposal} isConnected={isConnected}>
           <div className="mb-6">
             <InputText
               className=""
@@ -136,7 +136,7 @@ export default function Create() {
               </p>
             </div>
             <div className="flex flex-col gap-y-4 rounded-xl border border-neutral-100 bg-neutral-0 p-4">
-              <If not={!!resources.length}>
+              <If lengthOf={resources} is={0}>
                 <p className="text-sm font-normal leading-normal text-neutral-500 md:text-base">
                   There are no resources yet. Click the button below to add the first one.
                 </p>
@@ -193,7 +193,7 @@ export default function Create() {
             onRemove={(idx) => onRemoveAction(idx)}
           />
 
-          <If true={actions?.length}>
+          <If lengthOf={actions} above={0}>
             <Button
               className="mt-6"
               iconLeft={IconType.RICHTEXT_LIST_UNORDERED}
@@ -242,11 +242,6 @@ export default function Create() {
           {/* Submit */}
 
           <div className="mt-6 flex w-full flex-col items-center">
-            <div>
-              <span className="text-md mb-2 block font-normal text-neutral-700 ">
-                {signersWithPubKey || 0} signer(s) registered their public key
-              </span>
-            </div>
             <Button
               isLoading={isCreating}
               className="mt-3 border-primary-400"
@@ -254,7 +249,7 @@ export default function Create() {
               variant={actions.length ? "primary" : "secondary"}
               onClick={() => submitProposal()}
             >
-              <If true={actions.length}>
+              <If lengthOf={actions} above={0}>
                 <Then>Submit proposal</Then>
                 <Else>Submit signaling proposal</Else>
               </If>
@@ -265,8 +260,6 @@ export default function Create() {
     </MainSection>
   );
 }
-
-// HELPERS
 
 const PlaceHolderOr = ({
   selfAddress,
@@ -280,47 +273,14 @@ const PlaceHolderOr = ({
   children: ReactNode;
 }) => {
   const { open } = useWeb3Modal();
-  const { publicKey, requestSignature } = useDerivedWallet();
-  const {
-    data: registeredSigners,
-    registerPublicKey,
-    isLoading: isLoadingPubKeys,
-    isConfirming: isRegisteringPublicKey,
-  } = usePublicKeyRegistry();
-  const hasPubKeyRegistered = registeredSigners.some((item) => item.address === selfAddress);
-
   return (
-    <If true={isLoadingPubKeys}>
+    <If true={!selfAddress || !isConnected}>
       <Then>
-        {/* No public keys yet */}
-        <div>
-          <PleaseWaitSpinner fullMessage="Loading the signer public keys..." />
-        </div>
-      </Then>
-      <ElseIf true={!selfAddress || !isConnected}>
         {/* Not connected */}
         <MissingContentView callToAction="Connect wallet" onClick={() => open()}>
           Please connect your wallet to continue.
         </MissingContentView>
-      </ElseIf>
-      <ElseIf true={selfAddress && !hasPubKeyRegistered}>
-        {/* Public key not registered yet */}
-        <MissingContentView
-          callToAction="Register your public key"
-          onClick={() => registerPublicKey()}
-          isLoading={isRegisteringPublicKey}
-        >
-          You haven&apos;t registered a public key yet. A public key is necessary in order for proposals to have private
-          data that only members can decrypt. You will sign a deterministic text, which will be used to generate an
-          encryption key only for this DAO.
-        </MissingContentView>
-      </ElseIf>
-      <ElseIf true={!publicKey}>
-        {/* Not signed in */}
-        <MissingContentView callToAction="Sign in to continue" onClick={() => requestSignature()}>
-          Please sign in with your wallet to decrypt the private proposal data.
-        </MissingContentView>
-      </ElseIf>
+      </Then>
       <ElseIf true={!canCreate}>
         {/* Not a member */}
         <MissingContentView>

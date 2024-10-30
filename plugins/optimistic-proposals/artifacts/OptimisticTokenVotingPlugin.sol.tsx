@@ -58,22 +58,6 @@ export const OptimisticTokenVotingPluginAbi = [
     type: "error",
   },
   {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "limit",
-        type: "uint256",
-      },
-      {
-        internalType: "uint256",
-        name: "actual",
-        type: "uint256",
-      },
-    ],
-    name: "MinProposerVotingPowerOutOfBounds",
-    type: "error",
-  },
-  {
     inputs: [],
     name: "NoVotingPower",
     type: "error",
@@ -81,12 +65,12 @@ export const OptimisticTokenVotingPluginAbi = [
   {
     inputs: [
       {
-        internalType: "address",
-        name: "sender",
-        type: "address",
+        internalType: "uint256",
+        name: "proposalId",
+        type: "uint256",
       },
     ],
-    name: "ProposalCreationForbidden",
+    name: "ProposalCancellationForbidden",
     type: "error",
   },
   {
@@ -231,14 +215,21 @@ export const OptimisticTokenVotingPluginAbi = [
         name: "minDuration",
         type: "uint64",
       },
+    ],
+    name: "OptimisticGovernanceSettingsUpdated",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
       {
-        indexed: false,
+        indexed: true,
         internalType: "uint256",
-        name: "minProposerVotingPower",
+        name: "proposalId",
         type: "uint256",
       },
     ],
-    name: "OptimisticGovernanceSettingsUpdated",
+    name: "ProposalCancelled",
     type: "event",
   },
   {
@@ -360,12 +351,12 @@ export const OptimisticTokenVotingPluginAbi = [
   },
   {
     inputs: [],
-    name: "OPTIMISTIC_GOVERNANCE_INTERFACE_ID",
+    name: "CANCELLER_PERMISSION_ID",
     outputs: [
       {
-        internalType: "bytes4",
+        internalType: "bytes32",
         name: "",
-        type: "bytes4",
+        type: "bytes32",
       },
     ],
     stateMutability: "view",
@@ -418,6 +409,25 @@ export const OptimisticTokenVotingPluginAbi = [
         type: "uint256",
       },
     ],
+    name: "canCancel",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_proposalId",
+        type: "uint256",
+      },
+    ],
     name: "canExecute",
     outputs: [
       {
@@ -446,11 +456,24 @@ export const OptimisticTokenVotingPluginAbi = [
     outputs: [
       {
         internalType: "bool",
-        name: "",
+        name: "canVeto_",
         type: "bool",
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_proposalId",
+        type: "uint256",
+      },
+    ],
+    name: "cancel",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -556,6 +579,11 @@ export const OptimisticTokenVotingPluginAbi = [
         type: "bool",
       },
       {
+        internalType: "bool",
+        name: "cancelled",
+        type: "bool",
+      },
+      {
         components: [
           {
             internalType: "uint64",
@@ -569,7 +597,7 @@ export const OptimisticTokenVotingPluginAbi = [
           },
           {
             internalType: "uint64",
-            name: "snapshotBlock",
+            name: "snapshotEpoch",
             type: "uint64",
           },
           {
@@ -578,7 +606,7 @@ export const OptimisticTokenVotingPluginAbi = [
             type: "uint256",
           },
         ],
-        internalType: "struct OptimisticTokenVotingPlugin.ProposalParameters",
+        internalType: "struct IPWNOptimisticGovernance.ProposalParameters",
         name: "parameters",
         type: "tuple",
       },
@@ -687,19 +715,19 @@ export const OptimisticTokenVotingPluginAbi = [
             name: "minDuration",
             type: "uint64",
           },
-          {
-            internalType: "uint256",
-            name: "minProposerVotingPower",
-            type: "uint256",
-          },
         ],
-        internalType: "struct OptimisticTokenVotingPlugin.OptimisticGovernanceSettings",
+        internalType: "struct PWNOptimisticGovernancePlugin.OptimisticGovernanceSettings",
         name: "_governanceSettings",
         type: "tuple",
       },
       {
+        internalType: "contract IPWNEpochClock",
+        name: "_epochClock",
+        type: "address",
+      },
+      {
         internalType: "contract IVotesUpgradeable",
-        name: "_token",
+        name: "_votingToken",
         type: "address",
       },
     ],
@@ -754,19 +782,6 @@ export const OptimisticTokenVotingPluginAbi = [
         internalType: "uint64",
         name: "",
         type: "uint64",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "minProposerVotingPower",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -847,7 +862,7 @@ export const OptimisticTokenVotingPluginAbi = [
     inputs: [
       {
         internalType: "uint256",
-        name: "_blockNumber",
+        name: "_epoch",
         type: "uint256",
       },
     ],
@@ -876,13 +891,8 @@ export const OptimisticTokenVotingPluginAbi = [
             name: "minDuration",
             type: "uint64",
           },
-          {
-            internalType: "uint256",
-            name: "minProposerVotingPower",
-            type: "uint256",
-          },
         ],
-        internalType: "struct OptimisticTokenVotingPlugin.OptimisticGovernanceSettings",
+        internalType: "struct PWNOptimisticGovernancePlugin.OptimisticGovernanceSettings",
         name: "_governanceSettings",
         type: "tuple",
       },
