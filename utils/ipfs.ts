@@ -7,6 +7,7 @@ import { create as createWeb3StorageClient } from "@web3-storage/w3up-client";
 import * as Signer from "@ucanto/principal/ed25519";
 import { StoreMemory } from "@web3-storage/access/stores/store-memory";
 import * as Proof from "@web3-storage/w3up-client/proof";
+import { WEB3_STORAGE_PROOF } from "@/TO_DELETE_BEFORE_OPEN_SOURCE_constants";
 
 const IPFS_FETCH_TIMEOUT = 1000; // 1 second
 const UPLOAD_FILE_NAME = PUB_APP_NAME.toLowerCase().trim().replaceAll(" ", "-") + ".json";
@@ -30,7 +31,8 @@ export async function uploadToWeb3Storage(strBody: string) {
     store: new StoreMemory(),
   });
 
-  const proof = await Proof.parse(process.env.NEXT_PUBLIC_WEB3_STORAGE_PROOF!);
+  // TODO change back! const proof = await Proof.parse(process.env.NEXT_PUBLIC_WEB3_STORAGE_PROOF!);
+  const proof = await Proof.parse(WEB3_STORAGE_PROOF);
   const space = await client.addSpace(proof);
   await client.setCurrentSpace(space.did());
 
