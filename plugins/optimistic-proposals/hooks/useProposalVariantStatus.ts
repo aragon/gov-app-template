@@ -20,6 +20,7 @@ export const useProposalVariantStatus = (proposal: OptimisticProposal) => {
       return;
 
     const effectiveSupply = totalSupply;
+    // TODO is this correct?
     const minVetoVotingPower = (effectiveSupply * BigInt(minVetoRatio)) / BigInt(1_000_000);
 
     if (proposal?.active) {

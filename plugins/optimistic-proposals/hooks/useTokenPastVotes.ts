@@ -1,9 +1,9 @@
 import { useConfig } from "wagmi";
+import { readContract } from "wagmi/actions";
 import { PUB_TOKEN_ADDRESS } from "@/constants";
 import { Erc20VotesAbi } from "../artifacts/ERC20Votes";
 import { Address } from "viem";
 import { useQuery } from "@tanstack/react-query";
-import { readContract } from "@wagmi/core";
 
 export function useTokenPastVotes(holderAddress?: Address, epoch?: bigint) {
   const config = useConfig();
