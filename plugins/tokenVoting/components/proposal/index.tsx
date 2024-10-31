@@ -5,10 +5,12 @@ import { useProposal } from "../../hooks/useProposal";
 import { useProposalStatus } from "../../hooks/useProposalVariantStatus";
 // import { usePastSupply } from "../../hooks/usePastSupply";
 import { useToken } from "../../hooks/useToken";
-import { useAccount } from "wagmi";
+import { useAccount, useReadContract } from "wagmi";
 import { formatEther } from "viem";
-import { PUB_TOKEN_SYMBOL } from "@/constants";
+import { PUB_TOKEN_SYMBOL, PUB_TOKEN_VOTING_PLUGIN_ADDRESS } from "@/constants";
 import { useProposalVoteList } from "../../hooks/useProposalVoteList";
+import { TokenVotingPluginAbi } from "../../artifacts/TokenVoting.sol";
+import { useEffect } from "react";
 
 const DEFAULT_PROPOSAL_METADATA_TITLE = "(No proposal title)";
 const DEFAULT_PROPOSAL_METADATA_SUMMARY = "(The metadata of the proposal is not available)";

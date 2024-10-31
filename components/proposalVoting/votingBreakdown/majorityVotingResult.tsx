@@ -1,5 +1,5 @@
 import { capitalizeFirstLetter } from "@/utils/text";
-import { Button, Heading, Progress, RadioCard, RadioGroup } from "@aragon/ods";
+import { Button, Heading, Progress, ProposalStatus, RadioCard, RadioGroup } from "@aragon/ods";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import { type VotingCta } from "./types";
@@ -9,6 +9,7 @@ type Choice = "yes" | "no" | "abstain";
 export interface IBreakdownMajorityVotingResult {
   votingScores: { option: string; voteAmount: string; votePercentage: number; tokenSymbol: string }[];
   cta?: VotingCta;
+  status?: ProposalStatus;
 }
 
 const choiceClassNames: Record<Choice, string> = {
@@ -24,13 +25,15 @@ const choiceTextClassNames: Record<Choice, string> = {
 };
 
 export const BreakdownMajorityVotingResult: React.FC<IBreakdownMajorityVotingResult> = (props) => {
-  const { cta, votingScores } = props;
+  const { cta, votingScores, status } = props;
 
   const [showOptions, setShowOptions] = useState(false);
   const [option, setOption] = useState<string>();
 
   const handleVoteClick = () => {
-    if (showOptions || votingScores.length === 1) {
+    console.log("stattt");
+    console.log(status);
+    if (showOptions || votingScores.length === 1 || status === ProposalStatus.EXECUTABLE) {
       cta?.onClick?.(parseInt(option ?? "0"));
     } else {
       setShowOptions(true);

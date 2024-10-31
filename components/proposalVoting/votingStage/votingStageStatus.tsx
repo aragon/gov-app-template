@@ -1,9 +1,9 @@
 import { ElseIf, If, Then } from "@/components/if";
-import { AvatarIcon, IconType, Spinner, StatePingAnimation } from "@aragon/ods";
+import { AvatarIcon, IconType, ProposalStatus, Spinner, StatePingAnimation } from "@aragon/ods";
 
 interface IVotingStageStatus {
   endDate: string;
-  status: "pending" | "active" | "accepted" | "rejected" | "unreached";
+  status: ProposalStatus; // "pending" | "active" | "accepted" | "rejected" | "unreached";
 }
 
 export const VotingStageStatus: React.FC<IVotingStageStatus> = (props) => {
@@ -19,28 +19,31 @@ export const VotingStageStatus: React.FC<IVotingStageStatus> = (props) => {
           </div>
           <Spinner size="md" variant="neutral" className="shrink-0" />
         </Then>
-        <ElseIf all={[status === "active", endDate]}>
+        <ElseIf all={[status === ProposalStatus.ACTIVE, endDate]}>
           <div className="flex flex-grow items-center gap-x-0.5">
             <span className="shrink-0 text-primary-500">{endDate}</span>&nbsp;
             <span className="flex-grow truncate text-neutral-500">left to participate</span>
           </div>
           <StatePingAnimation variant="primary" className="shrink-0" />
         </ElseIf>
-        <ElseIf val={status} is="accepted">
+        <ElseIf val={status} is={ProposalStatus.ACCEPTED}>
           <div className="flex flex-grow items-center gap-x-0.5">
             <span className="shrink-0 text-neutral-500">The proposal has been</span>
             <span className="flex-grow truncate text-success-800">accepted</span>
           </div>
           <AvatarIcon size="sm" variant="success" icon={IconType.CHECKMARK} className="shrink-0" />
         </ElseIf>
-        <ElseIf true={["rejected", "vetoed"].includes(status)}>
+        <ElseIf true={[ProposalStatus.REJECTED, ProposalStatus.VETOED].includes(status)}>
           <div className="flex flex-grow items-center gap-x-0.5">
             <span className="shrink-0 text-neutral-500">The proposal has been</span>
             <span className="flex-grow truncate text-critical-800">rejected</span>
           </div>
           <AvatarIcon size="sm" variant="critical" icon={IconType.CLOSE} className="shrink-0" />
         </ElseIf>
-        <ElseIf val={status} is="unreached">
+        {
+          // TODO here was 'unreached', is PENDING good alternative?
+        }
+        <ElseIf val={status} is={ProposalStatus.PENDING}>
           <div className="flex flex-grow items-center gap-x-0.5">
             <span className="shrink-0 text-neutral-800">Stage</span>
             <span className="flex-grow truncate text-neutral-500">not reached</span>

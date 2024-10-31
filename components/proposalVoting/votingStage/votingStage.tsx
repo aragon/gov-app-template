@@ -1,6 +1,6 @@
 import { PUB_CHAIN } from "@/constants";
 import { getSimpleRelativeTimeFromDate } from "@/utils/dates";
-import { AccordionItem, AccordionItemContent, AccordionItemHeader, Heading, Tabs } from "@aragon/ods";
+import { AccordionItem, AccordionItemContent, AccordionItemHeader, Heading, ProposalStatus, Tabs } from "@aragon/ods";
 import { Tabs as RadixTabsRoot } from "@radix-ui/react-tabs";
 import dayjs from "dayjs";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
@@ -15,7 +15,7 @@ export interface IVotingStageProps<TType extends ProposalType = ProposalType> {
   title: string;
   number: number;
   disabled: boolean;
-  status: "accepted" | "rejected" | "active";
+  status: ProposalStatus; // "accepted" | "rejected" | "active";
 
   variant: TType;
   result?: TType extends "approvalThreshold" ? IBreakdownApprovalThresholdResult : IBreakdownMajorityVotingResult;
@@ -62,7 +62,7 @@ export const VotingStage: React.FC<IVotingStageProps> = (props) => {
 
   useLayoutEffect(resize, [resize]);
 
-  const defaultTab = status === "active" ? "breakdown" : "breakdown";
+  const defaultTab = "breakdown";
   const stageKey = `Stage ${number}`;
   const snapshotTakenAt = details?.censusBlock
     ? `Block ${details.censusBlock}`
@@ -101,7 +101,7 @@ export const VotingStage: React.FC<IVotingStageProps> = (props) => {
           </Tabs.List>
           <Tabs.Content value="breakdown">
             <div className="py-4 pb-8">
-              {result && <VotingBreakdown cta={result.cta} variant={variant} result={result} />}
+              {result && <VotingBreakdown status={status} cta={result.cta} variant={variant} result={result} />}
             </div>
           </Tabs.Content>
           <Tabs.Content value="votes">

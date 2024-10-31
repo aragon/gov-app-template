@@ -31,6 +31,7 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
   const { symbol: tokenSymbol } = useToken();
   const [showVotingModal, setShowVotingModal] = useState(false);
   const { executeProposal, canExecute, isConfirming: isConfirmingExecution } = useProposalExecute(proposalIdx);
+
   const showProposalLoading = getShowProposalLoading(proposal, proposalFetchStatus);
   const proposalStatus = useProposalStatus(proposal!);
 
@@ -45,7 +46,7 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
       disabled: true,
       label: "Executed",
     };
-  } else if (proposalStatus === ProposalStatus.ACCEPTED) {
+  } else if (proposalStatus === ProposalStatus.ACCEPTED || proposalStatus === ProposalStatus.EXECUTABLE) {
     cta = {
       disabled: !canExecute || !proposal?.actions.length,
       isLoading: isConfirmingExecution,

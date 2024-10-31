@@ -3,8 +3,7 @@ import React, { ReactNode, useState } from "react";
 import { RawAction } from "@/utils/types";
 import { Else, ElseIf, If, Then } from "@/components/if";
 import { MainSection } from "@/components/layout/main-section";
-import { useAccount, useConfig } from "wagmi";
-import { getBlock } from "@wagmi/core";
+import { useAccount } from "wagmi";
 import { useCanCreateProposal } from "../hooks/useCanCreateProposal";
 import { MissingContentView } from "@/components/MissingContentView";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
@@ -74,19 +73,12 @@ export default function Create() {
     downloadAsFile("actions.json", strResult, "text/json");
   };
 
-  const config = useConfig();
-  const debug = async () => {
-    const blockDetail = await getBlock(config, { blockTag: "latest" });
-  };
-
   return (
     <MainSection narrow>
       <div className="w-full justify-between">
         <h1 className="mb-8 line-clamp-1 flex flex-1 shrink-0 text-2xl font-normal leading-tight text-neutral-800 md:text-3xl">
           Create Proposal
         </h1>
-
-        <Button onClick={debug}>SDADASDASD</Button>
 
         <PlaceHolderOr selfAddress={selfAddress} canCreate={canCreateProposal} isConnected={isConnected}>
           <div className="mb-6">

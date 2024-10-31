@@ -27,7 +27,7 @@ export const PUB_IPFS_ENDPOINTS = process.env.NEXT_PUBLIC_IPFS_ENDPOINTS ?? "";
 // General
 export const PUB_APP_NAME = "PWN DAO";
 export const PUB_APP_DESCRIPTION = "PWN DAO's official voting UI.";
-export const PUB_TOKEN_SYMBOL = "PWN";
+export const PUB_TOKEN_SYMBOL = "vePWN";
 
 export const PUB_PROJECT_LOGO = "/pwn-dao.svg";
 export const PUB_PROJECT_URL = "https://pwn.xyz";

@@ -1,23 +1,21 @@
 import { useState, useEffect } from "react";
 import { Proposal } from "../utils/types";
 import { ProposalStatus } from "@aragon/ods";
-import { useToken } from "./useToken";
 
 export const useProposalVariantStatus = (proposal: Proposal) => {
   const [status, setStatus] = useState({ variant: "", label: "" });
-  const { tokenSupply: totalSupply } = useToken();
 
   useEffect(() => {
-    if (!proposal || !proposal?.parameters || !totalSupply) return;
+    if (!proposal || !proposal?.parameters) return;
 
-    const minVotingPower = (totalSupply * BigInt(proposal.parameters.minVotingPower)) / BigInt(1_000_000);
+    // TODO also check supportThreshold here?
     const totalVotes = proposal.tally.yes + proposal.tally.no + proposal.tally.abstain;
 
     if (proposal?.active) {
       setStatus({ variant: "info", label: "Active" });
     } else if (proposal?.executed) {
       setStatus({ variant: "primary", label: "Executed" });
-    } else if (totalVotes < minVotingPower) {
+    } else if (totalVotes < proposal.parameters.minVotingPower) {
       setStatus({ variant: "critical", label: "Low turnout" });
     } else if (proposal.tally.yes > proposal.tally.no && proposal.tally.yes > proposal.tally.abstain) {
       setStatus({ variant: "success", label: "Executable" });
@@ -30,25 +28,25 @@ export const useProposalVariantStatus = (proposal: Proposal) => {
         setStatus({ variant: "critical", label: "Defeated" });
       }
     }
-  }, [proposal?.tally, proposal?.active, proposal?.executed, proposal?.parameters?.minVotingPower, totalSupply]);
+  }, [proposal?.tally, proposal?.active, proposal?.executed, proposal?.parameters?.minVotingPower]);
 
   return status;
 };
 
 export const useProposalStatus = (proposal: Proposal) => {
   const [status, setStatus] = useState<ProposalStatus>();
-  const { tokenSupply: totalSupply } = useToken();
-  useEffect(() => {
-    if (!proposal || !proposal?.parameters || !totalSupply) return;
 
-    const minVotingPower = (totalSupply * BigInt(proposal.parameters.minVotingPower)) / BigInt(1_000_000);
+  useEffect(() => {
+    if (!proposal || !proposal?.parameters) return;
+
+    // TODO also check supportThreshold here?
     const totalVotes = proposal.tally.yes + proposal.tally.no + proposal.tally.abstain;
 
     if (proposal?.active) {
       setStatus(ProposalStatus.ACTIVE);
     } else if (proposal?.executed) {
       setStatus(ProposalStatus.EXECUTED);
-    } else if (totalVotes < minVotingPower) {
+    } else if (totalVotes < proposal.parameters.minVotingPower) {
       setStatus(ProposalStatus.FAILED);
     } else if (proposal.tally.yes > proposal.tally.no && proposal.tally.yes > proposal.tally.abstain) {
       setStatus(ProposalStatus.EXECUTABLE);
@@ -61,7 +59,7 @@ export const useProposalStatus = (proposal: Proposal) => {
         setStatus(ProposalStatus.REJECTED);
       }
     }
-  }, [proposal?.tally, proposal?.active, proposal?.executed, proposal?.parameters?.minVotingPower, totalSupply]);
+  }, [proposal?.tally, proposal?.active, proposal?.executed, proposal?.parameters?.minVotingPower]);
 
   return status;
 };
