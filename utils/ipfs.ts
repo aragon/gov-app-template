@@ -1,11 +1,11 @@
 import { PUB_IPFS_ENDPOINTS, PUB_PINATA_JWT, PUB_APP_NAME } from "@/constants";
-import { Hex, fromHex, toBytes } from "viem";
+import { type Hex, fromHex, toBytes } from "viem";
 import { CID } from "multiformats/cid";
 import * as raw from "multiformats/codecs/raw";
 import { sha256 } from "multiformats/hashes/sha2";
 
-const IPFS_FETCH_TIMEOUT = 1000; // 1 second
-const UPLOAD_FILE_NAME = PUB_APP_NAME.toLowerCase().trim().replaceAll(" ", "-") + ".json";
+const IPFS_FETCH_TIMEOUT = 5000; // 1 second
+const UPLOAD_FILE_NAME = `${PUB_APP_NAME.toLowerCase().trim().replaceAll(" ", "-")}.json`;
 
 export function fetchIpfsAsJson(ipfsUri: string) {
   return fetchRawIpfs(ipfsUri).then((res) => res.json());
@@ -37,16 +37,16 @@ export async function uploadToPinata(strBody: string) {
 
   const resData = await res.json();
 
-  if (resData.error) throw new Error("Request failed: " + resData.error);
+  if (resData.error) throw new Error(`Request failed: ${resData.error}`);
   else if (!resData.IpfsHash) throw new Error("Could not pin the metadata");
-  return "ipfs://" + resData.IpfsHash;
+  return `ipfs://${resData.IpfsHash}`;
 }
 
 export async function getContentCid(strMetadata: string) {
   const bytes = raw.encode(toBytes(strMetadata));
   const hash = await sha256.digest(bytes);
   const cid = CID.create(1, raw.code, hash);
-  return "ipfs://" + cid.toV1().toString();
+  return `ipfs://${cid.toV1().toString()}`;
 }
 
 // Internal helpers

@@ -23,7 +23,7 @@ export function useIsContract(address?: Address) {
     refetchOnReconnect: false,
     retryOnMount: true,
     enabled: !!address && isAddress(address) && !!publicClient,
-    staleTime: Infinity,
+    staleTime: 1000 * 60 * 10,
   });
 
   return {
