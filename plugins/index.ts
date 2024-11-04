@@ -14,14 +14,14 @@ type PluginItem = {
 
 export const plugins: PluginItem[] = [
   {
-    id: "token-voting",
+    id: "community-voting",
     folderName: "tokenVoting",
     title: "Community Voting",
     // icon: IconType.BLOCKCHAIN_BLOCKCHAIN,
     pluginAddress: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
   },
   {
-    id: "optimistic",
+    id: "stewards",
     folderName: "optimistic-proposals",
     title: "Stewards",
     // icon: IconType.APP_MEMBERS,
