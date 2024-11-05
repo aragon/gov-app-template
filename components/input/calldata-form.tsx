@@ -100,6 +100,7 @@ export const CalldataForm: FC<ICalldataFormProps> = ({ onChange, onSubmit }) => 
         </div>
         <div>
           <InputNumber
+            inputClassName="text-neutral-800"
             label={`${coinName} amount (optional)`}
             placeholder="1.234"
             min={0}

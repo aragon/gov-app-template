@@ -18,7 +18,15 @@ export const CallParamField: React.FC<ICallParamFiledProps> = ({ value, idx, fun
   const resolvedValue = resolveParamValue(value, functionAbi.inputs?.[idx]);
   const label = resolveFieldTitle(functionAbi.inputs?.[idx].name ?? "", functionAbi.inputs?.[idx].type, idx);
 
-  return <InputText label={decodeCamelCase(label)} className="w-full" value={resolvedValue} disabled={true} />;
+  return (
+    <InputText
+      inputClassName="text-neutral-800"
+      label={decodeCamelCase(label)}
+      className="w-full"
+      value={resolvedValue}
+      disabled={true}
+    />
+  );
 };
 
 export const CallFunctionSignatureField: React.FC<ICallFunctionSignatureFieldProps> = ({ functionAbi }) => {
@@ -26,5 +34,13 @@ export const CallFunctionSignatureField: React.FC<ICallFunctionSignatureFieldPro
 
   const sig = toFunctionSignature(functionAbi);
 
-  return <InputText label="Contract function" className="w-full" value={sig} disabled={true} />;
+  return (
+    <InputText
+      inputClassName="text-neutral-800"
+      label="Contract function"
+      className="w-full"
+      value={sig}
+      disabled={true}
+    />
+  );
 };

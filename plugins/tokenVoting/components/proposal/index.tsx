@@ -1,16 +1,13 @@
 import Link from "next/link";
-import { Card, ProposalStatus, ProposalDataListItem, IProposalDataListItemStructureProps } from "@aragon/ods";
+import { Card, ProposalStatus, ProposalDataListItem } from "@aragon/ods";
 import { PleaseWaitSpinner } from "@/components/please-wait";
 import { useProposal } from "../../hooks/useProposal";
 import { useProposalStatus } from "../../hooks/useProposalVariantStatus";
-// import { usePastSupply } from "../../hooks/usePastSupply";
 import { useToken } from "../../hooks/useToken";
-import { useAccount, useReadContract } from "wagmi";
+import { useAccount } from "wagmi";
 import { formatEther } from "viem";
-import { PUB_TOKEN_SYMBOL, PUB_TOKEN_VOTING_PLUGIN_ADDRESS } from "@/constants";
+import { PUB_TOKEN_SYMBOL } from "@/constants";
 import { useProposalVoteList } from "../../hooks/useProposalVoteList";
-import { TokenVotingPluginAbi } from "../../artifacts/TokenVoting.sol";
-import { useEffect } from "react";
 
 const DEFAULT_PROPOSAL_METADATA_TITLE = "(No proposal title)";
 const DEFAULT_PROPOSAL_METADATA_SUMMARY = "(The metadata of the proposal is not available)";
@@ -105,6 +102,7 @@ export default function ProposalCard(props: ProposalInputs) {
       publisher={{ address: proposal.creator }}
       status={proposalStatus!}
       type={"majorityVoting"}
+      className="hover:border-primary-400"
     />
   );
 }

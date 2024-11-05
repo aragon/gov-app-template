@@ -43,6 +43,7 @@ export const InputParameterArray = ({ abi, idx, onChange }: IInputParameterArray
       {value.map((item, i) => (
         <div key={i} className="flex">
           <InputText
+            inputClassName="text-neutral-800"
             className={i > 0 ? "mt-3" : ""}
             addon={(i + 1).toString()}
             placeholder={baseType ? readableTypeName(baseType) : decodeCamelCase(abi.name) || ""}

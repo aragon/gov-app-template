@@ -29,14 +29,14 @@ export const VotingStageStatus: React.FC<IVotingStageStatus> = (props) => {
         <ElseIf val={status} is={ProposalStatus.ACCEPTED}>
           <div className="flex flex-grow items-center gap-x-0.5">
             <span className="shrink-0 text-neutral-500">The proposal has been</span>
-            <span className="flex-grow truncate text-success-800">accepted</span>
+            <span className="flex-grow truncate text-success-200">accepted</span>
           </div>
           <AvatarIcon size="sm" variant="success" icon={IconType.CHECKMARK} className="shrink-0" />
         </ElseIf>
         <ElseIf true={[ProposalStatus.REJECTED, ProposalStatus.VETOED].includes(status)}>
           <div className="flex flex-grow items-center gap-x-0.5">
             <span className="shrink-0 text-neutral-500">The proposal has been</span>
-            <span className="flex-grow truncate text-critical-800">rejected</span>
+            <span className="flex-grow truncate text-negative-200">rejected</span>
           </div>
           <AvatarIcon size="sm" variant="critical" icon={IconType.CLOSE} className="shrink-0" />
         </ElseIf>

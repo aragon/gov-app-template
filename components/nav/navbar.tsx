@@ -55,7 +55,7 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Tab wrapper */}
-          <ul className="hidden gap-x-10 md:flex lg:pl-10">
+          <ul className="hidden gap-x-4 md:flex lg:pl-10">
             {navLinks.map(({ id, name, path }) => (
               <NavLink name={name} path={path} id={id} key={id} />
             ))}

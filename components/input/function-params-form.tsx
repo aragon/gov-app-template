@@ -85,6 +85,7 @@ export const FunctionParamsForm = ({
       <If true={functionAbi?.stateMutability === "payable" || !!functionAbi?.payable}>
         <div className="my-4">
           <InputNumber
+            inputClassName="text-neutral-800"
             label={`${coinName} amount (optional)`}
             placeholder="1.234"
             min={0}

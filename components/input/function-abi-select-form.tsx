@@ -42,6 +42,7 @@ export const FunctionAbiSelectForm: FC<FunctionAbiSelectFormProps> = ({ onChange
     <div className="mt-4">
       <div className="mb-3">
         <InputText
+          inputClassName="text-neutral-800"
           label="Contract address"
           placeholder="0x1234..."
           variant={!targetContract || isAddress(targetContract) ? "default" : "critical"}

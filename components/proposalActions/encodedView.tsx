@@ -12,7 +12,14 @@ export const EncodedView: React.FC<IEncodedViewProps> = (props) => {
   const { rawAction } = props;
 
   return getEncodedArgs(rawAction).map((arg) => (
-    <InputText key={arg.title} label={arg.title} disabled={true} value={arg.value} className="w-full" />
+    <InputText
+      inputClassName="text-neutral-800"
+      key={arg.title}
+      label={arg.title}
+      disabled={true}
+      value={arg.value}
+      className="w-full"
+    />
   ));
 };
 

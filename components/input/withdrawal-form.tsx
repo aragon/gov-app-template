@@ -31,6 +31,7 @@ export const WithdrawalForm: FC<IWithdrawalFormProps> = ({ onChange, onSubmit })
     <div className="my-6">
       <div className="mb-3 pb-3">
         <InputText
+          inputClassName="text-neutral-800"
           label="Recipient address"
           placeholder="0x1234..."
           variant={!to || isAddress(to) ? "default" : "critical"}
@@ -48,6 +49,7 @@ export const WithdrawalForm: FC<IWithdrawalFormProps> = ({ onChange, onSubmit })
       </div>
       <div>
         <InputNumber
+          inputClassName="text-neutral-800"
           label={`${coinName} amount`}
           placeholder="1.234"
           min={0}

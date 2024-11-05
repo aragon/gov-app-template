@@ -21,14 +21,14 @@ export const VotingDetails: React.FC<IVotingDetailsProps> = (props) => {
         <Heading size="h4">Voting</Heading>
         <DefinitionList.Container className="">
           <If true={startDate}>
-            <DefinitionList.Item term="Starting" className="!gap-y-1 *:text-neutral-500">
+            <DefinitionList.Item term="Starting" className="!gap-y-1">
               <div className="w-full text-neutral-800 md:text-right">{startDate}</div>
             </DefinitionList.Item>
           </If>
-          <DefinitionList.Item term="Ending" className="!gap-y-1 *:text-neutral-500">
+          <DefinitionList.Item term="Ending" className="!gap-y-1">
             <div className="w-full text-neutral-800 md:text-right">{endDate}</div>
           </DefinitionList.Item>
-          <DefinitionList.Item term="Census Snapshot" className="!gap-y-1 *:text-neutral-500">
+          <DefinitionList.Item term="Census Snapshot" className="!gap-y-1">
             <div className="w-full text-neutral-800 md:text-right">
               <If true={!!snapshotBlockURL}>
                 <Then>
@@ -46,16 +46,16 @@ export const VotingDetails: React.FC<IVotingDetailsProps> = (props) => {
         <Heading size="h4">Governance Settings</Heading>
         <DefinitionList.Container>
           <If true={!!tokenAddress}>
-            <DefinitionList.Item term="Token contract" className="!gap-y-1 *:text-neutral-500">
+            <DefinitionList.Item term="Token contract" className="!gap-y-1">
               <div className="w-full text-ellipsis text-neutral-800 md:text-right">
                 <AddressText>{tokenAddress}</AddressText>
               </div>
             </DefinitionList.Item>
           </If>
-          <DefinitionList.Item term="Strategy" className="!gap-y-1 *:text-neutral-500">
+          <DefinitionList.Item term="Strategy" className="!gap-y-1">
             <div className="w-full text-neutral-800 md:text-right">{strategy}</div>
           </DefinitionList.Item>
-          <DefinitionList.Item term="Voting options" className="!gap-y-1 *:text-neutral-500">
+          <DefinitionList.Item term="Voting options" className="!gap-y-1">
             <div className="w-full text-neutral-800 md:text-right">{options}</div>
           </DefinitionList.Item>
         </DefinitionList.Container>

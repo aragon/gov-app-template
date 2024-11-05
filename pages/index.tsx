@@ -5,7 +5,6 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    console.log("in useEffect");
     router.push("/plugins/community-voting/#/");
   }, []);
 

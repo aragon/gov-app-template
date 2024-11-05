@@ -64,7 +64,7 @@ export const NewActionDialog: React.FC<INewActionDialogProps> = (props) => {
         </If>
 
         <div className="flex justify-between">
-          <Button variant="secondary" size="lg" onClick={() => dismiss()}>
+          <Button className="hover:bg-primary-600" variant="secondary" size="lg" onClick={() => dismiss()}>
             Cancel
           </Button>
           <Button variant="primary" disabled={!stagedActions} size="lg" onClick={() => handleSubmit()}>

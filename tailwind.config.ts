@@ -71,6 +71,11 @@ const config: Config = {
           800: "rgb(var(--ods-color-secondary-800) / <alpha-value>)",
           900: "rgb(var(--ods-color-secondary-900) / <alpha-value>)",
         },
+
+        negative: {
+          200: "rgb(var(--ods-color-negative-200))",
+          800: "rgb(var(--ods-color-negative-800))",
+        },
       },
     },
   },

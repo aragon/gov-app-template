@@ -4,16 +4,6 @@
 
 @layer base {
   :root {
-    /*
-    --ods-color-neutral-0: #111;
-    --ods-color-neutral-50: #080808;
-    --ods-color-neutral-100: #434343;
-    --ods-color-neutral-600: #696678;
-    --ods-color-neutral-800: #F3F1FF;
-    */
-    
-    --tw-text-opacity: 1;
-
     /* Primary */
     --ods-color-primary-900: 24 15 1;
     --ods-color-primary-800: 72 44 4;
@@ -97,6 +87,42 @@
     --ods-dialog-alert-content-z-index: 30;
     --ods-dropdown-container-content-z-index: 40;
     --ods-text-area-rich-text-expanded-z-index: 50;
+
+    /* PWN OVERRIDES */
+    /* we are setting primary-50 to the value of primary-600 bceause it's used for hover state on button of background */
+    --ods-color-primary-50: 11 100 89; /* #0B6459; */
+    --ods-color-primary-100: 0 255 224; /* #00ffe0; */
+    --ods-color-primary-200: 0 255 224; /* #00ffe0; */
+    --ods-color-primary-300: 0 255 224; /* #00ffe0; */
+    --ods-color-primary-400: 0 255 224; /* #00ffe0; */
+    --ods-color-primary-500: 9 136 121; /* #098879; */
+    --ods-color-primary-600: 11 100 89; /* #0B6459; */
+    --ods-color-primary-800: 13 77 69; /* #0d4d45; */
+
+    --ods-color-neutral-0: #111; /* 17 17 17 */
+    --ods-color-neutral-50: #080808; /* 8 8 8 */
+    --ods-color-neutral-100: #434343; /* 67 67 67 */
+    --ods-color-neutral-500: #666666;
+    --ods-color-neutral-600: #d9d9d9; /* 105 102 120 */
+    --ods-color-neutral-700: #d9d9d9;
+    --ods-color-neutral-800: #f3f1ff; /* 243 241 255 */
+
+    --ods-color-success-200: 36 255 0; /* #24FF00; */
+    --ods-color-success-800: 7 51 0; /* #073300; */
+
+    --ods-color-warning-200: 243 248 5; /* #F3F805; */
+    --ods-color-warning-800: 73 74 2; /* #494A02; */
+
+    --ods-color-negative-200: 249 118 0; /* #F97600 */
+    --ods-color-negative-800: 156 78 7; /* #9C4E07 */
+
+    --ods-color-critical-200: 254 48 51; /* #FE3033 */
+    --ods-color-critical-800: 149 33 35; /* #952123 */
+
+    --ods-color-info-200: #f3f1ff; /* 105 102 120; */
+    --ods-color-info-800: #111111; /* 17 17 17; */
+
+    --tw-text-opacity: 1;
   }
 }
 
@@ -129,13 +155,6 @@ h6 {
   /* font-weight: 600; */
 }
 
-p,
-ul,
-ol {
-  /* Variables imported from layout.tsx > @aragon/ods */
-  color: var(--ods-color-neutral-600);
-}
-
 /* Inline alerts */
 div.inline-flex.items-center.gap-x-2.rounded p {
   font-size: 14px !important;
@@ -158,3 +177,21 @@ label div p.leading-tight {
   }
 }
 */
+
+/* PWN OVERRIDES */
+.bg-modal-header,
+.bg-modal-footer {
+  background-image: none !important;
+}
+
+.bg-modal-overlay {
+  background-image: linear-gradient(180deg, rgba(245, 247, 250, 0) 0%, rgb(var(--ods-color-primary-800)) 100%);
+}
+
+.text-neutral-500 {
+  color: var(--ods-color-neutral-800);
+}
+
+.prose {
+  color: var(--ods-color-neutral-800);
+}

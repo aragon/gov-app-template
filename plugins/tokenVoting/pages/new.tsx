@@ -83,6 +83,7 @@ export default function Create() {
         <PlaceHolderOr selfAddress={selfAddress} canCreate={canCreate} isConnected={isConnected}>
           <div className="mb-6">
             <InputText
+              inputClassName="text-neutral-800"
               className=""
               label="Title"
               maxLength={100}
@@ -95,6 +96,7 @@ export default function Create() {
           </div>
           <div className="mb-6">
             <InputText
+              inputClassName="text-neutral-800"
               className=""
               label="Summary"
               maxLength={280}
@@ -136,6 +138,7 @@ export default function Create() {
                   <div key={idx} className="flex flex-col gap-y-3 py-3 md:py-4">
                     <div className="flex items-end gap-x-3">
                       <InputText
+                        inputClassName="text-neutral-800"
                         label="Resource name"
                         readOnly={isCreating}
                         value={resource.name}
@@ -150,6 +153,7 @@ export default function Create() {
                       />
                     </div>
                     <InputText
+                      inputClassName="text-neutral-800"
                       label="URL"
                       value={resource.url}
                       onChange={(e) => onResourceUrlChange(e, idx)}
@@ -162,7 +166,7 @@ export default function Create() {
             </div>
             <span className="mt-3">
               <Button
-                variant="tertiary"
+                variant="secondary"
                 size="lg"
                 iconLeft={IconType.PLUS}
                 disabled={isCreating}
@@ -236,7 +240,7 @@ export default function Create() {
               isLoading={isCreating}
               className="mt-3 border-primary-400"
               size="lg"
-              variant={actions.length ? "primary" : "secondary"}
+              variant="primary"
               onClick={() => submitProposal()}
             >
               <If lengthOf={actions} above={0}>

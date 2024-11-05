@@ -130,6 +130,7 @@ const ActionItem = ({ index, rawAction, onRemove }: { index: number; rawAction: 
               ))}
               <If val={action.value} above={BigInt(0)}>
                 <InputText
+                  inputClassName="text-neutral-800"
                   label={`${coinName} value`}
                   className="w-full"
                   value={`${formatEther(action.value ?? BigInt(0))} ${coinName}`}

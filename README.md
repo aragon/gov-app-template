@@ -1,15 +1,16 @@
 ## Steps for testing
-1) In your wallet, set the RPC URL for Sepolia network to https://virtual.sepolia.rpc.tenderly.co/f8099806-f215-4c8a-bd88-aa34015f6b34 . This makes sure that we use the forked Sepolia network, where we can e.g. move forward time to test accepting proposals and other scenarios easily without needing to wait x days.
+
+1. In your wallet, set the RPC URL for Sepolia network to https://virtual.sepolia.rpc.tenderly.co/f8099806-f215-4c8a-bd88-aa34015f6b34 . This makes sure that we use the forked Sepolia network, where we can e.g. move forward time to test accepting proposals and other scenarios easily without needing to wait x days.
 
 ### Gaining voting power
-1) To gain voting power, you need to stake your tokens first. For a guide how to, please check the [Staking UI docs](https://github.com/PWNDAO/pwn_staking_ui)
-2) However you will get the voting power only in the next epoch, so in order to get your voting power now, it's necessary to move the time forward on the forked network. You can write to @microHoffman, or if you know how to work in Tenderly, go to our pwn_secrets KeePass file, get from there the logins to Tenderly. Then go to Virtual Testnets -> Select the PWN DAO -> RPC Builder -> select `evm_setNextBlockTimestamp` and as timestamp put there a timestamp 30 days in future from the current time (note however that the current time on that fork is different than the real current time, so for getting the "current" time on the network, you can call `eth_getBlockByNumber` with `latest` as an arg and see the `timestamp` in the result... to that you will add 30 days and that you can use as an arg to the `evm_setNextBlockTimestamp`).
+
+1. To gain voting power, you need to stake your tokens first. For a guide how to, please check the [Staking UI docs](https://github.com/PWNDAO/pwn_staking_ui)
+2. However you will get the voting power only in the next epoch, so in order to get your voting power now, it's necessary to move the time forward on the forked network. You can write to @microHoffman, or if you know how to work in Tenderly, go to our pwn_secrets KeePass file, get from there the logins to Tenderly. Then go to Virtual Testnets -> Select the PWN DAO -> RPC Builder -> select `evm_setNextBlockTimestamp` and as timestamp put there a timestamp 30 days in future from the current time (note however that the current time on that fork is different than the real current time, so for getting the "current" time on the network, you can call `eth_getBlockByNumber` with `latest` as an arg and see the `timestamp` in the result... to that you will add 30 days and that you can use as an arg to the `evm_setNextBlockTimestamp`).
 
 ### Optimistic (stewards) proposals
-1) For testing creating optimistic proposals, you can import our shared dev EOA account from the pwn_secrets KeePass file to your wallet. After that go to app.safe.global, connect this imported wallet and select this safe on Sepolia 0x282D9663815b1F9929a3C84a9a1290BE882E125f . With this safe connect to the Voting UI via WalletConnect.
-2) Now you should be able to create optimistic proposals.
 
-
+1. For testing creating optimistic proposals, you can import our shared dev EOA account from the pwn_secrets KeePass file to your wallet. After that go to app.safe.global, connect this imported wallet and select this safe on Sepolia 0x282D9663815b1F9929a3C84a9a1290BE882E125f . With this safe connect to the Voting UI via WalletConnect.
+2. Now you should be able to create optimistic proposals.
 
 # Governance App Template
 
