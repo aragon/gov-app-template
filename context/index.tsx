@@ -31,7 +31,7 @@ createWeb3Modal({
   projectId: PUB_WALLET_CONNECT_PROJECT_ID,
   enableAnalytics: false, // Optional - defaults to your Cloud configuration
   enableOnramp: true, // Optional
-  themeMode: "light",
+  themeMode: "dark",
   allWallets: "SHOW",
   featuredWalletIds: [
     "c57ca95b47569778a828d19178114f4db188b89b763c899ba0be274e97267d96",

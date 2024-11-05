@@ -4,6 +4,14 @@
 
 @layer base {
   :root {
+    /*
+    --ods-color-neutral-0: #111;
+    --ods-color-neutral-50: #080808;
+    --ods-color-neutral-100: #434343;
+    --ods-color-neutral-600: #696678;
+    --ods-color-neutral-800: #F3F1FF;
+    */
+    
     --tw-text-opacity: 1;
 
     /* Primary */

@@ -34,10 +34,6 @@ export const Navbar: React.FC = () => {
               >
                 <img src={PUB_PROJECT_LOGO} width="150" className="shrink-0" alt={`${PUB_APP_NAME} logo`} />
               </Link>
-              <div className="flex items-center gap-x-2">
-                <span className="text-md leading-tight text-neutral-500">Governed on</span>
-                <img src="/logo-aragon-text.svg" alt="Aragon" className="h-6" />
-              </div>
             </div>
 
             <div className="flex items-center gap-x-2">
