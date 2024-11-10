@@ -15,7 +15,8 @@ export const Navbar: React.FC = () => {
     ...plugins.map((p) => ({
       id: p.id,
       name: p.title,
-      path: `/plugins/${p.id}/#/`,
+      // path: `/plugins/${p.id}/#/`,
+      path: `#/${p.id}`,
     })),
   ];
 
@@ -26,7 +27,7 @@ export const Navbar: React.FC = () => {
           <div className="flex w-full items-center justify-between">
             <div className="pb-3 lg:ml-10">
               <Link
-                href="/"
+                href="/#/community-voting"
                 className={classNames(
                   "flex items-center gap-x-5 rounded-full py-2 md:rounded-lg",
                   "outline-none focus:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset" // focus styles

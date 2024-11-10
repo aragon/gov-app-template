@@ -42,7 +42,7 @@ export default function ProposalCard(props: ProposalInputs) {
   } else if (!proposal?.title && !proposal?.summary) {
     // We have the proposal but no metadata yet
     return (
-      <Link href={`#/proposals/${props.proposalIndex}`} className="mb-4 w-full">
+      <Link href={`#/community-voting/proposals/${props.proposalIndex}`} className="mb-4 w-full">
         <Card className="p-4">
           <span className="xs:px-10 px-4 py-5 md:px-6 lg:px-7">
             <PleaseWaitSpinner fullMessage="Loading metadata..." />
@@ -52,7 +52,7 @@ export default function ProposalCard(props: ProposalInputs) {
     );
   } else if (proposalFetchStatus.metadataReady && !proposal?.title) {
     return (
-      <Link href={`#/proposals/${props.proposalIndex}`} className="mb-4 w-full">
+      <Link href={`#/community-voting/proposals/${props.proposalIndex}`} className="mb-4 w-full">
         <Card className="p-4">
           <div className="xl:4/5 overflow-hidden text-ellipsis text-nowrap pr-4 md:w-7/12 lg:w-3/4">
             <h4 className="mb-1 line-clamp-1 text-lg text-neutral-300">
@@ -91,7 +91,7 @@ export default function ProposalCard(props: ProposalInputs) {
     <ProposalDataListItem.Structure
       title={proposal.title}
       summary={proposal.summary}
-      href={`#/proposals/${props.proposalIndex}`}
+      href={`#/community-voting/proposals/${props.proposalIndex}`}
       voted={hasVoted}
       date={
         [ProposalStatus.ACTIVE, ProposalStatus.ACCEPTED].includes(proposalStatus!) && proposal.parameters.endDate

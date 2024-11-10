@@ -53,7 +53,7 @@ export default function Proposals() {
         </h1>
         <div className="justify-self-end">
           <If true={isConnected && canCreateProposal}>
-            <Link href="#/new">
+            <Link href="#/stewards/new">
               <Button iconLeft={IconType.PLUS} size="md" variant="primary">
                 Submit Proposal
               </Button>

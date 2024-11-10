@@ -1,9 +1,6 @@
 import classNames from "classnames";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { type ParsedUrlQuery } from "querystring";
-import { resolveQueryParam } from "@/utils/query";
-import { Icon, type IconType } from "@aragon/ods";
 
 export interface INavLink {
   path: string;
@@ -17,34 +14,18 @@ interface INavLinkProps extends INavLink {
 
 export const NavLink: React.FC<INavLinkProps> = (props) => {
   const { id, name, path, onClick } = props;
-  const { pathname, query } = useRouter();
-  const pluginId = resolvePluginId(pathname, query);
-
-  const isHome = path === "/";
-  const isPluginPathname = pathname === "/plugins/[id]";
-
-  let selected;
-  if (isHome) {
-    // strict comparison for home page
-    selected = pathname === path;
-  } else if (isPluginPathname) {
-    // compare resolved pluginId from query params with plugin id
-    selected = pluginId === id;
-  } else {
-    // check if current path starts with tab path so that
-    // the nav item is selected when the user is on a nested page
-    selected = pathname.startsWith(path);
-  }
+  const { asPath } = useRouter();
+  const isSelected = asPath.includes(path);
 
   const containerClasses = classNames(
     "group relative md:-mb-0.25 md:border-b md:hover:border-b-primary-400", // base styles
     {
-      "md:border-b-transparent md:active:border-b-primary-400": !selected, // unselected link styles
-      "md:border-b-primary-400 md:hover:border-b-primary-400": selected, // base selected link styles
+      "md:border-b-transparent md:active:border-b-primary-400": !isSelected, // unselected link styles
+      "md:border-b-primary-400 md:hover:border-b-primary-400": isSelected, // base selected link styles
 
       // using after so that the size of the links don't change when one is selected and active
-      "md:after:bg-primary-400 md:after:content-[attr(aria-current)] md:active:after:hidden": selected,
-      "md:after:absolute md:after:-bottom-0 md:after:left-0 md:after:right-0 md:after:h-[1px]": selected,
+      "md:after:bg-primary-400 md:after:content-[attr(aria-current)] md:active:after:hidden": isSelected,
+      "md:after:absolute md:after:-bottom-0 md:after:left-0 md:after:right-0 md:after:h-[1px]": isSelected,
     }
   );
 
@@ -55,16 +36,16 @@ export const NavLink: React.FC<INavLinkProps> = (props) => {
     "flex h-12 flex-1 items-center justify-between gap-3 rounded-xl px-4 leading-tight", // mobile styles
     "md:h-11 md:rounded-none md:px-0 md:leading-normal", // desktop nav styles
     {
-      "bg-primary-800": selected,
+      "bg-primary-800": isSelected,
     }
   );
 
   return (
     <li key={id} className={containerClasses}>
-      <Link href={path} onClick={onClick} aria-current={selected ? "page" : undefined} className={anchorClasses}>
+      <Link href={path} onClick={onClick} aria-current={isSelected ? "page" : undefined} className={anchorClasses}>
         <span
           className={classNames("flex-1 truncate px-4 text-primary-400", {
-            "text-neutral-800": selected,
+            "text-neutral-800": isSelected,
           })}
         >
           {name}
@@ -73,17 +54,3 @@ export const NavLink: React.FC<INavLinkProps> = (props) => {
     </li>
   );
 };
-
-/**
- * Resolves the plugin ID from the given pathname and query parameters.
- *
- * @param pathname - The current pathname.
- * @param queryParams - The parsed query parameters.
- * @returns The resolved plugin ID or null if the pathname is not "/plugins/[id]"
- * or the ID is not found in the query parameters.
- */
-function resolvePluginId(pathname: string, queryParams: ParsedUrlQuery): string | null {
-  if (pathname !== "/plugins/[id]") return null;
-
-  return resolveQueryParam(queryParams.id) || null;
-}
