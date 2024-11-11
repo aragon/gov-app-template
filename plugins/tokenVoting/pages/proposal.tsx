@@ -11,7 +11,7 @@ import { useProposalStatus } from "../hooks/useProposalVariantStatus";
 import dayjs from "dayjs";
 import { ProposalActions } from "@/components/proposalActions/proposalActions";
 import { CardResources } from "@/components/proposal/cardResources";
-import { formatEther } from "viem";
+import { formatEther, formatUnits } from "viem";
 import { useToken } from "../hooks/useToken";
 import { Button, DialogContent, DialogFooter, DialogHeader, DialogRoot, ProposalStatus } from "@aragon/gov-ui-kit";
 import { useCanVote } from "../hooks/useCanVote";
@@ -67,8 +67,6 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
   }
 
   const { proposalRewardsResult } = useProposalRewards(PUB_TOKEN_VOTING_PLUGIN_ADDRESS, BigInt(proposalIdx));
-  console.log("proposal rewards result");
-  console.log(proposalRewardsResult);
 
   const onVote = (voteOption: number | null) => {
     switch (voteOption) {
@@ -139,8 +137,6 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
     },
   ];
 
-  console.log(proposal);
-
   if (!proposal || showProposalLoading) {
     return (
       <section className="justify-left items-left flex w-screen min-w-full max-w-full">
@@ -158,6 +154,7 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
           <div className="flex flex-col gap-y-6 md:w-[63%] md:shrink-0">
             <BodySection body={proposal.description || "No description was provided"} />
             <ProposalVoting
+              totalReward={proposalRewardsResult}
               stages={proposalStage}
               description="Proposals approved by the community become executable when the support ratio is above the threshold and the minimum participation is met."
             />

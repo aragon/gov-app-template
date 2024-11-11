@@ -12,9 +12,10 @@ dayjs.extend(relativeTime);
 interface IProposalVotingProps {
   stages: ITransformedStage[];
   description: string;
+  totalReward?: bigint;
 }
 
-export const ProposalVoting: React.FC<IProposalVotingProps> = ({ stages, description }) => {
+export const ProposalVoting: React.FC<IProposalVotingProps> = ({ stages, description, totalReward = undefined }) => {
   return (
     <Card className="overflow-hidden rounded-xl bg-neutral-0 shadow-neutral">
       {/* Header */}
@@ -25,7 +26,11 @@ export const ProposalVoting: React.FC<IProposalVotingProps> = ({ stages, descrip
       {/* Stages */}
       <AccordionContainer isMulti={false} defaultValue="Stage 1" className="border-t border-t-neutral-100">
         {stages.map((stage, index) => (
-          <VotingStage key={stage.id} {...({ ...stage, number: index + 1 } as IVotingStageProps)} />
+          <VotingStage
+            totalReward={totalReward}
+            key={stage.id}
+            {...({ ...stage, number: index + 1 } as IVotingStageProps)}
+          />
         ))}
       </AccordionContainer>
     </Card>

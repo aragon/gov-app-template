@@ -1,10 +1,9 @@
-import { Else, If, Then } from "@/components/if";
+import { If } from "@/components/if";
 import { AddressText } from "@/components/text/address";
 import { useEpochs } from "@/hooks/useEpochs";
-import { useGovernanceSettings } from "@/plugins/optimistic-proposals/hooks/useGovernanceSettings";
-import { Heading, IconType, Link, DefinitionListContainer, DefinitionListItem } from "@aragon/gov-ui-kit";
+import { Heading, DefinitionListContainer, DefinitionListItem } from "@aragon/gov-ui-kit";
 import { useEffect, useState } from "react";
-import { type Address } from "viem";
+import { formatUnits, type Address } from "viem";
 
 export interface IVotingDetailsProps {
   startDate?: string;
@@ -15,10 +14,12 @@ export interface IVotingDetailsProps {
   snapshotEpoch: bigint | undefined;
   quorum: string | undefined;
   supportThreshold?: string | undefined;
+  totalReward?: bigint | undefined;
 }
 
 export const VotingDetails: React.FC<IVotingDetailsProps> = (props) => {
-  const { startDate, endDate, snapshotEpoch, tokenAddress, options, strategy, supportThreshold, quorum } = props;
+  const { startDate, endDate, snapshotEpoch, tokenAddress, options, strategy, supportThreshold, quorum, totalReward } =
+    props;
 
   const { getStartAndEndDateOfEpoch, formatEpochDate } = useEpochs();
   const [epochStartDate, setEpochStartDate] = useState<number>();
@@ -59,6 +60,11 @@ export const VotingDetails: React.FC<IVotingDetailsProps> = (props) => {
                   ({formatEpochDate(epochStartDate)}-{formatEpochDate(epochEndDate)})
                 </span>
               </div>
+            </DefinitionListItem>
+          )}
+          {totalReward !== undefined && (
+            <DefinitionListItem term="Total distibuted voting reward" className="!gap-y-1">
+              <div className="w-full text-neutral-800 md:text-right">{formatUnits(totalReward, 18)} vePWN</div>
             </DefinitionListItem>
           )}
         </DefinitionListContainer>

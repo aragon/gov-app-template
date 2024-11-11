@@ -31,10 +31,11 @@ export interface IVotingStageProps<TType extends ProposalType = ProposalType> {
   result?: TType extends "approvalThreshold" ? IBreakdownApprovalThresholdResult : IBreakdownMajorityVotingResult;
   details?: IVotingStageDetails;
   votes?: IVote[];
+  totalReward?: bigint;
 }
 
 export const VotingStage: React.FC<IVotingStageProps> = (props) => {
-  const { details, disabled, title, number, result, status, variant, votes } = props;
+  const { details, disabled, title, number, result, status, variant, votes, totalReward } = props;
 
   const [node, setNode] = useState<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -123,6 +124,7 @@ export const VotingStage: React.FC<IVotingStageProps> = (props) => {
                   snapshotEpoch={details.snapshotEpoch}
                   supportThreshold={details.supportThreshold}
                   quorum={details.quorum}
+                  totalReward={totalReward}
                 />
               )}
             </div>

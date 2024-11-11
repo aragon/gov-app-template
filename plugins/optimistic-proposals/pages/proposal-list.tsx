@@ -3,7 +3,6 @@ import { type ReactNode, useEffect } from "react";
 import ProposalCard from "../components/proposal";
 import {
   Button,
-  DataList,
   Link,
   IconType,
   ProposalDataListItemSkeleton,
@@ -62,13 +61,11 @@ export default function Proposals() {
           Proposals
         </h1>
         <div className="justify-self-end">
-          <If true={isConnected && canCreateProposal}>
-            <Link href="#/stewards/new">
-              <Button iconLeft={IconType.PLUS} size="md" variant="primary">
-                Submit Proposal
-              </Button>
-            </Link>
-          </If>
+          <Link href="#/stewards/new">
+            <Button disabled={!isConnected || !canCreateProposal} iconLeft={IconType.PLUS} size="md" variant="primary">
+              Submit Proposal
+            </Button>
+          </Link>
         </div>
       </SectionView>
 

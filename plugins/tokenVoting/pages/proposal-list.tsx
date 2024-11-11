@@ -62,13 +62,11 @@ export default function Proposals() {
           Proposals
         </h1>
         <div className="justify-self-end">
-          <If true={isConnected && canCreate}>
-            <Link href="#/community-voting/new">
-              <Button iconLeft={IconType.PLUS} size="md" variant="primary">
-                Submit Proposal
-              </Button>
-            </Link>
-          </If>
+          <Link href="#/community-voting/new">
+            <Button disabled={!isConnected || !canCreate} iconLeft={IconType.PLUS} size="md" variant="primary">
+              Submit Proposal
+            </Button>
+          </Link>
         </div>
       </SectionView>
 
