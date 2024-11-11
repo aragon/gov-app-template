@@ -2,7 +2,7 @@ import Blockies from "react-blockies";
 import { VoteCastEvent } from "../../utils/types";
 import { formatUnits } from "viem";
 import { AddressText } from "@/components/text/address";
-import { Card } from "@aragon/ods";
+import { Card } from "@aragon/gov-ui-kit";
 import { compactNumber } from "@/utils/numbers";
 import { If } from "@/components/if";
 

@@ -1,6 +1,6 @@
 import { PUB_CHAIN } from "@/constants";
 import { formatHexString } from "@/utils/evm";
-import { DataListItem, MemberAvatar, Tag, type IDataListItemProps, type TagVariant } from "@aragon/ods";
+import { DataListItem, MemberAvatar, Tag, type IDataListItemProps, type TagVariant } from "@aragon/gov-ui-kit";
 import classNames from "classnames";
 
 export type IVotesDataListVariant = "yes" | "approve" | "no" | "abstain" | "veto";

@@ -1,4 +1,4 @@
-import { CardCollapsible, DocumentParser, Heading } from "@aragon/ods";
+import { CardCollapsible, DocumentParser, Heading } from "@aragon/gov-ui-kit";
 import classNames from "classnames";
 
 interface IBodySectionProps {

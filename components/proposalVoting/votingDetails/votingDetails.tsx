@@ -1,64 +1,95 @@
 import { Else, If, Then } from "@/components/if";
 import { AddressText } from "@/components/text/address";
-import { DefinitionList, Heading, IconType, Link } from "@aragon/ods";
+import { useEpochs } from "@/hooks/useEpochs";
+import { useGovernanceSettings } from "@/plugins/optimistic-proposals/hooks/useGovernanceSettings";
+import { Heading, IconType, Link, DefinitionListContainer, DefinitionListItem } from "@aragon/gov-ui-kit";
+import { useEffect, useState } from "react";
 import { type Address } from "viem";
 
 export interface IVotingDetailsProps {
   startDate?: string;
   endDate: string;
-  snapshotTakenAt: string;
-  snapshotBlockURL?: string;
   tokenAddress?: Address;
   options: string;
   strategy: string;
+  snapshotEpoch: bigint | undefined;
+  quorum: string | undefined;
+  supportThreshold?: string | undefined;
 }
 
 export const VotingDetails: React.FC<IVotingDetailsProps> = (props) => {
-  const { startDate, endDate, snapshotBlockURL, snapshotTakenAt, tokenAddress, options, strategy } = props;
+  const { startDate, endDate, snapshotEpoch, tokenAddress, options, strategy, supportThreshold, quorum } = props;
+
+  const { getStartAndEndDateOfEpoch, formatEpochDate } = useEpochs();
+  const [epochStartDate, setEpochStartDate] = useState<number>();
+  const [epochEndDate, setEpochEndDate] = useState<number>();
+
+  useEffect(() => {
+    if (!snapshotEpoch) {
+      return;
+    }
+
+    const startAndEndDateOfEpoch = getStartAndEndDateOfEpoch(Number(snapshotEpoch));
+    if (!startAndEndDateOfEpoch) {
+      return;
+    }
+    setEpochStartDate(startAndEndDateOfEpoch[0]);
+    setEpochEndDate(startAndEndDateOfEpoch[1]);
+  }, [snapshotEpoch]);
+
   return (
     <div className="flex flex-col gap-y-3">
       <div>
         <Heading size="h4">Voting</Heading>
-        <DefinitionList.Container className="">
+        <DefinitionListContainer className="">
           <If true={startDate}>
-            <DefinitionList.Item term="Starting" className="!gap-y-1">
+            <DefinitionListItem term="Starting" className="!gap-y-1">
               <div className="w-full text-neutral-800 md:text-right">{startDate}</div>
-            </DefinitionList.Item>
+            </DefinitionListItem>
           </If>
-          <DefinitionList.Item term="Ending" className="!gap-y-1">
+          <DefinitionListItem term="Ending" className="!gap-y-1">
             <div className="w-full text-neutral-800 md:text-right">{endDate}</div>
-          </DefinitionList.Item>
-          <DefinitionList.Item term="Census Snapshot" className="!gap-y-1">
-            <div className="w-full text-neutral-800 md:text-right">
-              <If true={!!snapshotBlockURL}>
-                <Then>
-                  <Link iconRight={IconType.LINK_EXTERNAL} href={snapshotBlockURL} target="_blank">
-                    {snapshotTakenAt}
-                  </Link>
-                </Then>
-                <Else>{snapshotTakenAt}</Else>
-              </If>
-            </div>
-          </DefinitionList.Item>
-        </DefinitionList.Container>
+          </DefinitionListItem>
+          {epochStartDate && epochEndDate && (
+            <DefinitionListItem term="Census epoch" className="!gap-y-1">
+              <div className="w-full text-neutral-800 md:text-right">
+                Epoch {snapshotEpoch}
+                <span className="text-xs text-neutral-200">
+                  {" "}
+                  ({formatEpochDate(epochStartDate)}-{formatEpochDate(epochEndDate)})
+                </span>
+              </div>
+            </DefinitionListItem>
+          )}
+        </DefinitionListContainer>
       </div>
       <div>
         <Heading size="h4">Governance Settings</Heading>
-        <DefinitionList.Container>
+        <DefinitionListContainer>
           <If true={!!tokenAddress}>
-            <DefinitionList.Item term="Token contract" className="!gap-y-1">
+            <DefinitionListItem term="Token contract" className="!gap-y-1">
               <div className="w-full text-ellipsis text-neutral-800 md:text-right">
                 <AddressText>{tokenAddress}</AddressText>
               </div>
-            </DefinitionList.Item>
+            </DefinitionListItem>
           </If>
-          <DefinitionList.Item term="Strategy" className="!gap-y-1">
+          <DefinitionListItem term="Strategy" className="!gap-y-1">
             <div className="w-full text-neutral-800 md:text-right">{strategy}</div>
-          </DefinitionList.Item>
-          <DefinitionList.Item term="Voting options" className="!gap-y-1">
+          </DefinitionListItem>
+          <DefinitionListItem term="Voting options" className="!gap-y-1">
             <div className="w-full text-neutral-800 md:text-right">{options}</div>
-          </DefinitionList.Item>
-        </DefinitionList.Container>
+          </DefinitionListItem>
+          {supportThreshold && (
+            <DefinitionListItem term="Threshold to pass" className="!gap-y-1">
+              <div className="w-full text-neutral-800 md:text-right">{supportThreshold}</div>
+            </DefinitionListItem>
+          )}
+          {quorum && (
+            <DefinitionListItem term="Quorum" className="!gap-y-1">
+              <div className="w-full text-neutral-800 md:text-right">{quorum}</div>
+            </DefinitionListItem>
+          )}
+        </DefinitionListContainer>
       </div>
     </div>
   );

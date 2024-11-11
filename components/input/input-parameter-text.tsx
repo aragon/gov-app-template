@@ -1,4 +1,4 @@
-import { InputText } from "@aragon/ods";
+import { InputText } from "@aragon/gov-ui-kit";
 import { type AbiParameter } from "viem";
 import { decodeCamelCase } from "@/utils/case";
 import { type InputValue, isValidStringValue, handleStringValue, readableTypeName } from "@/utils/input-values";

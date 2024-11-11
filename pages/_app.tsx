@@ -2,7 +2,7 @@ import { RootContextProvider } from "@/context";
 import { Layout } from "@/components/layout";
 import AlertContainer from "@/components/alert/alert-container";
 import { Manrope } from "next/font/google";
-import "@aragon/ods/index.css";
+import "@aragon/gov-ui-kit/index.css";
 import "@/pages/globals.css";
 import { PUB_APP_NAME } from "@/constants";
 import Head from "next/head";

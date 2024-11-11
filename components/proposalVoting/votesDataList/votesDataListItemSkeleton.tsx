@@ -1,4 +1,4 @@
-import { DataListItem, StateSkeletonBar, StateSkeletonCircular } from "@aragon/ods";
+import { DataListItem, StateSkeletonBar, StateSkeletonCircular } from "@aragon/gov-ui-kit";
 
 export const VotesDataListItemSkeleton: React.FC = () => {
   return (

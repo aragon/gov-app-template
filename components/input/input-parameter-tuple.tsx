@@ -4,7 +4,7 @@ import { decodeCamelCase } from "@/utils/case";
 import { InputParameter } from "./input-parameter";
 import { type InputValue } from "@/utils/input-values";
 import { Else, If, Then } from "../if";
-import { AlertInline } from "@aragon/ods";
+import { AlertInline } from "@aragon/gov-ui-kit";
 
 interface IInputParameterTupleProps {
   abi: AbiParameter;

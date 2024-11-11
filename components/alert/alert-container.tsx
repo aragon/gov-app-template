@@ -1,6 +1,6 @@
 import { type FC } from "react";
 import { useAlerts } from "@/context/Alerts";
-import { AlertCard, type AlertVariant, Icon, IconType } from "@aragon/ods";
+import { AlertCard, type AlertVariant, Icon, IconType } from "@aragon/gov-ui-kit";
 import { type IAlert } from "@/utils/types";
 
 const AlertContainer: FC = () => {

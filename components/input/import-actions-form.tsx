@@ -1,6 +1,6 @@
 import { type RawAction } from "@/utils/types";
 import { type FC, useState } from "react";
-import { TextArea } from "@aragon/ods";
+import { TextArea } from "@aragon/gov-ui-kit";
 import { If } from "../if";
 import { decodeStrJson } from "@/utils/json-actions";
 

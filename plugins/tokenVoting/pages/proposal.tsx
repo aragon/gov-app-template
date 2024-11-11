@@ -13,11 +13,13 @@ import { ProposalActions } from "@/components/proposalActions/proposalActions";
 import { CardResources } from "@/components/proposal/cardResources";
 import { formatEther } from "viem";
 import { useToken } from "../hooks/useToken";
-import { Button, DialogContent, DialogFooter, DialogHeader, DialogRoot, ProposalStatus } from "@aragon/ods";
+import { Button, DialogContent, DialogFooter, DialogHeader, DialogRoot, ProposalStatus } from "@aragon/gov-ui-kit";
 import { useCanVote } from "../hooks/useCanVote";
 import { useState } from "react";
-import { PUB_TOKEN_SYMBOL } from "@/constants";
+import { PUB_TOKEN_SYMBOL, PUB_TOKEN_VOTING_PLUGIN_ADDRESS } from "@/constants";
 import { useProposalVoteList } from "../hooks/useProposalVoteList";
+import { usePastSupply } from "../hooks/usePastSupply";
+import { useProposalRewards } from "@/hooks/useProposalRewards";
 
 const ABSTAIN_VALUE = 1;
 const VOTE_YES_VALUE = 2;
@@ -31,6 +33,8 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
   const { symbol: tokenSymbol } = useToken();
   const [showVotingModal, setShowVotingModal] = useState(false);
   const { executeProposal, canExecute, isConfirming: isConfirmingExecution } = useProposalExecute(proposalIdx);
+
+  const pastSupply = usePastSupply(proposal?.parameters.snapshotEpoch);
 
   const showProposalLoading = getShowProposalLoading(proposal, proposalFetchStatus);
   const proposalStatus = useProposalStatus(proposal!);
@@ -61,6 +65,10 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
       onClick: (option?: number) => (option ? onVote(option) : null),
     };
   }
+
+  const { proposalRewardsResult } = useProposalRewards(PUB_TOKEN_VOTING_PLUGIN_ADDRESS, BigInt(proposalIdx));
+  console.log("proposal rewards result");
+  console.log(proposalRewardsResult);
 
   const onVote = (voteOption: number | null) => {
     switch (voteOption) {
@@ -111,21 +119,27 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
         proposalId: proposalIdx.toString(),
       },
       details: {
-        censusTimestamp: Number(proposal?.parameters.snapshotBlock || 0) || 0,
         startDate,
         endDate,
         strategy: "Community voting",
         options: "Vote",
+        snapshotEpoch: proposal?.parameters?.snapshotEpoch,
+        supportThreshold: proposal?.parameters?.supportThreshold
+          ? `${proposal.parameters.supportThreshold / 10000}%`
+          : undefined,
+        quorum: `${Number(pastSupply / (proposal?.parameters.minVotingPower || 1n))}%`,
       },
       votes: votes.map(
-        ({ voter, voteOption: opt }) =>
+        ({ voter, voteOption: _voteOption }) =>
           ({
             address: voter,
-            variant: opt === ABSTAIN_VALUE ? "abstain" : opt === VOTE_YES_VALUE ? "yes" : "no",
+            variant: _voteOption === ABSTAIN_VALUE ? "abstain" : _voteOption === VOTE_YES_VALUE ? "yes" : "no",
           }) as IVote
       ),
     },
   ];
+
+  console.log(proposal);
 
   if (!proposal || showProposalLoading) {
     return (

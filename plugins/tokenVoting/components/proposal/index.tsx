@@ -1,13 +1,18 @@
 import Link from "next/link";
-import { Card, ProposalStatus, ProposalDataListItem } from "@aragon/ods";
+import { Card, ProposalStatus, ProposalDataListItemStructure } from "@aragon/gov-ui-kit";
 import { PleaseWaitSpinner } from "@/components/please-wait";
 import { useProposal } from "../../hooks/useProposal";
 import { useProposalStatus } from "../../hooks/useProposalVariantStatus";
 import { useToken } from "../../hooks/useToken";
 import { useAccount } from "wagmi";
-import { formatEther } from "viem";
+import { formatEther, formatUnits, parseUnits } from "viem";
 import { PUB_TOKEN_SYMBOL } from "@/constants";
 import { useProposalVoteList } from "../../hooks/useProposalVoteList";
+import { VotingBreakdown } from "@/components/proposalVoting";
+import {
+  BreakdownMajorityVotingResult,
+  IBreakdownMajorityVotingResult,
+} from "@/components/proposalVoting/votingBreakdown/majorityVotingResult";
 
 const DEFAULT_PROPOSAL_METADATA_TITLE = "(No proposal title)";
 const DEFAULT_PROPOSAL_METADATA_SUMMARY = "(The metadata of the proposal is not available)";
@@ -64,30 +69,30 @@ export default function ProposalCard(props: ProposalInputs) {
     );
   }
 
-  let result = { option: "", voteAmount: "", votePercentage: 0 };
-  if (proposal?.tally.yes > proposal?.tally.no && proposal?.tally.yes > proposal?.tally.abstain) {
-    result = {
+  const votingResults: IBreakdownMajorityVotingResult["votingScores"] = [
+    {
       option: "Yes",
       voteAmount: formatEther(proposal.tally.yes) + " " + (tokenSymbol || PUB_TOKEN_SYMBOL),
       votePercentage: Number(((proposal?.tally.yes || BigInt(0)) * BigInt(10_000)) / (totalVotes || BigInt(1))) / 100,
-    };
-  } else if (proposal?.tally.no > proposal?.tally.yes && proposal?.tally.no > proposal?.tally.abstain) {
-    result = {
+      tokenSymbol: PUB_TOKEN_SYMBOL,
+    },
+    {
       option: "No",
       voteAmount: formatEther(proposal.tally.no) + " " + (tokenSymbol || PUB_TOKEN_SYMBOL),
       votePercentage: Number(((proposal?.tally.no || BigInt(0)) * BigInt(10_000)) / (totalVotes || BigInt(1))) / 100,
-    };
-  } else if (proposal?.tally.abstain > proposal?.tally.no && proposal?.tally.abstain > proposal?.tally.yes) {
-    result = {
+      tokenSymbol: PUB_TOKEN_SYMBOL,
+    },
+    {
       option: "Abstain",
       voteAmount: formatEther(proposal.tally.abstain) + " " + (tokenSymbol || PUB_TOKEN_SYMBOL),
       votePercentage:
         Number(((proposal?.tally.abstain || BigInt(0)) * BigInt(10_000)) / (totalVotes || BigInt(1))) / 100,
-    };
-  }
+      tokenSymbol: PUB_TOKEN_SYMBOL,
+    },
+  ];
 
   return (
-    <ProposalDataListItem.Structure
+    <ProposalDataListItemStructure
       title={proposal.title}
       summary={proposal.summary}
       href={`#/community-voting/proposals/${props.proposalIndex}`}
@@ -97,12 +102,17 @@ export default function ProposalCard(props: ProposalInputs) {
           ? Number(proposal.parameters.endDate) * 1000
           : undefined
       }
-      result={result}
       publisher={{ address: proposal.creator }}
       status={proposalStatus!}
-      type={"majorityVoting"}
-      className="hover:border-primary-400"
-    />
+      // @ts-expect-error intentionally passing unspecified type to prevent a score graph
+      //  being displayed
+      type={"customMajorityVoting"}
+      className="custom-proposal-card-wrapper hover:border-primary-400"
+    >
+      {proposal?.active && (
+        <BreakdownMajorityVotingResult status={proposalStatus} cta={undefined} votingScores={votingResults} />
+      )}
+    </ProposalDataListItemStructure>
   );
 }
 

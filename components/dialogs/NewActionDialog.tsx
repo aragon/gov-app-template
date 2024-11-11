@@ -1,7 +1,14 @@
 import { type RawAction } from "@/utils/types";
 import { WithdrawalForm } from "@/components/input/withdrawal-form";
 import { FunctionAbiSelectForm } from "@/components/input/function-abi-select-form";
-import { Button, DialogContent, DialogFooter, DialogHeader, DialogRoot, type IDialogRootProps } from "@aragon/ods";
+import {
+  Button,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogRoot,
+  type IDialogRootProps,
+} from "@aragon/gov-ui-kit";
 import { ElseIf, If, Then } from "@/components/if";
 import { useState } from "react";
 import { type AbiFunction } from "viem";

@@ -6,7 +6,7 @@ import {
   Progress,
   formatterUtils,
   Button,
-} from "@aragon/ods";
+} from "@aragon/gov-ui-kit";
 import { type VotingCta } from "./types";
 
 export interface IBreakdownApprovalThresholdResult extends IApprovalThresholdResult {

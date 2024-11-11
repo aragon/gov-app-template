@@ -1,4 +1,4 @@
-import { AccordionContainer, Card, Heading } from "@aragon/ods";
+import { AccordionContainer, Card, Heading } from "@aragon/gov-ui-kit";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
 import utc from "dayjs/plugin/utc";

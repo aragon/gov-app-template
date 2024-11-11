@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { type Hex, encodeFunctionData, parseEther } from "viem";
-import { AlertInline, InputNumber } from "@aragon/ods";
+import { AlertInline, InputNumber } from "@aragon/gov-ui-kit";
 import { type AbiFunction } from "abitype";
 import { If } from "@/components/if";
 import { InputParameter } from "./input-parameter";

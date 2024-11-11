@@ -1,4 +1,4 @@
-import { Icon, type IconType } from "@aragon/ods";
+import { Icon, type IconType } from "@aragon/gov-ui-kit";
 
 export const AddActionCard = ({
   title,

@@ -1,5 +1,5 @@
 import { PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS, PUB_TOKEN_VOTING_PLUGIN_ADDRESS } from "@/constants";
-import { IconType } from "@aragon/ods";
+import { IconType } from "@aragon/gov-ui-kit";
 
 type PluginItem = {
   /** The URL fragment after /plugins */

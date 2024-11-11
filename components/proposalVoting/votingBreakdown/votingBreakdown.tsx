@@ -1,4 +1,4 @@
-import { type ProposalStatus } from "@aragon/ods";
+import { type ProposalStatus } from "@aragon/gov-ui-kit";
 import { BreakdownApprovalThresholdResult, type IBreakdownApprovalThresholdResult } from "./approvalThresholdResult";
 import { BreakdownMajorityVotingResult, type IBreakdownMajorityVotingResult } from "./majorityVotingResult";
 import { type VotingCta } from "./types";

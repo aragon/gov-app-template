@@ -1,5 +1,5 @@
 import { decodeCamelCase } from "@/utils/case";
-import { InputText } from "@aragon/ods";
+import { InputText } from "@aragon/gov-ui-kit";
 import { toFunctionSignature, type AbiFunction } from "viem";
 import { resolveFieldTitle, resolveParamValue, type CallParameterFieldType } from "@/utils/abi-helpers";
 

@@ -1,6 +1,6 @@
 import { type FC, useState } from "react";
 import { type AbiFunction, toFunctionSignature, type Address, type Hex } from "viem";
-import { AlertInline, InputContainer, InputText } from "@aragon/ods";
+import { AlertInline, InputContainer, InputText } from "@aragon/gov-ui-kit";
 import { PleaseWaitSpinner } from "@/components/please-wait";
 import { isAddress } from "@/utils/evm";
 import { type RawAction } from "@/utils/types";

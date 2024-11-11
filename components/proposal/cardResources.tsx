@@ -1,5 +1,5 @@
 import type { IProposalResource } from "@/utils/types";
-import { Card, CardEmptyState, Heading, IconType, Link } from "@aragon/ods";
+import { Card, CardEmptyState, Heading, IconType, Link } from "@aragon/gov-ui-kit";
 import React from "react";
 
 interface ICardResourcesProps {

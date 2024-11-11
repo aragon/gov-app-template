@@ -1,6 +1,6 @@
 import { type RawAction } from "@/utils/types";
 import { type FC, useEffect, useState } from "react";
-import { InputText, InputNumber, AlertInline } from "@aragon/ods";
+import { InputText, InputNumber, AlertInline } from "@aragon/gov-ui-kit";
 import { type Address, parseEther } from "viem";
 import { isAddress } from "@/utils/evm";
 import { ElseIf, If, Then } from "../if";

@@ -5,133 +5,133 @@
 @layer base {
   :root {
     /* Primary */
-    --ods-color-primary-900: 24 15 1;
-    --ods-color-primary-800: 72 44 4;
-    --ods-color-primary-700: 120 73 7;
-    --ods-color-primary-600: 169 103 10;
-    --ods-color-primary-500: 217 132 13;
-    --ods-color-primary-400: 242 158 38;
-    --ods-color-primary-300: 245 179 86;
-    --ods-color-primary-200: 248 201 135;
-    --ods-color-primary-100: 251 223 183;
-    --ods-color-primary-50: 254 244 231;
+    --guk-color-primary-900: 24 15 1;
+    --guk-color-primary-800: 72 44 4;
+    --guk-color-primary-700: 120 73 7;
+    --guk-color-primary-600: 169 103 10;
+    --guk-color-primary-500: 217 132 13;
+    --guk-color-primary-400: 242 158 38;
+    --guk-color-primary-300: 245 179 86;
+    --guk-color-primary-200: 248 201 135;
+    --guk-color-primary-100: 251 223 183;
+    --guk-color-primary-50: 254 244 231;
 
     /* Secondary */
-    /* --ods-color-secondary-50: 238 226 254; */
-    /* --ods-color-secondary-100: 222 196 253; */
-    /* --ods-color-secondary-200: 188 137 250; */
-    /* --ods-color-secondary-300: 155 78 248; */
-    /* --ods-color-secondary-400: 124 25 246; */
-    /* --ods-color-secondary-500: 93 8 200; */
-    /* --ods-color-secondary-600: 76 6 162; */
-    /* --ods-color-secondary-700: 56 5 118; */
-    /* --ods-color-secondary-800: 37 3 78; */
-    /* --ods-color-secondary-900: 19 2 39; */
+    /* --guk-color-secondary-50: 238 226 254; */
+    /* --guk-color-secondary-100: 222 196 253; */
+    /* --guk-color-secondary-200: 188 137 250; */
+    /* --guk-color-secondary-300: 155 78 248; */
+    /* --guk-color-secondary-400: 124 25 246; */
+    /* --guk-color-secondary-500: 93 8 200; */
+    /* --guk-color-secondary-600: 76 6 162; */
+    /* --guk-color-secondary-700: 56 5 118; */
+    /* --guk-color-secondary-800: 37 3 78; */
+    /* --guk-color-secondary-900: 19 2 39; */
 
     /* Info */
-    --ods-color-info-100: 227 250 252;
-    --ods-color-info-200: 186 240 247;
-    --ods-color-info-300: 145 229 242;
-    --ods-color-info-400: 70 208 232;
-    --ods-color-info-500: 0 181 221;
-    --ods-color-info-600: 0 156 199;
-    --ods-color-info-700: 0 119 166;
-    --ods-color-info-800: 0 86 133;
-    --ods-color-info-900: 0 60 99;
+    --guk-color-info-100: 227 250 252;
+    --guk-color-info-200: 186 240 247;
+    --guk-color-info-300: 145 229 242;
+    --guk-color-info-400: 70 208 232;
+    --guk-color-info-500: 0 181 221;
+    --guk-color-info-600: 0 156 199;
+    --guk-color-info-700: 0 119 166;
+    --guk-color-info-800: 0 86 133;
+    --guk-color-info-900: 0 60 99;
 
     /* Success */
-    --ods-color-success-100: 225 250 245;
-    --ods-color-success-200: 182 242 229;
-    --ods-color-success-300: 141 235 211;
-    --ods-color-success-400: 66 219 173;
-    --ods-color-success-500: 0 205 132;
-    --ods-color-success-600: 0 184 113;
-    --ods-color-success-700: 0 153 87;
-    --ods-color-success-800: 0 122 63;
-    --ods-color-success-900: 0 92 43;
+    --guk-color-success-100: 225 250 245;
+    --guk-color-success-200: 182 242 229;
+    --guk-color-success-300: 141 235 211;
+    --guk-color-success-400: 66 219 173;
+    --guk-color-success-500: 0 205 132;
+    --guk-color-success-600: 0 184 113;
+    --guk-color-success-700: 0 153 87;
+    --guk-color-success-800: 0 122 63;
+    --guk-color-success-900: 0 92 43;
 
     /* Warning */
-    --ods-color-warning-100: 255 244 204;
-    --ods-color-warning-200: 255 231 153;
-    --ods-color-warning-300: 255 214 102;
-    --ods-color-warning-400: 255 197 63;
-    --ods-color-warning-500: 255 170 0;
-    --ods-color-warning-600: 219 138 0;
-    --ods-color-warning-700: 183 109 0;
-    --ods-color-warning-800: 147 83 0;
-    --ods-color-warning-900: 122 64 0;
+    --guk-color-warning-100: 255 244 204;
+    --guk-color-warning-200: 255 231 153;
+    --guk-color-warning-300: 255 214 102;
+    --guk-color-warning-400: 255 197 63;
+    --guk-color-warning-500: 255 170 0;
+    --guk-color-warning-600: 219 138 0;
+    --guk-color-warning-700: 183 109 0;
+    --guk-color-warning-800: 147 83 0;
+    --guk-color-warning-900: 122 64 0;
 
     /* Critical */
-    --ods-color-critical-100: 255 229 211;
-    --ods-color-critical-200: 255 196 168;
-    --ods-color-critical-300: 255 156 124;
-    --ods-color-critical-400: 255 119 92;
-    --ods-color-critical-500: 255 56 38;
-    --ods-color-critical-600: 219 27 27;
-    --ods-color-critical-700: 183 19 32;
-    --ods-color-critical-800: 147 12 34;
-    --ods-color-critical-900: 122 7 35;
+    --guk-color-critical-100: 255 229 211;
+    --guk-color-critical-200: 255 196 168;
+    --guk-color-critical-300: 255 156 124;
+    --guk-color-critical-400: 255 119 92;
+    --guk-color-critical-500: 255 56 38;
+    --guk-color-critical-600: 219 27 27;
+    --guk-color-critical-700: 183 19 32;
+    --guk-color-critical-800: 147 12 34;
+    --guk-color-critical-900: 122 7 35;
 
     /* TODO this one seems unused? */
-    --foreground-rgb: rgb(var(--ods-color-neutral-800));
+    --foreground-rgb: rgb(var(--guk-color-neutral-800));
 
     /* Font */
-    --ods-font-weight-normal: 400;
-    --ods-font-weight-semibold: 600;
+    --guk-font-weight-normal: 400;
+    --guk-font-weight-semibold: 600;
 
     /* Layering */
     --hub-navbar-z-index: 10;
-    --ods-dialog-overlay-z-index: 20;
-    --ods-dialog-alert-overlay-z-index: 20;
-    --ods-dialog-content-z-index: 30;
-    --ods-dialog-alert-content-z-index: 30;
-    --ods-dropdown-container-content-z-index: 40;
-    --ods-text-area-rich-text-expanded-z-index: 50;
+    --guk-dialog-overlay-z-index: 20;
+    --guk-dialog-alert-overlay-z-index: 20;
+    --guk-dialog-content-z-index: 30;
+    --guk-dialog-alert-content-z-index: 30;
+    --guk-dropdown-container-content-z-index: 40;
+    --guk-text-area-rich-text-expanded-z-index: 50;
 
     /* PWN OVERRIDES */
     /* we are setting primary-50 to the value of primary-600 bceause it's used for hover state on button of background */
-    --ods-color-primary-50: 11 100 89; /* #0B6459; */
-    --ods-color-primary-100: 0 255 224; /* #00ffe0; */
-    --ods-color-primary-200: 0 255 224; /* #00ffe0; */
-    --ods-color-primary-300: 0 255 224; /* #00ffe0; */
-    --ods-color-primary-400: 0 255 224; /* #00ffe0; */
-    --ods-color-primary-500: 9 136 121; /* #098879; */
-    --ods-color-primary-600: 11 100 89; /* #0B6459; */
-    --ods-color-primary-800: 13 77 69; /* #0d4d45; */
+    --guk-color-primary-50: 11 100 89; /* #0B6459; */
+    --guk-color-primary-100: 0 255 224; /* #00ffe0; */
+    --guk-color-primary-200: 0 255 224; /* #00ffe0; */
+    --guk-color-primary-300: 0 255 224; /* #00ffe0; */
+    --guk-color-primary-400: 0 255 224; /* #00ffe0; */
+    --guk-color-primary-500: 9 136 121; /* #098879; */
+    --guk-color-primary-600: 11 100 89; /* #0B6459; */
+    --guk-color-primary-800: 13 77 69; /* #0d4d45; */
 
-    --ods-color-neutral-0: #111; /* 17 17 17 */
-    --ods-color-neutral-50: #080808; /* 8 8 8 */
-    --ods-color-neutral-100: #434343; /* 67 67 67 */
-    --ods-color-neutral-500: #666666;
-    --ods-color-neutral-600: #d9d9d9; /* 105 102 120 */
-    --ods-color-neutral-700: #d9d9d9;
-    --ods-color-neutral-800: #f3f1ff; /* 243 241 255 */
+    --guk-color-neutral-0: #111; /* 17 17 17 */
+    --guk-color-neutral-50: #080808; /* 8 8 8 */
+    --guk-color-neutral-100: #434343; /* 67 67 67 */
+    --guk-color-neutral-500: #666666;
+    --guk-color-neutral-600: #d9d9d9; /* 105 102 120 */
+    --guk-color-neutral-700: #d9d9d9;
+    --guk-color-neutral-800: #f3f1ff; /* 243 241 255 */
 
-    --ods-color-success-200: 36 255 0; /* #24FF00; */
-    --ods-color-success-800: 7 51 0; /* #073300; */
+    --guk-color-success-200: 36 255 0; /* #24FF00; */
+    --guk-color-success-800: 7 51 0; /* #073300; */
 
-    --ods-color-warning-200: 243 248 5; /* #F3F805; */
-    --ods-color-warning-800: 73 74 2; /* #494A02; */
+    --guk-color-warning-200: 243 248 5; /* #F3F805; */
+    --guk-color-warning-800: 73 74 2; /* #494A02; */
 
-    --ods-color-negative-200: 249 118 0; /* #F97600 */
-    --ods-color-negative-800: 156 78 7; /* #9C4E07 */
+    --guk-color-negative-200: 249 118 0; /* #F97600 */
+    --guk-color-negative-800: 156 78 7; /* #9C4E07 */
 
-    --ods-color-critical-200: 254 48 51; /* #FE3033 */
-    --ods-color-critical-800: 149 33 35; /* #952123 */
+    --guk-color-critical-200: 254 48 51; /* #FE3033 */
+    --guk-color-critical-800: 149 33 35; /* #952123 */
 
-    --ods-color-info-200: #f3f1ff; /* 105 102 120; */
-    --ods-color-info-800: #111111; /* 17 17 17; */
+    --guk-color-info-200: #f3f1ff; /* 105 102 120; */
+    --guk-color-info-800: #111111; /* 17 17 17; */
 
     --tw-text-opacity: 1;
   }
 }
 
 body {
-  /* Variables imported from layout.tsx > @aragon/ods */
-  color: var(--ods-color-neutral-800);
-  background-color: var(--ods-color-neutral-50);
+  /* Variables imported from layout.tsx > @aragon/gov-ui-kit */
+  color: var(--guk-color-neutral-800);
+  background-color: var(--guk-color-neutral-50);
 
-  font-family: var(--ods-font-family);
+  font-family: var(--guk-font-family);
   /* Custom font here */
   /* font-family: "..."; */
 }
@@ -147,8 +147,8 @@ h3,
 h4,
 h5,
 h6 {
-  /* Variables imported from layout.tsx > @aragon/ods */
-  color: var(--ods-color-neutral-800);
+  /* Variables imported from layout.tsx > @aragon/gov-ui-kit */
+  color: var(--guk-color-neutral-800);
 
   /* Custom font here */
   /* font-family: "..."; */
@@ -185,35 +185,48 @@ label div p.leading-tight {
 }
 
 .bg-modal-overlay {
-  background-image: linear-gradient(180deg, rgba(245, 247, 250, 0) 0%, rgb(var(--ods-color-primary-800)) 100%);
+  background-image: linear-gradient(180deg, rgba(245, 247, 250, 0) 0%, rgb(var(--guk-color-primary-800)) 100%);
 }
 
 .text-neutral-500 {
-  color: var(--ods-color-neutral-800);
+  color: var(--guk-color-neutral-800);
 }
 
 .prose {
-  color: var(--ods-color-neutral-800);
+  color: var(--guk-color-neutral-800);
 }
 
 .prose a,
 .prose a > em {
-  color: rgb(var(--ods-color-primary-500));
+  color: rgb(var(--guk-color-primary-500));
 }
 
 .prose a:hover,
 .prose a:hover em {
-  color: rgb(var(--ods-color-primary-400));
+  color: rgb(var(--guk-color-primary-400));
 }
 
 .prose ol > li::marker {
-  color: var(--ods-color-neutral-800);
+  color: var(--guk-color-neutral-800);
 }
 
 .custom-alert-container > div > p.text-success-800 {
-  color: rgb(var(--ods-color-primary-400));
+  color: rgb(var(--guk-color-primary-400));
 }
 
 .custom-alert-container > div > p.text-info-800 {
-  color: var(--ods-color-info-200);
+  color: var(--guk-color-info-200);
+}
+
+.custom-proposal-card-wrapper div div span.text-info-800 {
+  color: var(--guk-color-neutral-800);
+}
+
+.custom-proposal-card-wrapper div div span span.bg-info-500 {
+  background-color: var(--guk-color-neutral-800);
+}
+
+/* hide pulsing icon on VETOED proposals */
+.customStewardsProposalCardWrapper div span span.bg-warning-500 {
+  display: none;
 }

@@ -2,7 +2,16 @@ import { useAccount, useBlockNumber, useReadContract } from "wagmi";
 import { type ReactNode, useEffect } from "react";
 import ProposalCard from "../components/proposal";
 import { TokenVotingPluginAbi } from "../artifacts/TokenVoting.sol";
-import { Button, DataList, IconType, ProposalDataListItemSkeleton, type DataListState } from "@aragon/ods";
+import {
+  Button,
+  DataList,
+  DataListContainer,
+  DataListPagination,
+  DataListRoot,
+  IconType,
+  ProposalDataListItemSkeleton,
+  type DataListState,
+} from "@aragon/gov-ui-kit";
 import { useCanCreateProposal } from "../hooks/useCanCreateProposal";
 import Link from "next/link";
 import { Else, If, Then } from "@/components/if";
@@ -71,14 +80,14 @@ export default function Proposals() {
           </MissingContentView>
         </Then>
         <Else>
-          <DataList.Root
+          <DataListRoot
             entityLabel={entityLabel}
             itemsCount={proposalCount}
             pageSize={DEFAULT_PAGE_SIZE}
             state={dataListState}
             //onLoadMore={fetchNextPage}
           >
-            <DataList.Container SkeletonElement={ProposalDataListItemSkeleton}>
+            <DataListContainer SkeletonElement={ProposalDataListItemSkeleton}>
               {proposalCount &&
                 Array.from(Array(proposalCount || 0)?.keys())
                   .reverse()
@@ -86,9 +95,9 @@ export default function Proposals() {
                     // TODO: update with router agnostic ODS DataListItem
                     <ProposalCard key={proposalIndex} proposalIndex={proposalIndex} />
                   ))}
-            </DataList.Container>
-            <DataList.Pagination />
-          </DataList.Root>
+            </DataListContainer>
+            <DataListPagination />
+          </DataListRoot>
         </Else>
       </If>
     </MainSection>

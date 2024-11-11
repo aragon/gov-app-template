@@ -1,4 +1,4 @@
-import { modulesCopy } from "@aragon/ods";
+import { modulesCopy } from "@aragon/gov-ui-kit";
 import NextLink from "next/link";
 import { type ComponentProps } from "react";
 

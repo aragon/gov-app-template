@@ -1,4 +1,4 @@
-import { Button, IllustrationHuman } from "@aragon/ods";
+import { Button, IllustrationHuman } from "@aragon/gov-ui-kit";
 import { type ReactNode } from "react";
 
 export const MissingContentView = ({

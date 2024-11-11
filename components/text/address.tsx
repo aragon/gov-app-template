@@ -2,7 +2,7 @@ import { formatHexString } from "@/utils/evm";
 import { getChildrenText } from "@/utils/content";
 import { type ReactNode, useState, useEffect } from "react";
 import { usePublicClient } from "wagmi";
-// import { Link } from '@aragon/ods'
+// import { Link } from '@aragon/gov-ui-kit'
 
 export const AddressText = ({ children, bold }: { children: ReactNode; bold?: boolean }) => {
   const address = getChildrenText(children);

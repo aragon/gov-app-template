@@ -1,4 +1,4 @@
-import { IApprovalThresholdResult, IButtonProps, ProposalType } from "@aragon/ods";
+import { IApprovalThresholdResult, IButtonProps, ProposalType } from "@aragon/gov-ui-kit";
 import { Address, Hex, AbiFunction } from "viem";
 import { IVotesDataListVariant } from "@/components/proposalVoting/votesDataList/votesDataListItemStructure";
 
@@ -64,13 +64,14 @@ export interface IBreakdownMajorityVotingResult {
 }
 
 export interface IVotingStageDetails {
-  censusBlock?: number;
-  censusTimestamp?: number;
   startDate: string;
   endDate: string;
   tokenAddress?: Address;
   strategy: string;
   options: string;
+  snapshotEpoch: bigint | undefined;
+  quorum: string | undefined;
+  supportThreshold?: string;
 }
 
 export interface IVote {

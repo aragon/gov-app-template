@@ -1,6 +1,6 @@
 import { PUB_CHAIN, PUB_RPC_URL } from "@/constants";
 import { formatHexString } from "@/utils/evm";
-import { MemberAvatar } from "@aragon/ods";
+import { MemberAvatar } from "@aragon/gov-ui-kit";
 import { useWeb3Modal } from "@web3modal/wagmi/react";
 import classNames from "classnames";
 import { useEffect } from "react";

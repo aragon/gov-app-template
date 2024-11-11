@@ -1,7 +1,7 @@
 import { PUB_CHAIN } from "@/constants";
 import { capitalizeFirstLetter } from "@/utils/text";
 import { type RawAction } from "@/utils/types";
-import { InputText, NumberFormat, formatterUtils } from "@aragon/ods";
+import { InputText, NumberFormat, formatterUtils } from "@aragon/gov-ui-kit";
 import { formatEther } from "viem";
 
 type IEncodedViewProps = {

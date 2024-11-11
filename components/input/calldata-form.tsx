@@ -1,6 +1,6 @@
 import { type RawAction } from "@/utils/types";
 import { type FC, useEffect, useState } from "react";
-import { InputText, InputNumber, TextArea } from "@aragon/ods";
+import { InputText, InputNumber, TextArea } from "@aragon/gov-ui-kit";
 import {
   type Address,
   parseEther,

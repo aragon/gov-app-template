@@ -7,7 +7,10 @@ import {
   Heading,
   type ProposalStatus,
   Tabs,
-} from "@aragon/ods";
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@aragon/gov-ui-kit";
 import { Tabs as RadixTabsRoot } from "@radix-ui/react-tabs";
 import dayjs from "dayjs";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
@@ -71,14 +74,6 @@ export const VotingStage: React.FC<IVotingStageProps> = (props) => {
 
   const defaultTab = "breakdown";
   const stageKey = `Stage ${number}`;
-  const snapshotTakenAt = details?.censusBlock
-    ? `Block ${details.censusBlock}`
-    : details?.censusTimestamp
-      ? dayjs(details.censusTimestamp * 1000).toString()
-      : "";
-  const snapshotBlockURL = details?.censusBlock
-    ? `${PUB_CHAIN.blockExplorers?.default.url}/block/${details?.censusBlock}`
-    : "";
 
   return (
     <AccordionItem
@@ -101,36 +96,37 @@ export const VotingStage: React.FC<IVotingStageProps> = (props) => {
 
       <AccordionItemContent ref={contentRef} className="!md:pb-0 !pb-0">
         <RadixTabsRoot defaultValue={defaultTab} ref={setRef}>
-          <Tabs.List>
-            <Tabs.Trigger value="breakdown" label="Breakdown" />
-            <Tabs.Trigger value="votes" label="Votes" />
-            <Tabs.Trigger value="details" label="Details" />
-          </Tabs.List>
-          <Tabs.Content value="breakdown">
+          <TabsList>
+            <TabsTrigger value="breakdown" label="Breakdown" />
+            <TabsTrigger value="votes" label="Votes" />
+            <TabsTrigger value="details" label="Details" />
+          </TabsList>
+          <TabsContent value="breakdown">
             <div className="py-4 pb-8">
               {result && <VotingBreakdown status={status} cta={result.cta} variant={variant} result={result} />}
             </div>
-          </Tabs.Content>
-          <Tabs.Content value="votes">
+          </TabsContent>
+          <TabsContent value="votes">
             <div className="py-4 pb-8">
               <VotesDataList votes={votes ?? []} />
             </div>
-          </Tabs.Content>
-          <Tabs.Content value="details">
+          </TabsContent>
+          <TabsContent value="details">
             <div className="py-4 pb-8">
               {details && (
                 <VotingDetails
                   startDate={details.startDate}
                   endDate={details.endDate}
-                  snapshotTakenAt={snapshotTakenAt}
-                  snapshotBlockURL={snapshotBlockURL}
                   tokenAddress={details.tokenAddress}
                   strategy={details.strategy}
                   options={details.options}
+                  snapshotEpoch={details.snapshotEpoch}
+                  supportThreshold={details.supportThreshold}
+                  quorum={details.quorum}
                 />
               )}
             </div>
-          </Tabs.Content>
+          </TabsContent>
         </RadixTabsRoot>
       </AccordionItemContent>
     </AccordionItem>

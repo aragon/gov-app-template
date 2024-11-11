@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AlertInline, Button, Tag } from "@aragon/ods";
+import { AlertInline, Button, Tag } from "@aragon/gov-ui-kit";
 import { type AbiParameter } from "viem";
 import { type InputValue } from "@/utils/input-values";
 import { InputParameterTuple } from "./input-parameter-tuple";

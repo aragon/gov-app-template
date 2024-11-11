@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useProposalVeto } from "@/plugins/optimistic-proposals/hooks/useProposalVeto";
-import { Card, ProposalStatus } from "@aragon/ods";
-import { ProposalDataListItem } from "@aragon/ods";
+import { Card, ProposalDataListItemStructure, ProposalStatus } from "@aragon/gov-ui-kit";
+import { ProposalDataListItem } from "@aragon/gov-ui-kit";
 import { PleaseWaitSpinner } from "@/components/please-wait";
 import { useProposalStatus } from "../../hooks/useProposalVariantStatus";
 import { PUB_TOKEN_SYMBOL } from "@/constants";
@@ -67,7 +67,7 @@ export default function ProposalCard(props: ProposalInputs) {
   }
 
   return (
-    <ProposalDataListItem.Structure
+    <ProposalDataListItemStructure
       title={proposal.title}
       summary={proposal.summary}
       href={`#/stewards/proposals/${props.proposalIndex}`}
@@ -89,6 +89,7 @@ export default function ProposalCard(props: ProposalInputs) {
       publisher={{ address: proposal.creator }}
       status={proposalStatus!}
       type={"majorityVoting"}
+      className="customStewardsProposalCardWrapper"
     />
   );
 }

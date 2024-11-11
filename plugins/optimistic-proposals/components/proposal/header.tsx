@@ -1,4 +1,4 @@
-import { AvatarIcon, Breadcrumbs, Heading, IBreadcrumbsLink, IconType, ProposalStatus, Tag } from "@aragon/ods";
+import { AvatarIcon, Breadcrumbs, Heading, IBreadcrumbsLink, IconType, ProposalStatus, Tag } from "@aragon/gov-ui-kit";
 import { Publisher } from "@/components/publisher";
 import { OptimisticProposal } from "@/plugins/optimistic-proposals/utils/types";
 import { useProposalStatus } from "@/plugins/optimistic-proposals/hooks/useProposalVariantStatus";

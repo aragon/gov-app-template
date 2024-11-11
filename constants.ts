@@ -7,6 +7,8 @@ export const PUB_TOKEN_ADDRESS = (process.env.NEXT_PUBLIC_TOKEN_ADDRESS ?? "") a
 export const PUB_STEWARD_SAFE_MULTISIG_ADDRESS = (process.env.NEXT_PUBLIC_STEWARD_SAFE_MULTISIG_ADDRESS ??
   "") as Address;
 
+export const PUB_PWN_TOKEN_ADDRESS = (process.env.NEXT_PUBLIC_PWN_TOKEN_ADDRESS ?? "") as Address;
+export const PUB_PWN_EPOCH_CLOCK_ADDRESS = (process.env.NEXT_PUBLIC_PWN_EPOCH_CLOCK_ADDRESS ?? "") as Address;
 export const PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS = (process.env.NEXT_PUBLIC_DUAL_GOVERNANCE_PLUGIN_ADDRESS ??
   "") as Address;
 export const PUB_TOKEN_VOTING_PLUGIN_ADDRESS = (process.env.NEXT_PUBLIC_TOKEN_VOTING_PLUGIN_ADDRESS ?? "") as Address;

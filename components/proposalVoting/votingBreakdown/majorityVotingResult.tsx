@@ -1,5 +1,5 @@
 import { capitalizeFirstLetter } from "@/utils/text";
-import { Button, Heading, Progress, ProposalStatus, RadioCard, RadioGroup } from "@aragon/ods";
+import { Button, Heading, Progress, ProposalStatus, RadioCard, RadioGroup } from "@aragon/gov-ui-kit";
 import classNames from "classnames";
 import { useEffect, useState } from "react";
 import { type VotingCta } from "./types";

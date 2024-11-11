@@ -13,8 +13,9 @@ import { ProposalActions } from "@/components/proposalActions/proposalActions";
 import { CardResources } from "@/components/proposal/cardResources";
 import { formatEther } from "viem";
 import { useToken } from "../hooks/useToken";
-import { ProposalStatus } from "@aragon/ods";
+import { ProposalStatus } from "@aragon/gov-ui-kit";
 import { PUB_TOKEN_SYMBOL } from "@/constants";
+import { useGovernanceSettings } from "../hooks/useGovernanceSettings";
 
 export default function ProposalDetail({ index: proposalIdx }: { index: number }) {
   const {
@@ -26,6 +27,8 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
     vetoProposal,
   } = useProposalVeto(proposalIdx);
   const { symbol: tokenSymbol } = useToken();
+
+  const { minVetoRatio } = useGovernanceSettings();
 
   const { executeProposal, canExecute, isConfirming: isConfirmingExecution } = useProposalExecute(proposalIdx);
 
@@ -84,13 +87,12 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
         proposalId: proposalIdx.toString(),
       },
       details: {
-        // TODO ?
-        // TODO rather show epoch in which this started?
-        // censusTimestamp: Number(proposal?.parameters.snapshotTimestamp || 0) || 0,
         startDate,
         endDate,
         strategy: "Stewards voting",
         options: "Veto",
+        snapshotEpoch: proposal?.parameters?.snapshotEpoch,
+        quorum: minVetoRatio ? `${minVetoRatio / 10000}%` : "",
       },
       votes: vetoes.map(({ voter }) => ({ address: voter, variant: "veto" }) as IVote),
     },

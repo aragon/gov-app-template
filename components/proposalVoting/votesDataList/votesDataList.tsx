@@ -1,4 +1,4 @@
-import { DataList, IconType } from "@aragon/ods";
+import { DataListPagination, DataListContainer, DataListRoot, IconType } from "@aragon/gov-ui-kit";
 import { isAddressEqual } from "viem";
 import { useAccount } from "wagmi";
 import { VotesDataListItemSkeleton } from "./votesDataListItemSkeleton";
@@ -43,14 +43,14 @@ export const VotesDataList: React.FC<IVotesDataListProps> = (props) => {
   };
 
   return (
-    <DataList.Root
+    <DataListRoot
       entityLabel={entityLabel}
       itemsCount={totalVotes}
       pageSize={DEFAULT_PAGE_SIZE}
       state={undefined}
       onLoadMore={() => {}}
     >
-      <DataList.Container
+      <DataListContainer
         SkeletonElement={VotesDataListItemSkeleton}
         errorState={errorState}
         emptyState={emptyState}
@@ -64,8 +64,8 @@ export const VotesDataList: React.FC<IVotesDataListProps> = (props) => {
             key={id}
           />
         ))}
-      </DataList.Container>
-      {showPagination && <DataList.Pagination />}
-    </DataList.Root>
+      </DataListContainer>
+      {showPagination && <DataListPagination />}
+    </DataListRoot>
   );
 };

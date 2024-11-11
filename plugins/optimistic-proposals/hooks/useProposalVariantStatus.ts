@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { OptimisticProposal } from "../utils/types";
-import { ProposalStatus } from "@aragon/ods";
+import { ProposalStatus } from "@aragon/gov-ui-kit";
 
 export const useProposalVariantStatus = (proposal: OptimisticProposal) => {
   const [status, setStatus] = useState({ variant: "", label: "" });

@@ -1,5 +1,5 @@
 import { formatHexString } from "@/utils/evm";
-import { Link, type IPublisher } from "@aragon/ods";
+import { Link, type IPublisher } from "@aragon/gov-ui-kit";
 
 const MAX_PUBLISHERS_SHOWN = 3;
 

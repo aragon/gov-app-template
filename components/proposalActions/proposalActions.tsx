@@ -9,7 +9,7 @@ import {
   Button,
   IconType,
   InputText,
-} from "@aragon/ods";
+} from "@aragon/gov-ui-kit";
 import Link from "next/link";
 import { CallFunctionSignatureField, CallParamField } from "./callParamField";
 import { EncodedView } from "./encodedView";

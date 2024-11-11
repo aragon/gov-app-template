@@ -1,7 +1,17 @@
 import { useAccount, useBlockNumber, useReadContract } from "wagmi";
 import { type ReactNode, useEffect } from "react";
 import ProposalCard from "../components/proposal";
-import { Button, DataList, Link, IconType, ProposalDataListItemSkeleton, type DataListState } from "@aragon/ods";
+import {
+  Button,
+  DataList,
+  Link,
+  IconType,
+  ProposalDataListItemSkeleton,
+  type DataListState,
+  DataListRoot,
+  DataListContainer,
+  DataListPagination,
+} from "@aragon/gov-ui-kit";
 import { Else, If, Then } from "@/components/if";
 import { PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS, PUB_CHAIN } from "@/constants";
 import { MainSection } from "@/components/layout/main-section";
@@ -64,19 +74,19 @@ export default function Proposals() {
 
       <If true={proposalCount}>
         <Then>
-          <DataList.Root
+          <DataListRoot
             entityLabel={entityLabel}
             itemsCount={proposalCount}
             pageSize={DEFAULT_PAGE_SIZE}
             state={dataListState}
           >
-            <DataList.Container SkeletonElement={ProposalDataListItemSkeleton}>
+            <DataListContainer SkeletonElement={ProposalDataListItemSkeleton}>
               {Array.from(Array(proposalCount || 0)?.keys())
                 .reverse()
                 ?.map((proposalIndex) => <ProposalCard key={proposalIndex} proposalIndex={proposalIndex} />)}
-            </DataList.Container>
-            <DataList.Pagination />
-          </DataList.Root>
+            </DataListContainer>
+            <DataListPagination />
+          </DataListRoot>
         </Then>
         <Else>
           <MissingContentView>

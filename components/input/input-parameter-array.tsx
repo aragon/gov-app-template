@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, InputText } from "@aragon/ods";
+import { Button, InputText } from "@aragon/gov-ui-kit";
 import { type AbiParameter } from "viem";
 import { decodeCamelCase } from "@/utils/case";
 import { type InputValue, handleStringValue, isValidStringValue, readableTypeName } from "@/utils/input-values";

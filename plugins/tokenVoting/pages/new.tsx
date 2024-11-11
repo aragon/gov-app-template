@@ -1,4 +1,4 @@
-import { Button, IconType, InputText, TextAreaRichText, Tag } from "@aragon/ods";
+import { Button, IconType, InputText, TextAreaRichText, Tag } from "@aragon/gov-ui-kit";
 import React, { ReactNode, useState } from "react";
 import { RawAction } from "@/utils/types";
 import { Else, ElseIf, If, Then } from "@/components/if";
