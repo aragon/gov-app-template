@@ -123,6 +123,9 @@
     --guk-color-info-800: #111111; /* 17 17 17; */
 
     --tw-text-opacity: 1;
+
+    --guk-illustration-primary-color: rgb(var(--guk-color-primary-500));
+    --guk-illustration-accent-color: rgb(var(--guk-color-primary-600));
   }
 }
 
@@ -229,4 +232,12 @@ label div p.leading-tight {
 /* hide pulsing icon on VETOED proposals */
 .customStewardsProposalCardWrapper div span span.bg-warning-500 {
   display: none;
+}
+
+.custom-proposal-card-wrapper > div > div.text-critical-800 {
+  color: var(--guk-color-neutral-0);
+}
+
+nav[aria-label=Breadcrumbs] > div.text-critical-800 {
+  color: var(--guk-color-neutral-0);
 }

@@ -26,7 +26,7 @@ export const MissingContentView = ({
       <p className="text-md text-neutral-400">{children}</p>
       <Illustration />
       <div className="flex justify-center">
-        <Button size="md" variant="primary" isLoading={!!isLoading} onClick={onClick ? onClick : () => {}}>
+        <Button size="md" variant="secondary" isLoading={!!isLoading} onClick={onClick ? onClick : () => {}}>
           <span>{callToAction}</span>
         </Button>
       </div>
