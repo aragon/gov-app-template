@@ -5,7 +5,7 @@ import { TokenVotingPluginAbi } from "../artifacts/TokenVoting.sol";
 
 export function useGovernanceSettings() {
   const [minProposerVotingPower, setMinProposerVotingPower] = useState<bigint>();
-  const [minDuration, setMinDuration] = useState<bigint>();
+  const [minDuration, setMinDuration] = useState<bigint>(); // in seconds
   const [minParticipation, setMinParticipation] = useState<number>();
   const [supportThreshold, setSupportThreshold] = useState<number>();
 

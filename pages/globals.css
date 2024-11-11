@@ -238,6 +238,6 @@ label div p.leading-tight {
   color: var(--guk-color-neutral-0);
 }
 
-nav[aria-label=Breadcrumbs] > div.text-critical-800 {
+nav[aria-label="Breadcrumbs"] > div.text-critical-800 {
   color: var(--guk-color-neutral-0);
 }

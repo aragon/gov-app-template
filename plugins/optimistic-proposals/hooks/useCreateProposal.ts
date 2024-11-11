@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ProposalMetadata, RawAction } from "@/utils/types";
 import { useAlerts } from "@/context/Alerts";
 import { PUB_APP_NAME, PUB_CHAIN, PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS, PUB_PROJECT_URL } from "@/constants";
@@ -8,18 +8,33 @@ import { toHex } from "viem";
 import { useTransactionManager } from "@/hooks/useTransactionManager";
 import { uploadToWeb3Storage } from "@/utils/ipfs";
 import { OptimisticTokenVotingPluginAbi } from "../artifacts/OptimisticTokenVotingPlugin.sol";
+import { useGovernanceSettings } from "./useGovernanceSettings";
+import { useBlock } from "wagmi";
 
 const UrlRegex = new RegExp(URL_PATTERN);
 
 export function useCreateProposal() {
   const { push } = useRouter();
   const { addAlert } = useAlerts();
+  const { minDuration } = useGovernanceSettings();
   const [isCreating, setIsCreating] = useState(false);
   const [title, setTitle] = useState<string>("");
   const [summary, setSummary] = useState<string>("");
+  const [duration, setDuration] = useState<number>(); // in hours
   const [description, setDescription] = useState<string>("");
   const [actions, setActions] = useState<RawAction[]>([]);
   const [resources, setResources] = useState<{ name: string; url: string }[]>([]);
+  const { data: blockInfo } = useBlock({
+    blockTag: "latest",
+  });
+
+  useEffect(() => {
+    if (!minDuration || duration !== undefined) {
+      return;
+    }
+
+    setDuration(Number(minDuration) / 3600);
+  }, [minDuration]);
 
   const { writeContract: createProposalWrite, isConfirming } = useTransactionManager({
     onSuccessMessage: "Proposal created",
@@ -34,6 +49,13 @@ export function useCreateProposal() {
   });
 
   const submitProposal = async () => {
+    if (!blockInfo?.timestamp) {
+      return addAlert("Could not get current block timestamp.", {
+        description: "Please try again",
+        type: "error",
+      });
+    }
+
     // Check metadata
     if (!title.trim()) {
       return addAlert("Invalid proposal details", {
@@ -45,6 +67,13 @@ export function useCreateProposal() {
     if (!summary.trim()) {
       return addAlert("Invalid proposal details", {
         description: "Please enter a summary of what the proposal is about",
+        type: "error",
+      });
+    }
+
+    if (!duration || !minDuration || duration * 3600 < minDuration) {
+      return addAlert("Invalid proposal duration", {
+        description: `Current duration of ${duration} is lower than minimally allowed duration ${minDuration}.`,
         type: "error",
       });
     }
@@ -75,7 +104,9 @@ export function useCreateProposal() {
       const ipfsPin = await uploadToWeb3Storage(JSON.stringify(proposalMetadataJsonObject));
 
       const startDate = BigInt(0); // equals "start right now"
-      const endDate = BigInt(0); // equals "minDuration"
+      // the 5 * 3600 is some padding as the checks for min duration and block.timestmap in the contract will use different block timestamp than we are using here
+      const endDate = blockInfo?.timestamp + BigInt(duration * 3600) + BigInt(10 * 3600);
+
       createProposalWrite({
         chainId: PUB_CHAIN.id,
         abi: OptimisticTokenVotingPluginAbi,
@@ -102,5 +133,7 @@ export function useCreateProposal() {
     setActions,
     setResources,
     submitProposal,
+    duration,
+    setDuration,
   };
 }

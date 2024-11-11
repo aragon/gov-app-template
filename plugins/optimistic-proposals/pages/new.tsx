@@ -1,4 +1,4 @@
-import { Button, IconType, InputText, Tag, TextAreaRichText } from "@aragon/gov-ui-kit";
+import { Button, IconType, InputNumber, InputText, Tag, TextAreaRichText } from "@aragon/gov-ui-kit";
 import React, { ReactNode, useState } from "react";
 import { RawAction } from "@/utils/types";
 import { Else, ElseIf, If, Then } from "@/components/if";
@@ -14,6 +14,7 @@ import { ProposalActions } from "@/components/proposalActions/proposalActions";
 import { downloadAsFile } from "@/utils/download-as-file";
 import { encodeActionsAsJson } from "@/utils/json-actions";
 import { useCreateProposal } from "../hooks/useCreateProposal";
+import { useGovernanceSettings } from "../hooks/useGovernanceSettings";
 
 export default function Create() {
   const { address: selfAddress, isConnected } = useAccount();
@@ -32,7 +33,10 @@ export default function Create() {
     setResources,
     isCreating,
     submitProposal,
+    duration,
+    setDuration,
   } = useCreateProposal();
+  const { minDuration } = useGovernanceSettings();
 
   const handleTitleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event?.target?.value);
@@ -105,6 +109,19 @@ export default function Create() {
               value={summary}
               readOnly={isCreating}
               onChange={handleSummaryInput}
+            />
+          </div>
+          <div className="mb-6">
+            <InputNumber
+              min={(Number(minDuration) || 0) / 3600}
+              inputClassName="text-neutral-800"
+              className=""
+              label="Duration in hours"
+              placeholder="Duration of voting period for proposal"
+              variant="default"
+              value={duration}
+              readOnly={isCreating}
+              onChange={(event) => setDuration(Number(event))}
             />
           </div>
           <div className="mb-6">
