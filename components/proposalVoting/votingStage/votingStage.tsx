@@ -1,4 +1,3 @@
-import { PUB_CHAIN } from "@/constants";
 import { getSimpleRelativeTimeFromDate } from "@/utils/dates";
 import {
   AccordionItem,
@@ -6,7 +5,6 @@ import {
   AccordionItemHeader,
   Heading,
   type ProposalStatus,
-  Tabs,
   TabsList,
   TabsTrigger,
   TabsContent,

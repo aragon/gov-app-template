@@ -28,6 +28,7 @@ const PluginLoader: FC = () => {
 
     const plugin = plugins.find((p) => p.id === pluginIdOrDefault);
     if (!plugin) {
+      // eslint-disable-next-line no-console
       console.error(`In URL Routing: no plugin has been found under name ${pluginIdOrDefault}.`);
       return;
     }

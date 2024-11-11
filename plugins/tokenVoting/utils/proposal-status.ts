@@ -1,4 +1,4 @@
-import { Proposal, VotingMode } from "./types";
+import { Proposal } from "./types";
 export const RATIO_BASE = 1_000_000;
 
 export function getProposalStatusVariant(proposal: Proposal, tokenSupply: bigint) {
@@ -26,15 +26,5 @@ export function getProposalStatusVariant(proposal: Proposal, tokenSupply: bigint
     return { variant: "critical", label: "Defeated" };
   }
 
-  // Active or early execution?
-  const noVotesWorstCase = tokenSupply - proposal.tally.yes - proposal.tally.abstain;
-  const totalYesNoWc = proposal.tally.yes + noVotesWorstCase;
-
-  if (proposal.parameters.votingMode == VotingMode.EarlyExecution) {
-    const currentRatio = (BigInt(RATIO_BASE) * proposal.tally.yes) / totalYesNoWc;
-    if (currentRatio > BigInt(supportThreshold)) {
-      return { variant: "success", label: proposal.actions?.length > 0 ? "Executable" : "Passed" };
-    }
-  }
   return { variant: "info", label: "Active" };
 }

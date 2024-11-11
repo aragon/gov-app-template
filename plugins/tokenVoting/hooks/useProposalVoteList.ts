@@ -32,7 +32,7 @@ export function useProposalVoteList(proposalId: number, proposal: Proposal | nul
 
   useEffect(() => {
     getLogs();
-  }, [proposalId, proposal?.parameters?.snapshotBlock]);
+  }, [proposalId, proposal?.parameters?.snapshotEpoch]);
 
   return proposalLogs;
 }

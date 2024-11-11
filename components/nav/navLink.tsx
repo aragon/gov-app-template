@@ -15,9 +15,6 @@ interface INavLinkProps extends INavLink {
 export const NavLink: React.FC<INavLinkProps> = (props) => {
   const { id, name, path, onClick } = props;
   const { asPath } = useRouter();
-  const router = useRouter();
-  // TODO this is maybe incorrect? i think during local dev, the server can't detect reroutes from
-  //  router.push in index.tsx, however it should be fine on deploy
   const pathToCheck = asPath === "/" ? "/#/community-voting" : asPath;
   const isSelected = pathToCheck.includes(path);
 

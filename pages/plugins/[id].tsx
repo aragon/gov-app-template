@@ -13,8 +13,6 @@ const PluginLoader: FC = () => {
   const [componentLoading, setComponentLoading] = useState(true);
 
   useEffect(() => {
-    console.log("pluginId in plugins id");
-    console.log(pluginId || "community-voting");
     if (!pluginId) return;
 
     const plugin = plugins.find((p) => p.id === (pluginId || "community-voting"));
@@ -23,8 +21,6 @@ const PluginLoader: FC = () => {
     import(`@/plugins/${plugin.folderName}`)
       .then((mod) => {
         setComponentLoading(true);
-        console.log("mod in plugins [id]");
-        console.log(mod);
         setPageComponent(() => mod.default);
       })
       .catch((err) => {
