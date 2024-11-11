@@ -109,7 +109,7 @@ export default function Create() {
           </div>
           <div className="mb-6">
             <TextAreaRichText
-              label="Body"
+              label="Body (optional)"
               className="pt-2"
               value={description}
               onChange={setDescription}
@@ -201,7 +201,7 @@ export default function Create() {
 
           <div className="mt-8 grid w-full grid-cols-2 gap-4 md:grid-cols-4">
             <AddActionCard
-              title="Add a payment"
+              title="Add an ETH transfer"
               icon={IconType.WITHDRAW}
               disabled={isCreating}
               onClick={() => setAddActionType("withdrawal")}
@@ -278,7 +278,7 @@ const PlaceHolderOr = ({
       <ElseIf true={!canCreate}>
         {/* Not a member */}
         <MissingContentView>
-          You cannot create proposals on the multisig because you are not currently defined as a member.
+          You cannot create proposals because you currently don’t have the necessary permission.
         </MissingContentView>
       </ElseIf>
       <Else>{children}</Else>

@@ -3,7 +3,7 @@ import { formatHexString } from "@/utils/evm";
 import { DataListItem, MemberAvatar, Tag, type IDataListItemProps, type TagVariant } from "@aragon/ods";
 import classNames from "classnames";
 
-export type IVotesDataListVariant = "yes" | "approve" | "no" | "abstain";
+export type IVotesDataListVariant = "yes" | "approve" | "no" | "abstain" | "veto";
 
 export interface IVotesDataListItemStructureProps extends IDataListItemProps {
   address: string;
@@ -27,6 +27,7 @@ export const VotesDataListItemStructure: React.FC<IVotesDataListItemStructurePro
     approve: "success",
     no: "critical",
     abstain: "neutral",
+    veto: "critical",
   };
 
   return (

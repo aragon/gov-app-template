@@ -82,7 +82,7 @@ export default function Proposals() {
           <MissingContentView>
             No proposals have been created yet.
             <br />
-            Here you will see the list of proposals initiated by the Security Council.
+            Here you will see the list of proposals initiated by the Stewards.
           </MissingContentView>
         </Else>
       </If>

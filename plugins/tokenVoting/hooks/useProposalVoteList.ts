@@ -12,8 +12,9 @@ export function useProposalVoteList(proposalId: number, proposal: Proposal | nul
   const [proposalLogs, setLogs] = useState<VoteCastEvent[]>([]);
 
   async function getLogs() {
-    if (!proposal?.parameters?.snapshotBlock) return;
-    else if (!publicClient) return;
+    // TODO do we need some kind of if here?
+    //if (!proposal?.parameters?.snapshotBlock) return;
+    if (!publicClient) return;
 
     const logs = await publicClient.getLogs({
       address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
@@ -21,7 +22,7 @@ export function useProposalVoteList(proposalId: number, proposal: Proposal | nul
       args: {
         proposalId: BigInt(proposalId),
       },
-      fromBlock: proposal.parameters.snapshotBlock,
+      fromBlock: 0n,
       toBlock: "latest", // TODO: Make this variable between 'latest' and proposal last block
     });
 

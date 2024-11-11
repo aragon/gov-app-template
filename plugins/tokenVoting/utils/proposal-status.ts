@@ -21,7 +21,7 @@ export function getProposalStatusVariant(proposal: Proposal, tokenSupply: bigint
     const finalRatio = (BigInt(RATIO_BASE) * proposal.tally.yes) / yesNoVotes;
 
     if (finalRatio > BigInt(supportThreshold)) {
-      return { variant: "success", label: "Executable" };
+      return { variant: "success", label: proposal.actions?.length > 0 ? "Executable" : "Passed" };
     }
     return { variant: "critical", label: "Defeated" };
   }
@@ -33,7 +33,7 @@ export function getProposalStatusVariant(proposal: Proposal, tokenSupply: bigint
   if (proposal.parameters.votingMode == VotingMode.EarlyExecution) {
     const currentRatio = (BigInt(RATIO_BASE) * proposal.tally.yes) / totalYesNoWc;
     if (currentRatio > BigInt(supportThreshold)) {
-      return { variant: "success", label: "Executable" };
+      return { variant: "success", label: proposal.actions?.length > 0 ? "Executable" : "Passed" };
     }
   }
   return { variant: "info", label: "Active" };

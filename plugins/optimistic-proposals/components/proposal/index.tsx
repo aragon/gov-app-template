@@ -7,9 +7,7 @@ import { useProposalStatus } from "../../hooks/useProposalVariantStatus";
 import { PUB_TOKEN_SYMBOL } from "@/constants";
 import { useAccount } from "wagmi";
 import { formatEther } from "viem";
-import { usePastSupply } from "../../hooks/usePastSupply";
 import { useToken } from "../../hooks/useToken";
-import { useGovernanceSettings } from "../../hooks/useGovernanceSettings";
 
 const DEFAULT_PROPOSAL_METADATA_TITLE = "(No proposal title)";
 const DEFAULT_PROPOSAL_METADATA_SUMMARY = "(The metadata of the proposal is not available)";
@@ -21,14 +19,11 @@ type ProposalInputs = {
 export default function ProposalCard(props: ProposalInputs) {
   const { address } = useAccount();
   const { proposal, proposalFetchStatus, vetoes } = useProposalVeto(props.proposalIndex);
-  const pastSupply = usePastSupply(proposal);
   const { symbol: tokenSymbol } = useToken();
 
   const proposalStatus = useProposalStatus(proposal!);
   const showLoading = getShowProposalLoading(proposal, proposalFetchStatus);
   const hasVetoed = vetoes?.some((veto) => veto.voter === address);
-
-  const { minVetoRatio } = useGovernanceSettings();
 
   if (!proposal && showLoading) {
     return (
@@ -67,10 +62,8 @@ export default function ProposalCard(props: ProposalInputs) {
   }
 
   let vetoPercentage = 0;
-  if (proposal?.vetoTally && pastSupply && minVetoRatio) {
-    vetoPercentage = Number(
-      (BigInt(1000) * proposal.vetoTally) / ((pastSupply * BigInt(minVetoRatio)) / BigInt(10000000))
-    );
+  if (proposal?.vetoTally && proposal.parameters.minVetoVotingPower) {
+    vetoPercentage = Number(proposal.vetoTally / (proposal.parameters.minVetoVotingPower / 100n));
   }
 
   return (
@@ -88,6 +81,10 @@ export default function ProposalCard(props: ProposalInputs) {
         option: "Veto",
         voteAmount: formatEther(proposal.vetoTally) + " " + (tokenSymbol || PUB_TOKEN_SYMBOL),
         votePercentage: vetoPercentage,
+        stage: {
+          id: `${vetoPercentage}%`,
+          title: "Proposal vetoes",
+        },
       }}
       publisher={{ address: proposal.creator }}
       status={proposalStatus!}

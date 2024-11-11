@@ -6,8 +6,9 @@ export const customModulesCopy = {
   ...modulesCopy,
   majorityVotingResult: {
     ...modulesCopy.majorityVotingResult,
+    stage: "",
     // Overridding the default "Winning option" text, which doesn't apply to vetoing proposals
-    winningOption: "Proposal vetoes",
+    // TODO? winningOption: "Proposal vetoes",
   },
 };
 

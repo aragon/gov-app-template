@@ -13,10 +13,8 @@ import { ProposalActions } from "@/components/proposalActions/proposalActions";
 import { CardResources } from "@/components/proposal/cardResources";
 import { formatEther } from "viem";
 import { useToken } from "../hooks/useToken";
-import { usePastSupply } from "../hooks/usePastSupply";
 import { ProposalStatus } from "@aragon/ods";
 import { PUB_TOKEN_SYMBOL } from "@/constants";
-import { useGovernanceSettings } from "../hooks/useGovernanceSettings";
 
 export default function ProposalDetail({ index: proposalIdx }: { index: number }) {
   const {
@@ -27,9 +25,7 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
     isConfirming: isConfirmingVeto,
     vetoProposal,
   } = useProposalVeto(proposalIdx);
-  const pastSupply = usePastSupply(proposal);
   const { symbol: tokenSymbol } = useToken();
-  const { minVetoRatio } = useGovernanceSettings();
 
   const { executeProposal, canExecute, isConfirming: isConfirmingExecution } = useProposalExecute(proposalIdx);
 
@@ -39,10 +35,8 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
   const showProposalLoading = getShowProposalLoading(proposal, proposalFetchStatus);
   const proposalStatus = useProposalStatus(proposal!);
   let vetoPercentage = 0;
-  if (proposal?.vetoTally && pastSupply && minVetoRatio) {
-    vetoPercentage = Number(
-      (BigInt(1000) * proposal.vetoTally) / ((pastSupply * BigInt(minVetoRatio)) / BigInt(10000000))
-    );
+  if (proposal?.vetoTally && proposal.parameters.minVetoVotingPower) {
+    vetoPercentage = Number(proposal.vetoTally / (proposal.parameters.minVetoVotingPower / 100n));
   }
 
   let cta: IBreakdownMajorityVotingResult["cta"];
@@ -98,7 +92,7 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
         strategy: "Stewards voting",
         options: "Veto",
       },
-      votes: vetoes.map(({ voter }) => ({ address: voter, variant: "no" }) as IVote),
+      votes: vetoes.map(({ voter }) => ({ address: voter, variant: "veto" }) as IVote),
     },
   ];
 
@@ -120,7 +114,7 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
             <BodySection body={proposal.description || "No description was provided"} />
             <ProposalVoting
               stages={proposalStage}
-              description="Proposals approved by the Security Council become eventually executable, unless the community reaches the veto threshold during the community veto stage."
+              description="Proposals approved by the Stewards become eventually executable, unless the community reaches the veto threshold during the community veto stage."
             />
             <ProposalActions actions={proposal.actions} />
           </div>

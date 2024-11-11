@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useBalance, useAccount, useReadContracts } from "wagmi";
 import { TokenVotingPluginAbi } from "../artifacts/TokenVoting.sol";
 import { PUB_CHAIN, PUB_TOKEN_VOTING_PLUGIN_ADDRESS } from "@/constants";
+import { ADDRESS_ZERO } from "@/utils/evm";
 
 export function useCanCreateProposal() {
   const { address } = useAccount();
@@ -12,6 +13,9 @@ export function useCanCreateProposal() {
     address,
     token: votingToken,
     chainId: PUB_CHAIN.id,
+    query: {
+      enabled: !!votingToken && votingToken !== ADDRESS_ZERO && !!address,
+    },
   });
 
   const { data: contractReads } = useReadContracts({

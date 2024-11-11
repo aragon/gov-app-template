@@ -15,7 +15,11 @@ interface INavLinkProps extends INavLink {
 export const NavLink: React.FC<INavLinkProps> = (props) => {
   const { id, name, path, onClick } = props;
   const { asPath } = useRouter();
-  const isSelected = asPath.includes(path);
+  const router = useRouter();
+  // TODO this is maybe incorrect? i think during local dev, the server can't detect reroutes from
+  //  router.push in index.tsx, however it should be fine on deploy
+  const pathToCheck = asPath === "/" ? "/#/community-voting" : asPath;
+  const isSelected = pathToCheck.includes(path);
 
   const containerClasses = classNames(
     "group relative md:-mb-0.25 md:border-b md:hover:border-b-primary-400", // base styles
@@ -40,16 +44,14 @@ export const NavLink: React.FC<INavLinkProps> = (props) => {
     }
   );
 
+  const spanClasses = classNames("flex-1 truncate px-4 text-primary-400", {
+    "text-neutral-800": isSelected,
+  });
+
   return (
     <li key={id} className={containerClasses}>
       <Link href={path} onClick={onClick} aria-current={isSelected ? "page" : undefined} className={anchorClasses}>
-        <span
-          className={classNames("flex-1 truncate px-4 text-primary-400", {
-            "text-neutral-800": isSelected,
-          })}
-        >
-          {name}
-        </span>
+        <span className={spanClasses}>{name}</span>
       </Link>
     </li>
   );

@@ -195,3 +195,25 @@ label div p.leading-tight {
 .prose {
   color: var(--ods-color-neutral-800);
 }
+
+.prose a,
+.prose a > em {
+  color: rgb(var(--ods-color-primary-500));
+}
+
+.prose a:hover,
+.prose a:hover em {
+  color: rgb(var(--ods-color-primary-400));
+}
+
+.prose ol > li::marker {
+  color: var(--ods-color-neutral-800);
+}
+
+.custom-alert-container > div > p.text-success-800 {
+  color: rgb(var(--ods-color-primary-400));
+}
+
+.custom-alert-container > div > p.text-info-800 {
+  color: var(--ods-color-info-200);
+}

@@ -20,7 +20,6 @@ export default function ProposalCard(props: ProposalInputs) {
   const { address } = useAccount();
   const { proposal, status: proposalFetchStatus } = useProposal(props.proposalIndex);
   const votes = useProposalVoteList(props.proposalIndex, proposal);
-  // const pastSupply = usePastSupply(proposal?.parameters.snapshotBlock);
   const { symbol: tokenSymbol } = useToken();
   const proposalStatus = useProposalStatus(proposal!);
   const showLoading = getShowProposalLoading(proposal, proposalFetchStatus);

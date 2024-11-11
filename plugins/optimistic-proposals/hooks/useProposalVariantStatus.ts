@@ -1,56 +1,43 @@
 import { useState, useEffect } from "react";
 import { OptimisticProposal } from "../utils/types";
 import { ProposalStatus } from "@aragon/ods";
-import { useToken } from "./useToken";
-import { useGovernanceSettings } from "./useGovernanceSettings";
 
 export const useProposalVariantStatus = (proposal: OptimisticProposal) => {
   const [status, setStatus] = useState({ variant: "", label: "" });
-  const { tokenSupply: totalSupply } = useToken();
-  const { minVetoRatio } = useGovernanceSettings();
 
   useEffect(() => {
-    if (!minVetoRatio || !proposal || !proposal?.parameters || !totalSupply) return;
-
-    const effectiveSupply = totalSupply;
-    // TODO is this correct?
-    const minVetoVotingPower = (effectiveSupply * BigInt(minVetoRatio)) / BigInt(1_000_000);
+    if (!proposal || !proposal?.parameters) return;
 
     if (proposal?.active) {
       setStatus({ variant: "info", label: "Active" });
     } else if (proposal?.executed) {
       setStatus({ variant: "primary", label: "Executed" });
-    } else if (proposal?.vetoTally >= minVetoVotingPower) {
+    } else if (proposal?.vetoTally >= proposal.parameters.minVetoVotingPower) {
       setStatus({ variant: "critical", label: "Defeated" });
     } else {
-      setStatus({ variant: "success", label: "Executable" });
+      setStatus({ variant: "success", label: proposal.actions?.length > 0 ? "Executable" : "Passed" });
     }
-  }, [proposal?.vetoTally, proposal?.active, proposal?.executed, minVetoRatio, totalSupply]);
+  }, [proposal?.vetoTally, proposal?.active, proposal?.executed, proposal?.parameters?.minVetoVotingPower]);
 
   return status;
 };
 
 export const useProposalStatus = (proposal: OptimisticProposal) => {
   const [status, setStatus] = useState<ProposalStatus>();
-  const { tokenSupply: totalSupply } = useToken();
-  const { minVetoRatio } = useGovernanceSettings();
 
   useEffect(() => {
-    if (!minVetoRatio || !proposal || !proposal?.parameters || !totalSupply) return;
-
-    const effectiveSupply = totalSupply;
-    const minVetoVotingPower = (effectiveSupply * BigInt(minVetoRatio)) / BigInt(1_000_000);
+    if (!proposal || !proposal?.parameters) return;
 
     if (proposal?.active) {
       setStatus(ProposalStatus.ACTIVE);
     } else if (proposal?.executed) {
       setStatus(ProposalStatus.EXECUTED);
-    } else if (proposal?.vetoTally >= minVetoVotingPower) {
+    } else if (proposal?.vetoTally >= proposal.parameters.minVetoVotingPower) {
       setStatus(ProposalStatus.VETOED);
     } else {
       setStatus(ProposalStatus.ACCEPTED);
     }
-  }, [proposal?.vetoTally, proposal?.active, proposal?.executed, minVetoRatio, totalSupply]);
+  }, [proposal?.vetoTally, proposal?.active, proposal?.executed, proposal?.parameters?.minVetoVotingPower]);
 
   return status;
 };

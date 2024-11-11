@@ -3,6 +3,7 @@ import { useReadContracts } from "wagmi";
 import { OptimisticTokenVotingPluginAbi } from "../artifacts/OptimisticTokenVotingPlugin.sol";
 import { useEffect, useState } from "react";
 
+// TODO can we remove this?
 export function useGovernanceSettings() {
   const [minVetoRatio, setMinVetoRatio] = useState<number>();
   const [minDuration, setMinDuration] = useState<bigint>();

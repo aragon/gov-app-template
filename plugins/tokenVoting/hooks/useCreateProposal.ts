@@ -20,9 +20,7 @@ export function useCreateProposal() {
   const [summary, setSummary] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [actions, setActions] = useState<RawAction[]>([]);
-  const [resources, setResources] = useState<{ name: string; url: string }[]>([
-    { name: PUB_APP_NAME, url: PUB_PROJECT_URL },
-  ]);
+  const [resources, setResources] = useState<{ name: string; url: string }[]>([]);
 
   const { writeContract: createProposalWrite, isConfirming } = useTransactionManager({
     onSuccessMessage: "Proposal created",

@@ -18,12 +18,12 @@ export const useProposalVariantStatus = (proposal: Proposal) => {
     } else if (totalVotes < proposal.parameters.minVotingPower) {
       setStatus({ variant: "critical", label: "Low turnout" });
     } else if (proposal.tally.yes > proposal.tally.no && proposal.tally.yes > proposal.tally.abstain) {
-      setStatus({ variant: "success", label: "Executable" });
+      setStatus({ variant: "success", label: proposal.actions?.length > 0 ? "Executable" : "Passed" });
     } else if (proposal.tally.no > proposal.tally.yes && proposal.tally.no > proposal.tally.abstain) {
       setStatus({ variant: "critical", label: "Defeated" });
     } else if (proposal.tally.abstain > proposal.tally.no && proposal.tally.abstain > proposal.tally.yes) {
       if (proposal.tally.yes > proposal.tally.no) {
-        setStatus({ variant: "success", label: "Executable" });
+        setStatus({ variant: "success", label: proposal.actions?.length > 0 ? "Executable" : "Passed" });
       } else {
         setStatus({ variant: "critical", label: "Defeated" });
       }
@@ -49,12 +49,12 @@ export const useProposalStatus = (proposal: Proposal) => {
     } else if (totalVotes < proposal.parameters.minVotingPower) {
       setStatus(ProposalStatus.FAILED);
     } else if (proposal.tally.yes > proposal.tally.no && proposal.tally.yes > proposal.tally.abstain) {
-      setStatus(ProposalStatus.EXECUTABLE);
+      setStatus(proposal.actions?.length > 0 ? ProposalStatus.EXECUTABLE : ProposalStatus.ACCEPTED);
     } else if (proposal.tally.no > proposal.tally.yes && proposal.tally.no > proposal.tally.abstain) {
       setStatus(ProposalStatus.REJECTED);
     } else if (proposal.tally.abstain > proposal.tally.no && proposal.tally.abstain > proposal.tally.yes) {
       if (proposal.tally.yes > proposal.tally.no) {
-        setStatus(ProposalStatus.EXECUTABLE);
+        setStatus(proposal.actions?.length > 0 ? ProposalStatus.EXECUTABLE : ProposalStatus.ACCEPTED);
       } else {
         setStatus(ProposalStatus.REJECTED);
       }
