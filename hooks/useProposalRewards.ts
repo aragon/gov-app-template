@@ -11,9 +11,6 @@ export function useProposalRewards(votingContract: Address, proposalId: bigint) 
     args: [votingContract, proposalId],
   });
 
-  console.log("proposalrewards");
-  console.log(proposalRewardsResult);
-
   return {
     isLoading,
     proposalRewardsResult,

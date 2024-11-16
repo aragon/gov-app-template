@@ -21,7 +21,7 @@ export function useCreateProposal() {
 
   const [isCreating, setIsCreating] = useState(false);
   const [title, setTitle] = useState<string>("");
-  const [duration, setDuration] = useState<number>(); // in hours
+  const [duration, setDuration] = useState<number>(); // in days
   const [summary, setSummary] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [actions, setActions] = useState<RawAction[]>([]);
@@ -35,7 +35,7 @@ export function useCreateProposal() {
       return;
     }
 
-    setDuration(Number(minDuration) / 3600);
+    setDuration(Number(minDuration) / 86400);
   }, [minDuration]);
 
   const { writeContract: createProposalWrite, isConfirming } = useTransactionManager({
@@ -73,7 +73,7 @@ export function useCreateProposal() {
       });
     }
 
-    if (!duration || !minDuration || duration * 3600 < minDuration) {
+    if (!duration || !minDuration || duration * 86400 < minDuration) {
       return addAlert("Invalid proposal duration", {
         description: `Current duration of ${duration} is lower than minimally allowed duration ${minDuration}.`,
         type: "error",
@@ -107,7 +107,7 @@ export function useCreateProposal() {
 
       const startDate = BigInt(0); // equals "start right now"
       // the 5 * 3600 is some padding as the checks for min duration and block.timestmap in the contract will use different block timestamp than we are using here
-      const endDate = blockInfo?.timestamp + BigInt(duration * 3600) + BigInt(10 * 3600);
+      const endDate = blockInfo?.timestamp + BigInt(duration * 86400) + BigInt(10 * 3600);
 
       createProposalWrite({
         chainId: PUB_CHAIN.id,

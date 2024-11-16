@@ -8,6 +8,8 @@ import {
   TabsList,
   TabsTrigger,
   TabsContent,
+  DefinitionListContainer,
+  DefinitionListItem,
 } from "@aragon/gov-ui-kit";
 import { Tabs as RadixTabsRoot } from "@radix-ui/react-tabs";
 import dayjs from "dayjs";
@@ -18,10 +20,11 @@ import { VotingDetails } from "../votingDetails";
 import { VotingStageStatus } from "./votingStageStatus";
 import type { IVote, IVotingStageDetails } from "@/utils/types";
 import { VotesDataList } from "../votesDataList/votesDataList";
+import { formatUnits } from "viem";
 
 export interface IVotingStageProps<TType extends ProposalType = ProposalType> {
   title: string;
-  number: number;
+  number: number | undefined;
   disabled: boolean;
   status: ProposalStatus; // "accepted" | "rejected" | "active";
 
@@ -30,10 +33,11 @@ export interface IVotingStageProps<TType extends ProposalType = ProposalType> {
   details?: IVotingStageDetails;
   votes?: IVote[];
   totalReward?: bigint;
+  showStageKey?: boolean;
 }
 
 export const VotingStage: React.FC<IVotingStageProps> = (props) => {
-  const { details, disabled, title, number, result, status, variant, votes, totalReward } = props;
+  const { details, disabled, title, number, result, status, variant, votes, totalReward, showStageKey } = props;
 
   const [node, setNode] = useState<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -72,7 +76,7 @@ export const VotingStage: React.FC<IVotingStageProps> = (props) => {
   useLayoutEffect(resize, [resize]);
 
   const defaultTab = "breakdown";
-  const stageKey = `Stage ${number}`;
+  const stageKey = number === undefined ? "" : `Stage ${number}`;
 
   return (
     <AccordionItem
@@ -89,7 +93,7 @@ export const VotingStage: React.FC<IVotingStageProps> = (props) => {
             </Heading>
             <VotingStageStatus status={status} endDate={getSimpleRelativeTimeFromDate(dayjs(details?.endDate))} />
           </div>
-          <span className="hidden leading-tight text-neutral-500 sm:block">{stageKey}</span>
+          {showStageKey && <span className="hidden leading-tight text-neutral-500 sm:block">{stageKey}</span>}
         </div>
       </AccordionItemHeader>
 
@@ -97,8 +101,9 @@ export const VotingStage: React.FC<IVotingStageProps> = (props) => {
         <RadixTabsRoot defaultValue={defaultTab} ref={setRef}>
           <TabsList>
             <TabsTrigger value="breakdown" label="Breakdown" />
-            <TabsTrigger value="votes" label="Votes" />
+            <TabsTrigger value="votes" label={details?.strategy === "Veto" ? "Vetoes" : "Votes"} />
             <TabsTrigger value="details" label="Details" />
+            <TabsTrigger value="rewards" label="Rewards" />
           </TabsList>
           <TabsContent value="breakdown">
             <div className="py-4 pb-8">
@@ -107,7 +112,7 @@ export const VotingStage: React.FC<IVotingStageProps> = (props) => {
           </TabsContent>
           <TabsContent value="votes">
             <div className="py-4 pb-8">
-              <VotesDataList votes={votes ?? []} />
+              <VotesDataList strategy={details?.strategy} votes={votes ?? []} />
             </div>
           </TabsContent>
           <TabsContent value="details">
@@ -118,14 +123,23 @@ export const VotingStage: React.FC<IVotingStageProps> = (props) => {
                   endDate={details.endDate}
                   tokenAddress={details.tokenAddress}
                   strategy={details.strategy}
-                  options={details.options}
                   snapshotEpoch={details.snapshotEpoch}
                   supportThreshold={details.supportThreshold}
                   quorum={details.quorum}
-                  totalReward={totalReward}
                 />
               )}
             </div>
+          </TabsContent>
+
+          <TabsContent value="rewards">
+            <Heading size="h4">Rewards</Heading>
+            <DefinitionListContainer className="mt-4 border-b border-t border-neutral-100">
+              {totalReward !== undefined && (
+                <DefinitionListItem term="Voting rewards" className="!gap-y-1">
+                  <div className="w-full text-neutral-800 md:text-right">{formatUnits(totalReward, 18)} PWN</div>
+                </DefinitionListItem>
+              )}
+            </DefinitionListContainer>
           </TabsContent>
         </RadixTabsRoot>
       </AccordionItemContent>

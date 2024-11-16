@@ -67,8 +67,7 @@ export interface IVotingStageDetails {
   startDate: string;
   endDate: string;
   tokenAddress?: Address;
-  strategy: string;
-  options: string;
+  strategy: "Veto" | "Vote";
   snapshotEpoch: bigint | undefined;
   quorum: string | undefined;
   supportThreshold?: string;

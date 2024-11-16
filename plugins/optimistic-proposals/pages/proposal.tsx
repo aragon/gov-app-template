@@ -68,8 +68,8 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
     {
       id: "1",
       type: ProposalStages.OPTIMISTIC_EXECUTION,
-      variant: "majorityVoting",
-      title: "Stewards voting",
+      variant: "majorityVoting", // this is misleading title, but correct
+      title: "Community vetoing",
       status: proposalStatus!,
       disabled: false,
       proposalId: proposalIdx.toString(),
@@ -89,8 +89,7 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
       details: {
         startDate,
         endDate,
-        strategy: "Stewards voting",
-        options: "Veto",
+        strategy: "Veto",
         snapshotEpoch: proposal?.parameters?.snapshotEpoch,
         quorum: minVetoRatio ? `${minVetoRatio / 10000}%` : "",
       },
@@ -116,7 +115,8 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
             <BodySection body={proposal.description || "No description was provided"} />
             <ProposalVoting
               stages={proposalStage}
-              description="Proposals approved by the Stewards become eventually executable, unless the community reaches the veto threshold during the community veto stage."
+              description="Proposals proposed by the Stewards become eventually executable, unless the community reaches the veto threshold during the community veto stage."
+              isVeto={true}
             />
             <ProposalActions actions={proposal.actions} />
           </div>

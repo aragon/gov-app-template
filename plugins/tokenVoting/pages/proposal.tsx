@@ -79,6 +79,10 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
     }
   };
 
+  const quorum =
+    !pastSupply || !proposal?.parameters?.minVotingPower
+      ? "x"
+      : `${(Number(proposal?.parameters.minVotingPower) / Number(pastSupply)) * 100}%`;
   const proposalStage: ITransformedStage[] = [
     {
       id: "1",
@@ -119,13 +123,12 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
       details: {
         startDate,
         endDate,
-        strategy: "Community voting",
-        options: "Vote",
+        strategy: "Vote",
         snapshotEpoch: proposal?.parameters?.snapshotEpoch,
         supportThreshold: proposal?.parameters?.supportThreshold
           ? `${proposal.parameters.supportThreshold / 10000}%`
           : undefined,
-        quorum: `${Number(pastSupply / (proposal?.parameters.minVotingPower || 1n))}%`,
+        quorum,
       },
       votes: votes.map(
         ({ voter, voteOption: _voteOption }) =>
@@ -157,6 +160,7 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
               totalReward={proposalRewardsResult}
               stages={proposalStage}
               description="Proposals approved by the community become executable when the support ratio is above the threshold and the minimum participation is met."
+              isVeto={false}
             />
             <ProposalActions actions={proposal.actions} />
           </div>

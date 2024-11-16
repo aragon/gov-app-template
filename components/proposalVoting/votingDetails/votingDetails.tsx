@@ -3,23 +3,20 @@ import { AddressText } from "@/components/text/address";
 import { useEpochs } from "@/hooks/useEpochs";
 import { Heading, DefinitionListContainer, DefinitionListItem } from "@aragon/gov-ui-kit";
 import { useEffect, useState } from "react";
-import { formatUnits, type Address } from "viem";
+import { type Address } from "viem";
 
 export interface IVotingDetailsProps {
   startDate?: string;
   endDate: string;
   tokenAddress?: Address;
-  options: string;
   strategy: string;
   snapshotEpoch: bigint | undefined;
   quorum: string | undefined;
   supportThreshold?: string | undefined;
-  totalReward?: bigint | undefined;
 }
 
 export const VotingDetails: React.FC<IVotingDetailsProps> = (props) => {
-  const { startDate, endDate, snapshotEpoch, tokenAddress, options, strategy, supportThreshold, quorum, totalReward } =
-    props;
+  const { startDate, endDate, snapshotEpoch, tokenAddress, strategy, supportThreshold, quorum } = props;
 
   const { getStartAndEndDateOfEpoch, formatEpochDate } = useEpochs();
   const [epochStartDate, setEpochStartDate] = useState<number>();
@@ -54,17 +51,12 @@ export const VotingDetails: React.FC<IVotingDetailsProps> = (props) => {
           {epochStartDate && epochEndDate && (
             <DefinitionListItem term="Census epoch" className="!gap-y-1">
               <div className="w-full text-neutral-800 md:text-right">
-                Epoch {snapshotEpoch}
+                Epoch {String(snapshotEpoch)}
                 <span className="text-xs text-neutral-200">
                   {" "}
                   ({formatEpochDate(epochStartDate)}-{formatEpochDate(epochEndDate)})
                 </span>
               </div>
-            </DefinitionListItem>
-          )}
-          {totalReward !== undefined && (
-            <DefinitionListItem term="Total distibuted voting reward" className="!gap-y-1">
-              <div className="w-full text-neutral-800 md:text-right">{formatUnits(totalReward, 18)} vePWN</div>
             </DefinitionListItem>
           )}
         </DefinitionListContainer>
@@ -82,11 +74,11 @@ export const VotingDetails: React.FC<IVotingDetailsProps> = (props) => {
           <DefinitionListItem term="Strategy" className="!gap-y-1">
             <div className="w-full text-neutral-800 md:text-right">{strategy}</div>
           </DefinitionListItem>
-          <DefinitionListItem term="Voting options" className="!gap-y-1">
+          {/* <DefinitionListItem term="Voting options" className="!gap-y-1">
             <div className="w-full text-neutral-800 md:text-right">{options}</div>
-          </DefinitionListItem>
+          </DefinitionListItem> */}
           {supportThreshold && (
-            <DefinitionListItem term="Threshold to pass" className="!gap-y-1">
+            <DefinitionListItem term="In-support ratio" className="!gap-y-1">
               <div className="w-full text-neutral-800 md:text-right">{supportThreshold}</div>
             </DefinitionListItem>
           )}

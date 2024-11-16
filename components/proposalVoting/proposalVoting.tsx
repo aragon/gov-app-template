@@ -13,14 +13,20 @@ interface IProposalVotingProps {
   stages: ITransformedStage[];
   description: string;
   totalReward?: bigint;
+  isVeto: boolean;
 }
 
-export const ProposalVoting: React.FC<IProposalVotingProps> = ({ stages, description, totalReward = undefined }) => {
+export const ProposalVoting: React.FC<IProposalVotingProps> = ({
+  stages,
+  description,
+  totalReward = undefined,
+  isVeto,
+}) => {
   return (
     <Card className="overflow-hidden rounded-xl bg-neutral-0 shadow-neutral">
       {/* Header */}
       <div className="flex flex-col gap-y-2 p-6">
-        <Heading size="h2">Voting</Heading>
+        <Heading size="h2">{isVeto ? "Vetoing" : "Voting"}</Heading>
         <p className="text-lg leading-normal text-neutral-500">{description}</p>
       </div>
       {/* Stages */}
@@ -30,6 +36,7 @@ export const ProposalVoting: React.FC<IProposalVotingProps> = ({ stages, descrip
             totalReward={totalReward}
             key={stage.id}
             {...({ ...stage, number: index + 1 } as IVotingStageProps)}
+            showStageKey={false}
           />
         ))}
       </AccordionContainer>

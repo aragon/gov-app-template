@@ -9,18 +9,21 @@ const DEFAULT_PAGE_SIZE = 6;
 
 interface IVotesDataListProps {
   votes: IVote[];
+  strategy: "Veto" | "Vote" | undefined;
 }
 
 export const VotesDataList: React.FC<IVotesDataListProps> = (props) => {
-  const { votes } = props;
+  const { votes, strategy } = props;
   const { address } = useAccount();
+
+  const isVeto = strategy === "Veto";
 
   const totalVotes = votes.length;
   const showPagination = (totalVotes ?? 0) > DEFAULT_PAGE_SIZE;
-  const entityLabel = totalVotes === 1 ? "Vote" : "Votes";
+  const entityLabel = totalVotes === 1 ? (isVeto ? "Veto" : "Vote") : isVeto ? "Vetoes" : "Votes";
 
   const emptyFilteredState = {
-    heading: "No votes found",
+    heading: isVeto ? "No vetoes found" : "No votes found",
     description: "Your applied filters are not matching with any results. Reset and search with other filters!",
     secondaryButton: {
       label: "Reset all filters",
@@ -29,14 +32,14 @@ export const VotesDataList: React.FC<IVotesDataListProps> = (props) => {
   };
 
   const emptyState = {
-    heading: "No votes cast",
+    heading: isVeto ? "No vetoes cast" : "No votes cast",
   };
 
   const errorState = {
-    heading: "Error loading votes",
-    description: "There was an error loading the votes. Try again!",
+    heading: isVeto ? "Error loading vetoes" : "Error loading votes",
+    description: `There was an error loading the ${isVeto ? "vetoes" : "votes"}. Try again!`,
     secondaryButton: {
-      label: "Reload votes",
+      label: isVeto ? "Reload vetoes" : "Reload votes",
       iconLeft: IconType.RELOAD,
       // onClick: () => refetch(),
     },

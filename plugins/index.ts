@@ -15,7 +15,7 @@ export const plugins: PluginItem[] = [
   {
     id: "community-voting",
     folderName: "tokenVoting",
-    title: "Community Voting",
+    title: "Community",
     pluginAddress: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
   },
   {

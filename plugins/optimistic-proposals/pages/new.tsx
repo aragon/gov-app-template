@@ -113,10 +113,10 @@ export default function Create() {
           </div>
           <div className="mb-6">
             <InputNumber
-              min={(Number(minDuration) || 0) / 3600}
+              min={(Number(minDuration) || 0) / 86400}
               inputClassName="text-neutral-800"
               className=""
-              label="Duration in hours"
+              label="Duration in days"
               placeholder="Duration of voting period for proposal"
               variant="default"
               value={duration}
@@ -127,7 +127,7 @@ export default function Create() {
           <div className="mb-6">
             <TextAreaRichText
               label="Body (optional)"
-              className="pt-2"
+              className="pt-2 prose-strong:text-neutral-800 prose-em:text-neutral-800"
               value={description}
               onChange={setDescription}
               placeholder="A description of what the proposal is all about"

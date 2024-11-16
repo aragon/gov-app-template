@@ -113,10 +113,10 @@ export default function Create() {
           </div>
           <div className="mb-6">
             <InputNumber
-              min={(Number(minDuration) || 0) / 3600}
+              min={(Number(minDuration) || 0) / 86400}
               inputClassName="text-neutral-800"
               className=""
-              label="Duration in hours"
+              label="Duration in days"
               placeholder="Duration of voting period for proposal"
               variant="default"
               value={duration}
