@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: Screener;
+  font-display: swap;
+  src: url("./fonts/screener-400.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
 @layer base {
   :root {
     /* Primary */
@@ -135,6 +143,8 @@
     --guk-border-rounded-3xl: 0;
     --guk-border-rounded-lg: 0;
     /* --guk-border-rounded-full: 0; */
+
+    --font-family-screener: "Screener", "sans-serif";
   }
 }
 
@@ -165,6 +175,8 @@ h6 {
   /* Custom font here */
   /* font-family: "..."; */
   /* font-weight: 600; */
+
+  font-family: var(--font-family-screener);
 }
 
 /* Inline alerts */
@@ -243,8 +255,18 @@ label div p.leading-tight {
   display: none;
 }
 
+
 .custom-proposal-card-wrapper > div > div.text-critical-800 {
   color: var(--guk-color-neutral-0);
+}
+
+/* make status info non-rounded */
+.customStewardsProposalCardWrapper > div > div.rounded-full {
+  border-radius: 0;
+}
+
+.custom-proposal-card-wrapper > div > div.rounded-full {
+  border-radius: 0;
 }
 
 nav[aria-label="Breadcrumbs"] > div.text-critical-800 {
