@@ -35,11 +35,11 @@ const proseClasses = classNames(
   // "prose-strong:text-base prose-strong:md:text-lg prose-strong:text-neutral-500", // prose-strong
   "prose-em:text-neutral-800", // em
   // "prose-em:text-base prose-em:md:text-lg prose-em:text-neutral-500", //em
-  "prose-blockquote:rounded-lg prose-blockquote:border prose-blockquote:border-neutral-200 prose-blockquote:bg-neutral-50 prose-blockquote:prose-p-10 prose-blockquote:shadow-md", // blockquote
-  "prose-pre:rounded-lg prose-pre:bg-neutral-900 prose-pre:text-neutral-50", //pre
+  "prose-blockquote:border prose-blockquote:border-neutral-200 prose-blockquote:bg-neutral-50 prose-blockquote:prose-p-10 prose-blockquote:shadow-md", // blockquote
+  "prose-pre:bg-neutral-900 prose-pre:text-neutral-50", //pre
   "prose-code:bg-neutral-900 prose-code:text-neutral-50 prose-code:text-sm prose-code:py-1 prose-code:px-1 prose-code:rounded prose-code:font-normal", //code
-  "prose-img:overflow-hidden prose-img:rounded-xl prose-img:shadow-md", // img
-  "prose-video:overflow-hidden prose-video:rounded-xl prose-video:shadow-md", // video
+  "prose-img:overflow-hidden prose-img: prose-img:shadow-md", // img
+  "prose-video:overflow-hidden prose-video: prose-video:shadow-md", // video
   "prose-hr:mt-10 prose-hr:border-neutral-200", // hr
   "prose-lead:text-neutral-600",
   "prose-headings:text-neutral-800 prose-headings:leading-tight text-neutral-500 prose-headings:font-normal"

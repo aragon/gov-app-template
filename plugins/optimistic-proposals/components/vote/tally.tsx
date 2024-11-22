@@ -23,7 +23,7 @@ const VetoTally: FC<VoteTallyProps> = ({ voteCount, votePercentage }) => (
 const Card = function ({ children }: { children: ReactNode }) {
   return (
     <div
-      className="box-border flex w-full flex-col space-y-6 rounded-xl
+      className="box-border flex w-full flex-col space-y-6 
     border border-neutral-100 bg-neutral-0
     p-4 xl:p-6"
     >

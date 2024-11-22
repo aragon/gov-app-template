@@ -107,7 +107,8 @@
     --guk-color-neutral-700: #d9d9d9;
     --guk-color-neutral-800: #f3f1ff; /* 243 241 255 */
 
-    --guk-color-success-200: 36 255 0; /* #24FF00; */
+    /*--guk-color-success-200: 36 255 0; /* #24FF00; */
+    --guk-color-success-200: 134 255 115; /* #86FF73; */
     --guk-color-success-800: 7 51 0; /* #073300; */
 
     --guk-color-warning-200: 243 248 5; /* #F3F805; */
@@ -116,7 +117,8 @@
     --guk-color-negative-200: 249 118 0; /* #F97600 */
     --guk-color-negative-800: 156 78 7; /* #9C4E07 */
 
-    --guk-color-critical-200: 254 48 51; /* #FE3033 */
+    /*--guk-color-critical-200: 254 48 51; /* #FE3033 */
+    --guk-color-critical-200: 254 99 101; /* #FE6365 */
     --guk-color-critical-800: 149 33 35; /* #952123 */
 
     --guk-color-info-200: #f3f1ff; /* 105 102 120; */
@@ -127,6 +129,12 @@
 
     --guk-illustration-primary-color: rgb(var(--guk-color-primary-500));
     --guk-illustration-accent-color: rgb(var(--guk-color-primary-600));
+
+    --guk-border-rounded-xl: 0;
+    --guk-border-rounded: 0;
+    --guk-border-rounded-3xl: 0;
+    --guk-border-rounded-lg: 0;
+    /* --guk-border-rounded-full: 0; */
   }
 }
 

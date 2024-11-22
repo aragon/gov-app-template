@@ -29,7 +29,7 @@ export const Navbar: React.FC = () => {
               <Link
                 href="/#/community-voting"
                 className={classNames(
-                  "flex items-center gap-x-5 rounded-full py-2 md:rounded-lg",
+                  "flex items-center gap-x-5 py-2",
                   "outline-none focus:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset" // focus styles
                 )}
               >
@@ -46,7 +46,7 @@ export const Navbar: React.FC = () => {
               <button
                 onClick={() => setShowMenu(true)}
                 className={classNames(
-                  "rounded-full border border-neutral-100 bg-neutral-0 p-1 md:hidden",
+                  "border border-neutral-100 bg-neutral-0 p-1 md:hidden",
                   "outline-none focus:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset" // focus styles
                 )}
               >

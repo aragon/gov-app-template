@@ -23,7 +23,7 @@ export const ProposalVoting: React.FC<IProposalVotingProps> = ({
   isVeto,
 }) => {
   return (
-    <Card className="overflow-hidden rounded-xl bg-neutral-0 shadow-neutral">
+    <Card className="overflow-hidden  bg-neutral-0 shadow-neutral">
       {/* Header */}
       <div className="flex flex-col gap-y-2 p-6">
         <Heading size="h2">{isVeto ? "Vetoing" : "Voting"}</Heading>

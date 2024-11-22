@@ -49,7 +49,7 @@ export const BreakdownMajorityVotingResult: React.FC<IBreakdownMajorityVotingRes
 
   return (
     <div className="flex flex-col gap-y-4">
-      <div className="flex flex-col gap-y-3 rounded-xl border border-neutral-100 p-3 shadow-neutral-sm md:flex-row md:gap-x-6 md:p-6">
+      <div className="flex flex-col gap-y-3  border border-neutral-100 p-3 shadow-neutral-sm md:flex-row md:gap-x-6 md:p-6">
         {votingScores.map((choice, index) => (
           <div className="flex flex-1 flex-col gap-y-3 md:flex-row md:gap-x-6" key={choice.option}>
             <div className="flex flex-1 flex-col gap-y-2 py-1 md:gap-y-3 md:py-0">

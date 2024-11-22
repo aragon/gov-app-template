@@ -34,8 +34,8 @@ export const NavLink: React.FC<INavLinkProps> = (props) => {
     "w-full py-3", // base styles
     "group-hover:text-neutral-800 group-hover:bg-primary-600", // hover styles
     "outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset", // focus styles
-    "flex h-12 flex-1 items-center justify-between gap-3 rounded-xl px-4 leading-tight", // mobile styles
-    "md:h-11 md:rounded-none md:px-0 md:leading-normal", // desktop nav styles
+    "flex h-12 flex-1 items-center justify-between gap-3  px-4 leading-tight", // mobile styles
+    "md:h-11 md:px-0 md:leading-normal", // desktop nav styles
     {
       "bg-primary-800": isSelected,
     }

@@ -41,7 +41,7 @@ export const ProposalActions: React.FC<IProposalActionsProps> = (props) => {
   }
 
   return (
-    <div className="overflow-hidden rounded-xl bg-neutral-0 pb-2 shadow-neutral">
+    <div className="overflow-hidden  bg-neutral-0 pb-2 shadow-neutral">
       {/* Header */}
       <div className="flex flex-col gap-y-2 px-4 py-4 md:gap-y-3 md:px-6 md:py-6">
         <div className="flex justify-between gap-x-2 gap-y-2">
