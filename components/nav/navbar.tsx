@@ -59,28 +59,29 @@ export const Navbar: React.FC = () => {
               >
                 <img src={PUB_PROJECT_LOGO} height={24} className="shrink-0" alt={`${PUB_APP_NAME} logo`} />
               </Link>
-              <ul className="mr-auto hidden gap-x-8 md:flex lg:pl-8">
+              <ul className="mr-auto hidden gap-x-8 md:flex md:pl-8">
                 {navLinks.map(({ id, name, path, isExternal = false }) => (
                   <NavLink name={name} path={path} id={id} key={id} isExternal={isExternal} />
                 ))}
               </ul>
 
-              <div className="shrink-0">
+              <div className="ml-auto mr-4 shrink-0 md:ml-0 md:mr-0">
                 <WalletContainer />
               </div>
-            </div>
 
-            <div className="flex items-center gap-x-2">
-              {/* Nav Trigger */}
-              <button
-                onClick={() => setShowMenu(true)}
-                className={classNames(
-                  "border border-neutral-100 bg-neutral-0 p-1 md:hidden",
-                  "outline-none focus:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset" // focus styles
-                )}
-              >
-                <AvatarIcon size="lg" icon={IconType.MENU} />
-              </button>
+              <div className="flex items-center gap-x-2">
+                {/* Nav Trigger */}
+                <button
+                  style={{ paddingTop: "5px", paddingBottom: "5px" }}
+                  onClick={() => setShowMenu(true)}
+                  className={classNames(
+                    "border-gray border bg-neutral-0 p-1 md:hidden",
+                    "outline-none focus:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset" // focus styles
+                  )}
+                >
+                  <AvatarIcon size="md" icon={IconType.MENU} />
+                </button>
+              </div>
             </div>
           </div>
 

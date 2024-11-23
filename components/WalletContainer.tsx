@@ -41,7 +41,7 @@ const WalletContainer = () => {
     <button
       className={classNames(
         "shrink-none border-gray group flex items-center border bg-neutral-0 leading-tight text-neutral-500",
-        "leading-none font-screener px-2 py-2 text-sm",
+        "leading-none font-screener px-2 py-3 text-sm md:py-2",
         "outline-none focus:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset", // focus styles
         "hover:border-primary-400 hover:text-primary-400" // hover styles
       )}
