@@ -129,6 +129,8 @@
     --guk-color-critical-200: 254 99 101; /* #FE6365 */
     --guk-color-critical-800: 149 33 35; /* #952123 */
 
+    --white-color: 243 241 255; /* f3f1ff */
+
     --guk-color-info-200: #f3f1ff; /* 105 102 120; */
     --guk-color-info-500: #f3f1ff;
     --guk-color-info-800: #111111; /* 17 17 17; */
@@ -145,6 +147,8 @@
     /* --guk-border-rounded-full: 0; */
 
     --font-family-screener: "Screener", "sans-serif";
+
+    --border-gray: rgb(var(--white-color) / 50%);
   }
 }
 
@@ -177,6 +181,19 @@ h6 {
   /* font-weight: 600; */
 
   font-family: var(--font-family-screener);
+}
+
+/* custom util classes */
+.font-screener {
+  font-family: var(--font-family-screener);
+}
+
+.font-supreme {
+  font-family: var(--guk-font-family);
+}
+
+.border-gray {
+  border-color: var(--border-gray);
 }
 
 /* Inline alerts */

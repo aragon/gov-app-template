@@ -12,11 +12,6 @@ const supreme = localFont({
   variable: "--guk-font-family",
 });
 
-const screener = localFont({
-  src: "./fonts/screener-400.woff2",
-  variable: "--font-family-screener",
-});
-
 export default function AragonetteApp({ Component, pageProps }: any) {
   return (
     <div className={`${supreme.className}`}>

@@ -63,7 +63,7 @@ export default function Proposals() {
         </h1>
         <div className="justify-self-end">
           <Link href="#/community-voting/new">
-            <Button disabled={!isConnected || !canCreate} iconLeft={IconType.PLUS} size="md" variant="primary">
+            <Button disabled={!isConnected || !canCreate} iconLeft={IconType.PLUS} size="md" variant="secondary">
               Submit Proposal
             </Button>
           </Link>
@@ -85,7 +85,7 @@ export default function Proposals() {
             state={dataListState}
             //onLoadMore={fetchNextPage}
           >
-            <DataListContainer SkeletonElement={ProposalDataListItemSkeleton}>
+            <DataListContainer style={{ rowGap: "1rem" }} SkeletonElement={ProposalDataListItemSkeleton}>
               {proposalCount &&
                 Array.from(Array(proposalCount || 0)?.keys())
                   .reverse()

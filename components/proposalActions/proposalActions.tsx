@@ -45,7 +45,7 @@ export const ProposalActions: React.FC<IProposalActionsProps> = (props) => {
       {/* Header */}
       <div className="flex flex-col gap-y-2 px-4 py-4 md:gap-y-3 md:px-6 md:py-6">
         <div className="flex justify-between gap-x-2 gap-y-2">
-          <p className="text-xl leading-tight text-neutral-800 md:text-2xl">Actions</p>
+          <p className="font-screener text-xl leading-tight text-neutral-800 md:text-2xl">Actions</p>
         </div>
         <p className="md:text-md text-base leading-normal text-neutral-500">{message}</p>
       </div>

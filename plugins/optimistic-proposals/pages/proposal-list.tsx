@@ -62,7 +62,12 @@ export default function Proposals() {
         </h1>
         <div className="justify-self-end">
           <Link href="#/stewards/new">
-            <Button disabled={!isConnected || !canCreateProposal} iconLeft={IconType.PLUS} size="md" variant="primary">
+            <Button
+              disabled={!isConnected || !canCreateProposal}
+              iconLeft={IconType.PLUS}
+              size="md"
+              variant="secondary"
+            >
               Submit Proposal
             </Button>
           </Link>
@@ -77,7 +82,7 @@ export default function Proposals() {
             pageSize={DEFAULT_PAGE_SIZE}
             state={dataListState}
           >
-            <DataListContainer SkeletonElement={ProposalDataListItemSkeleton}>
+            <DataListContainer style={{ rowGap: "1rem" }} SkeletonElement={ProposalDataListItemSkeleton}>
               {Array.from(Array(proposalCount || 0)?.keys())
                 .reverse()
                 ?.map((proposalIndex) => <ProposalCard key={proposalIndex} proposalIndex={proposalIndex} />)}

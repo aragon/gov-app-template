@@ -18,14 +18,38 @@ export const Navbar: React.FC = () => {
       // path: `/plugins/${p.id}/#/`,
       path: `#/${p.id}`,
     })),
+    {
+      id: "appUi",
+      name: "App",
+      path: "https://app.pwn.xyz",
+      isExternal: true,
+    },
+    {
+      id: "stakingUi",
+      name: "Stake",
+      path: "https://staking.pwn.xyz",
+      isExternal: true,
+    },
+    {
+      id: "forumUi",
+      name: "Forum",
+      path: "https://forum.pwn.xyz",
+      isExternal: true,
+    },
+    //{
+    //  id: 'linktree',
+    //  name: 'Linktree',
+    //  path: 'https://linktr.ee/pwndao',
+    //  isExternal: true,
+    //}
   ];
 
   return (
     <>
-      <nav className="h-30 sticky top-0 z-[var(--hub-navbar-z-index)] flex w-full select-none items-center justify-center border-b border-b-neutral-100 bg-neutral-0">
+      <nav className="font-screener sticky top-0 z-[var(--hub-navbar-z-index)] flex h-20 w-full select-none items-center justify-center bg-neutral-0">
         <div className="w-full max-w-[1280px] flex-col gap-2 p-3 md:px-6 md:pb-0 lg:gap-3">
-          <div className="flex w-full items-center justify-between">
-            <div className="pb-3 lg:ml-10">
+          <div className="">
+            <div className="flex w-full items-center justify-between pb-3 lg:ml-10">
               <Link
                 href="/#/community-voting"
                 className={classNames(
@@ -33,15 +57,20 @@ export const Navbar: React.FC = () => {
                   "outline-none focus:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset" // focus styles
                 )}
               >
-                <img src={PUB_PROJECT_LOGO} width="150" className="shrink-0" alt={`${PUB_APP_NAME} logo`} />
+                <img src={PUB_PROJECT_LOGO} height={24} className="shrink-0" alt={`${PUB_APP_NAME} logo`} />
               </Link>
-            </div>
+              <ul className="mr-auto hidden gap-x-8 md:flex lg:pl-8">
+                {navLinks.map(({ id, name, path, isExternal = false }) => (
+                  <NavLink name={name} path={path} id={id} key={id} isExternal={isExternal} />
+                ))}
+              </ul>
 
-            <div className="flex items-center gap-x-2">
               <div className="shrink-0">
                 <WalletContainer />
               </div>
+            </div>
 
+            <div className="flex items-center gap-x-2">
               {/* Nav Trigger */}
               <button
                 onClick={() => setShowMenu(true)}
@@ -56,11 +85,6 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Tab wrapper */}
-          <ul className="hidden gap-x-4 md:flex lg:pl-10">
-            {navLinks.map(({ id, name, path }) => (
-              <NavLink name={name} path={path} id={id} key={id} />
-            ))}
-          </ul>
         </div>
       </nav>
       <MobileNavDialog open={showMenu} navLinks={navLinks} onOpenChange={setShowMenu} />

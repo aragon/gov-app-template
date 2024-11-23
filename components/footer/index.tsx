@@ -45,14 +45,12 @@ export const Footer = () => {
         <ul className="divide-y divide-neutral-100 md:order-1 md:flex md:items-center md:justify-center md:gap-x-6 md:divide-y-0 xl:justify-start">
           <li className="group py-4 md:py-0">
             <a className="overflow-hidden" href={PUB_PROJECT_URL} target="_blank">
-              <span className="line-clamp-1 leading-tight text-neutral-500 group-hover:text-primary-400">PWN UI</span>
+              <span className="line-clamp-1 leading-tight text-neutral-500 group-hover:text-primary-400">App</span>
             </a>
           </li>
           <li className="group py-4 md:py-0">
             <a className="overflow-hidden" href="https://staking.pwn.xyz" target="_blank">
-              <span className="line-clamp-1 leading-tight text-neutral-500 group-hover:text-primary-400">
-                Staking UI
-              </span>
+              <span className="line-clamp-1 leading-tight text-neutral-500 group-hover:text-primary-400">Stake</span>
             </a>
           </li>
           <li className="group py-4 md:py-0">

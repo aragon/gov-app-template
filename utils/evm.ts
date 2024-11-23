@@ -18,7 +18,7 @@ export function formatHexString(address: string): string {
   }
 
   // Take the first 5 characters (including '0x') and the last 4 characters
-  return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+  return `${address.substring(0, 5)}...${address.substring(address.length - 3)}`;
 }
 
 export function isContract(address: Address, publicClient: PublicClient) {
