@@ -99,7 +99,7 @@ export const BreakdownMajorityVotingResult: React.FC<IBreakdownMajorityVotingRes
       {/* Button group */}
       {cta && (
         <div className="flex w-full flex-col gap-y-4 md:flex-row md:gap-x-4">
-          <Button size="md" disabled={disabled} onClick={handleVoteClick} isLoading={cta.isLoading}>
+          <Button variant="secondary" size="md" disabled={disabled} onClick={handleVoteClick} isLoading={cta.isLoading}>
             {label}
           </Button>
 
