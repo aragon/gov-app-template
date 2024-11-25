@@ -5,8 +5,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { MobileNavDialog } from "./mobileNavDialog";
 import { NavLink, type INavLink } from "./navLink";
-import { AvatarIcon, IconType } from "@aragon/gov-ui-kit";
 import { PUB_APP_NAME, PUB_PROJECT_LOGO } from "@/constants";
+import mobileNavMenuTriggerStyles from "./mobileNavMenuTrigger.module.css";
 
 export const Navbar: React.FC = () => {
   const [showMenu, setShowMenu] = useState(false);
@@ -47,45 +47,37 @@ export const Navbar: React.FC = () => {
   return (
     <>
       <nav className="font-screener sticky top-0 z-[var(--hub-navbar-z-index)] flex h-20 w-full select-none items-center justify-center bg-neutral-0">
-        <div className="w-full max-w-[1280px] flex-col gap-2 p-3 md:px-6 md:pb-0 lg:gap-3">
-          <div className="">
-            <div className="flex w-full items-center justify-between pb-3 lg:ml-10">
-              <Link
-                href="/#/community-voting"
-                className={classNames(
-                  "flex items-center gap-x-5 py-2",
-                  "outline-none focus:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset" // focus styles
-                )}
-              >
-                <img src={PUB_PROJECT_LOGO} height={24} className="shrink-0" alt={`${PUB_APP_NAME} logo`} />
-              </Link>
-              <ul className="mr-auto hidden gap-x-8 md:flex md:pl-8">
-                {navLinks.map(({ id, name, path, isExternal = false }) => (
-                  <NavLink name={name} path={path} id={id} key={id} isExternal={isExternal} />
-                ))}
-              </ul>
+        <div className="m-auto flex h-[90%] w-[97%] max-w-[100%] items-center justify-between gap-2 px-4 md:gap-8 lg:h-[95%]">
+          <Link
+            href="/#/community-voting"
+            className={classNames(
+              "flex items-center gap-x-5 py-2",
+              "outline-none focus:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset" // focus styles
+            )}
+          >
+            <img src={PUB_PROJECT_LOGO} height={24} className="shrink-0" alt={`${PUB_APP_NAME} logo`} />
+          </Link>
+          <ul className="mr-auto hidden gap-x-8 md:flex">
+            {navLinks.map(({ id, name, path, isExternal = false }) => (
+              <NavLink name={name} path={path} id={id} key={id} isExternal={isExternal} />
+            ))}
+          </ul>
 
-              <div className="ml-auto mr-4 shrink-0 md:ml-0 md:mr-0">
-                <WalletContainer />
-              </div>
-
-              <div className="flex items-center gap-x-2">
-                {/* Nav Trigger */}
-                <button
-                  style={{ paddingTop: "5px", paddingBottom: "5px" }}
-                  onClick={() => setShowMenu(true)}
-                  className={classNames(
-                    "border-gray border bg-neutral-0 p-1 md:hidden",
-                    "outline-none focus:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset" // focus styles
-                  )}
-                >
-                  <AvatarIcon size="md" icon={IconType.MENU} />
-                </button>
-              </div>
-            </div>
+          <div className="ml-auto shrink-0 md:ml-0 md:mr-0">
+            <WalletContainer />
           </div>
 
-          {/* Tab wrapper */}
+          {/* Mobile Nav Menu Trigger */}
+          <div
+            className={classNames("relative md:hidden", mobileNavMenuTriggerStyles.ExpandMenuContainer, {
+              [mobileNavMenuTriggerStyles.ExpandMenuContainerActive]: showMenu,
+            })}
+            onClick={() => setShowMenu(true)}
+          >
+            <span />
+            <span />
+            <span />
+          </div>
         </div>
       </nav>
       <MobileNavDialog open={showMenu} navLinks={navLinks} onOpenChange={setShowMenu} />
