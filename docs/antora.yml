@@ -1,0 +1,6 @@
+name: gov-app-template
+title: Governance App Template
+version: 1.x
+prerelease: false
+nav:
+  - modules/ROOT/nav.adoc
