@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
     branches:
-      - "master"
+      - "main"
 
 env:
   BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
@@ -16,7 +16,7 @@ jobs:
       - name: Determine environment file
         shell: bash
         run: |
-          if [ "$BRANCH_NAME" = "master" ]; then
+          if [ "$BRANCH_NAME" = "main" ]; then
             echo "ENV_FILE=.env.app.production" >> $GITHUB_ENV
             echo "BUILD_COMMAND=bun run build-prod" >> $GITHUB_ENV
             echo "ENABLED_CHAIN_IDS=1" >> $GITHUB_ENV
@@ -87,7 +87,7 @@ jobs:
 
       # TODO make this work!
       # - name: Deploy to IPFS  
-      #   if: ${{ env.BRANCH_NAME }} == 'master'
+      #   if: ${{ env.BRANCH_NAME }} == 'main'
       #   uses: web3-storage/add-to-web3@v3
       #   id: deploy-ipfs
       #   with:
@@ -96,7 +96,7 @@ jobs:
       #     secret_key: ${{ secrets.WEB3_STORAGE_KEY }}
 
       # - name: Update DNSLink
-      #   if: ${{ env.BRANCH_NAME }} == 'master'
+      #   if: ${{ env.BRANCH_NAME }} == 'main'
       #   env:
       #     CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       #     CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
