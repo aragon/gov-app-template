@@ -6,6 +6,7 @@ import { RawAction, ProposalMetadata } from "@/utils/types";
 import { Proposal, ProposalParameters, Tally } from "../utils/types";
 import { PUB_TOKEN_VOTING_PLUGIN_ADDRESS } from "@/constants";
 import { useMetadata } from "@/hooks/useMetadata";
+import { useChainIdTypesafe } from "@/utils/chains";
 
 type ProposalCreatedLogResponse = {
   args: {
@@ -29,6 +30,7 @@ export function useProposal(proposalId: number, autoRefresh = false) {
   const [proposalCreationEvent, setProposalCreationEvent] = useState<ProposalCreatedLogResponse["args"]>();
   const [metadataUri, setMetadataUri] = useState<string>();
   const { data: blockNumber } = useBlockNumber();
+  const chainId = useChainIdTypesafe();
 
   // Proposal on-chain data
   const {
@@ -37,7 +39,8 @@ export function useProposal(proposalId: number, autoRefresh = false) {
     fetchStatus: proposalFetchStatus,
     refetch: proposalRefetch,
   } = useReadContract({
-    address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
+    address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS[chainId],
+    chainId,
     abi: TokenVotingPluginAbi,
     functionName: "getProposal",
     args: [BigInt(proposalId)],
@@ -46,7 +49,7 @@ export function useProposal(proposalId: number, autoRefresh = false) {
 
   useEffect(() => {
     if (autoRefresh) proposalRefetch();
-  }, [blockNumber]);
+  }, [blockNumber, chainId]);
 
   // Creation event
   useEffect(() => {
@@ -54,7 +57,7 @@ export function useProposal(proposalId: number, autoRefresh = false) {
 
     publicClient
       .getLogs({
-        address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
+        address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS[chainId],
         event: ProposalCreatedEvent,
         args: {
           proposalId: BigInt(proposalId),
@@ -73,7 +76,7 @@ export function useProposal(proposalId: number, autoRefresh = false) {
       .catch((err) => {
         console.error(`Could not fetch the proposal details for proposal id == ${proposalId}.`, err);
       });
-  }, [proposalData?.tally.yes, proposalData?.tally.no, proposalData?.tally.abstain, !!publicClient]);
+  }, [proposalData?.tally.yes, proposalData?.tally.no, proposalData?.tally.abstain, !!publicClient, chainId]);
 
   // JSON metadata
   const {

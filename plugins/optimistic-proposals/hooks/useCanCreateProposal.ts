@@ -2,11 +2,13 @@ import { keccak256, toHex } from "viem";
 import { useState, useEffect } from "react";
 import { useAccount, useReadContract } from "wagmi";
 import { DaoAbi } from "@/artifacts/DAO.sol";
-import { PUB_CHAIN, PUB_DAO_ADDRESS, PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
+import { PUB_DAO_ADDRESS, PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
 import { ADDRESS_ZERO } from "@/utils/evm";
+import { useChainIdTypesafe } from "@/utils/chains";
 
 export function useCanCreateProposal() {
   const { address } = useAccount();
+  const chainId = useChainIdTypesafe();
 
   const [hasCreatePermission, setHasCreatePermission] = useState(false);
 
@@ -17,12 +19,17 @@ export function useCanCreateProposal() {
     refetch: hasCreatePermissionRefetch,
     status: hasCreatePermissionStatus,
   } = useReadContract({
-    chainId: PUB_CHAIN.id,
-    address: PUB_DAO_ADDRESS,
+    chainId,
+    address: PUB_DAO_ADDRESS[chainId],
     abi: DaoAbi,
     functionName: "hasPermission",
     // where, who, permissionId, data
-    args: [PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS, address ?? ADDRESS_ZERO, keccak256(toHex("PROPOSER_PERMISSION")), "0x"],
+    args: [
+      PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS[chainId],
+      address ?? ADDRESS_ZERO,
+      keccak256(toHex("PROPOSER_PERMISSION")),
+      "0x",
+    ],
     query: {
       enabled: !!address,
     },
@@ -34,7 +41,7 @@ export function useCanCreateProposal() {
 
   useEffect(() => {
     hasCreatePermissionRefetch();
-  }, [address]);
+  }, [address, chainId]);
 
   return address && hasCreatePermission;
 }

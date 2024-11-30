@@ -12,7 +12,6 @@ import {
 } from "viem";
 import { isAddress } from "@/utils/evm";
 import { If } from "../if";
-import { PUB_CHAIN } from "@/constants";
 import { useIsContract } from "@/hooks/useIsContract";
 import { PleaseWaitSpinner } from "../please-wait";
 import { useAbi } from "@/hooks/useAbi";
@@ -24,7 +23,7 @@ interface ICalldataFormProps {
 }
 
 export const CalldataForm: FC<ICalldataFormProps> = ({ onChange, onSubmit }) => {
-  const coinName = PUB_CHAIN.nativeCurrency.symbol;
+  const coinName = "ETH";
   const [to, setTo] = useState<Address>();
   const [calldata, setCalldata] = useState<string>("");
   const [value, setValue] = useState<string>("");

@@ -4,7 +4,6 @@ import { InputText, InputNumber, AlertInline } from "@aragon/gov-ui-kit";
 import { type Address, parseEther } from "viem";
 import { isAddress } from "@/utils/evm";
 import { ElseIf, If, Then } from "../if";
-import { PUB_CHAIN } from "@/constants";
 
 interface IWithdrawalFormProps {
   onChange: (action: RawAction) => any;
@@ -12,7 +11,7 @@ interface IWithdrawalFormProps {
 }
 
 export const WithdrawalForm: FC<IWithdrawalFormProps> = ({ onChange, onSubmit }) => {
-  const coinName = PUB_CHAIN.nativeCurrency.symbol;
+  const coinName = "ETH";
   const [to, setTo] = useState<Address>();
   const [value, setValue] = useState<string>("");
 

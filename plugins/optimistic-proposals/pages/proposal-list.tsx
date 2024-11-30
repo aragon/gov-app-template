@@ -12,11 +12,12 @@ import {
   DataListPagination,
 } from "@aragon/gov-ui-kit";
 import { Else, If, Then } from "@/components/if";
-import { PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS, PUB_CHAIN } from "@/constants";
+import { PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
 import { MainSection } from "@/components/layout/main-section";
 import { MissingContentView } from "@/components/MissingContentView";
 import { useCanCreateProposal } from "../hooks/useCanCreateProposal";
 import { OptimisticTokenVotingPluginAbi } from "../artifacts/OptimisticTokenVotingPlugin.sol";
+import { useChainIdTypesafe } from "@/utils/chains";
 
 const DEFAULT_PAGE_SIZE = 6;
 
@@ -24,6 +25,7 @@ export default function Proposals() {
   const { isConnected } = useAccount();
   const canCreateProposal = useCanCreateProposal();
   const { data: blockNumber } = useBlockNumber({ watch: true });
+  const chainId = useChainIdTypesafe();
 
   const {
     data: proposalCountResponse,
@@ -32,16 +34,16 @@ export default function Proposals() {
     isFetching: isFetchingNextPage,
     refetch,
   } = useReadContract({
-    address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
+    address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS[chainId],
     abi: OptimisticTokenVotingPluginAbi,
     functionName: "proposalCount",
-    chainId: PUB_CHAIN.id,
+    chainId,
   });
   const proposalCount = Number(proposalCountResponse);
 
   useEffect(() => {
     refetch();
-  }, [blockNumber]);
+  }, [blockNumber, chainId]);
 
   const entityLabel = proposalCount === 1 ? "Proposal" : "Proposals";
 

@@ -4,16 +4,14 @@ import { usePublicClient } from "wagmi";
 import { AbiFunction } from "abitype";
 import { useQuery } from "@tanstack/react-query";
 import { ADDRESS_ZERO, isAddress, isContract } from "@/utils/evm";
-import { PUB_CHAIN, PUB_ETHERSCAN_API_KEY } from "@/constants";
+import { PUB_ETHERSCAN_API_KEY } from "@/constants";
 import { useAlerts } from "@/context/Alerts";
 import { getImplementation } from "@/utils/proxies";
-import { ChainName } from "@/utils/chains";
-
-const CHAIN_NAME = PUB_CHAIN.name.toLowerCase() as ChainName;
+import { ChainName, getChainIdTypesafe } from "@/utils/chains";
 
 export const useAbi = (contractAddress: Address) => {
   const { addAlert } = useAlerts();
-  const publicClient = usePublicClient({ chainId: PUB_CHAIN.id });
+  const publicClient = usePublicClient();
 
   const { data: implementationAddress, isLoading: isLoadingImpl } = useQuery<Address | null>({
     queryKey: ["proxy-check", contractAddress, publicClient?.chain.id],
@@ -102,35 +100,15 @@ export const useAbi = (contractAddress: Address) => {
 };
 
 function getEtherscanAbiLoader() {
-  switch (CHAIN_NAME) {
-    case "mainnet":
+  switch (getChainIdTypesafe()) {
+    case 1:
       return new whatsabi.loaders.EtherscanABILoader({
         apiKey: PUB_ETHERSCAN_API_KEY,
       });
-    case "polygon":
-      return new whatsabi.loaders.EtherscanABILoader({
-        apiKey: PUB_ETHERSCAN_API_KEY,
-        baseURL: "https://api.polygonscan.com/api",
-      });
-    case "arbitrum":
-      return new whatsabi.loaders.EtherscanABILoader({
-        apiKey: PUB_ETHERSCAN_API_KEY,
-        baseURL: "https://api.arbiscan.io/api",
-      });
-    case "sepolia":
+    case 11155111:
       return new whatsabi.loaders.EtherscanABILoader({
         apiKey: PUB_ETHERSCAN_API_KEY,
         baseURL: "https://api-sepolia.etherscan.io/api",
-      });
-    case "holesky":
-      return new whatsabi.loaders.EtherscanABILoader({
-        apiKey: PUB_ETHERSCAN_API_KEY,
-        baseURL: "https://api-holesky.etherscan.io/api",
-      });
-    case "mumbai":
-      return new whatsabi.loaders.EtherscanABILoader({
-        apiKey: PUB_ETHERSCAN_API_KEY,
-        baseURL: "https://api-mumbai.polygonscan.com/api",
       });
     default:
       throw new Error("Unknown chain");

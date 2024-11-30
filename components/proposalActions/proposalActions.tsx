@@ -1,4 +1,3 @@
-import { PUB_CHAIN } from "@/constants";
 import { formatHexString } from "@/utils/evm";
 import {
   AccordionContainer,
@@ -18,6 +17,7 @@ import { Else, ElseIf, If, Then } from "../if";
 import { useAction } from "@/hooks/useAction";
 import { decodeCamelCase } from "@/utils/case";
 import { formatEther } from "viem";
+import { useAccount } from "wagmi";
 
 const DEFAULT_DESCRIPTION =
   "When the proposal passes the community vote, the following actions will be executable by the DAO.";
@@ -70,13 +70,15 @@ export const ProposalActions: React.FC<IProposalActionsProps> = (props) => {
 const ActionItem = ({ index, rawAction, onRemove }: { index: number; rawAction: RawAction; onRemove?: () => any }) => {
   const action = useAction(rawAction);
   const title = `Action ${index + 1}`;
-  const coinName = PUB_CHAIN.nativeCurrency.symbol;
+  const coinName = "ETH";
   const isEthTransfer = !action.data || action.data === "0x";
   const functionName = isEthTransfer
     ? `Transfer ${coinName}`
     : decodeCamelCase(action.functionName || "(function call)");
   const functionAbi = action.functionAbi ?? null;
-  const explorerUrl = `${PUB_CHAIN.blockExplorers?.default.url}/address/${action.to}`;
+
+  const { chain } = useAccount();
+  const explorerUrl = `${chain!.blockExplorers?.default.url}/address/${action.to}`;
 
   return (
     <AccordionItem className="border-t border-t-neutral-100 bg-neutral-0" value={title}>

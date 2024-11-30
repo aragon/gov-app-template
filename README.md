@@ -1,6 +1,6 @@
 ## Steps for testing
 
-1. In your wallet, set the RPC URL for Sepolia network to https://virtual.sepolia.rpc.tenderly.co/f8099806-f215-4c8a-bd88-aa34015f6b34 . This makes sure that we use the forked Sepolia network, where we can e.g. move forward time to test accepting proposals and other scenarios easily without needing to wait x days.
+1. In your wallet, set the RPC URL for Sepolia network to Tenderly fork. This makes sure that we use the forked Sepolia network, where we can e.g. move forward time to test accepting proposals and other scenarios easily without needing to wait x days.
 
 ### Gaining voting power
 
@@ -9,7 +9,7 @@
 
 ### Optimistic (stewards) proposals
 
-1. For testing creating optimistic proposals, you can import our shared dev EOA account from the pwn_secrets KeePass file to your wallet. After that go to app.safe.global, connect this imported wallet and select this safe on Sepolia 0x282D9663815b1F9929a3C84a9a1290BE882E125f . With this safe connect to the Voting UI via WalletConnect.
+1. For testing creating optimistic proposals, you can import our shared dev EOA account. After that go to app.safe.global, connect this imported wallet and select this safe on Sepolia 0x282D9663815b1F9929a3C84a9a1290BE882E125f . With this safe connect to the Voting UI via WalletConnect.
 2. Now you should be able to create optimistic proposals.
 
 # Governance App Template

@@ -38,3 +38,6 @@ next-env.d.ts
 
 # editor
 .vscode
+
+# https://github.com/nektos/act
+bin/*

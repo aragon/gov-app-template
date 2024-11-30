@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { ProposalMetadata, RawAction } from "@/utils/types";
 import { useAlerts } from "@/context/Alerts";
-import { PUB_APP_NAME, PUB_CHAIN, PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS, PUB_PROJECT_URL } from "@/constants";
+import { PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
 import { URL_PATTERN } from "@/utils/input-values";
 import { toHex } from "viem";
 import { useTransactionManager } from "@/hooks/useTransactionManager";
@@ -10,6 +10,7 @@ import { uploadToWeb3Storage } from "@/utils/ipfs";
 import { OptimisticTokenVotingPluginAbi } from "../artifacts/OptimisticTokenVotingPlugin.sol";
 import { useGovernanceSettings } from "./useGovernanceSettings";
 import { useBlock } from "wagmi";
+import { useChainIdTypesafe } from "@/utils/chains";
 
 const UrlRegex = new RegExp(URL_PATTERN);
 
@@ -27,6 +28,7 @@ export function useCreateProposal() {
   const { data: blockInfo } = useBlock({
     blockTag: "latest",
   });
+  const chainId = useChainIdTypesafe();
 
   useEffect(() => {
     if (!minDuration || duration !== undefined) {
@@ -108,9 +110,9 @@ export function useCreateProposal() {
       const endDate = blockInfo?.timestamp + BigInt(duration * 86400) + BigInt(10 * 3600);
 
       createProposalWrite({
-        chainId: PUB_CHAIN.id,
+        chainId,
         abi: OptimisticTokenVotingPluginAbi,
-        address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
+        address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS[chainId],
         functionName: "createProposal",
         args: [toHex(ipfsPin), actions, BigInt(0), startDate, endDate],
       });

@@ -4,7 +4,6 @@ import ProposalCard from "../components/proposal";
 import { TokenVotingPluginAbi } from "../artifacts/TokenVoting.sol";
 import {
   Button,
-  DataList,
   DataListContainer,
   DataListPagination,
   DataListRoot,
@@ -15,9 +14,10 @@ import {
 import { useCanCreateProposal } from "../hooks/useCanCreateProposal";
 import Link from "next/link";
 import { Else, If, Then } from "@/components/if";
-import { PUB_TOKEN_VOTING_PLUGIN_ADDRESS, PUB_CHAIN } from "@/constants";
+import { PUB_TOKEN_VOTING_PLUGIN_ADDRESS } from "@/constants";
 import { MainSection } from "@/components/layout/main-section";
 import { MissingContentView } from "@/components/MissingContentView";
+import { useChainIdTypesafe } from "@/utils/chains";
 
 const DEFAULT_PAGE_SIZE = 6;
 
@@ -25,6 +25,7 @@ export default function Proposals() {
   const { isConnected } = useAccount();
   const canCreate = useCanCreateProposal();
   const { data: blockNumber } = useBlockNumber({ watch: true });
+  const chainId = useChainIdTypesafe();
 
   const {
     data: proposalCountResponse,
@@ -33,16 +34,16 @@ export default function Proposals() {
     isFetching: isFetchingNextPage,
     refetch,
   } = useReadContract({
-    address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
+    address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS[chainId],
     abi: TokenVotingPluginAbi,
     functionName: "proposalCount",
-    chainId: PUB_CHAIN.id,
+    chainId,
   });
   const proposalCount = Number(proposalCountResponse);
 
   useEffect(() => {
     refetch();
-  }, [blockNumber]);
+  }, [blockNumber, chainId]);
 
   const entityLabel = proposalCount === 1 ? "Proposal" : "Proposals";
 

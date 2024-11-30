@@ -1,0 +1,109 @@
+name: Deploy app
+on:
+  workflow_call:
+  pull_request:
+  push:
+    branches:
+      - "master"
+
+env:
+  BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine environment file
+        shell: bash
+        run: |
+          if [ "$BRANCH_NAME" = "master" ]; then
+            echo "ENV_FILE=.env.app.production" >> $GITHUB_ENV
+            echo "BUILD_COMMAND=bun run build-prod" >> $GITHUB_ENV
+            echo "ENABLED_CHAIN_IDS=1" >> $GITHUB_ENV
+            echo "PREFERRED_CHAIN_ID=1" >> $GITHUB_ENV
+          else
+            echo "ENV_FILE=.env.app.development" >> $GITHUB_ENV
+            echo "BUILD_COMMAND=bun run build-dev" >> $GITHUB_ENV
+            echo "ENABLED_CHAIN_IDS=1,11155111" >> $GITHUB_ENV
+            echo "PREFERRED_CHAIN_ID=11155111" >> $GITHUB_ENV
+          fi
+
+      - name: Checkout
+        uses: actions/checkout@v4
+              
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: 'package.json'
+
+      - uses: oven-sh/setup-bun@v2
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache
+          key: |
+            ${{ runner.os }}-${{ matrix.bun }}-bun-${{ hashFiles('**/bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.bun }}-bun-
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Fill env values with secrets
+        uses: Langsdorf/env-replace@v1.0.7
+        with:
+          file: "env/${{ env.ENV_FILE }}"
+          replace-all: |
+            NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=${{ secrets.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID }}
+            NEXT_PUBLIC_ETHEREUM_RPC_URL=${{ secrets.NEXT_PUBLIC_ETHEREUM_RPC_URL }}
+            NEXT_PUBLIC_SEPOLIA_RPC_URL=${{ secrets.NEXT_PUBLIC_SEPOLIA_RPC_URL }}
+            NEXT_PUBLIC_WEB3_STORAGE_KEY=${{ secrets.NEXT_PUBLIC_WEB3_STORAGE_KEY }}
+            NEXT_PUBLIC_ETHERSCAN_API_KEY=${{ secrets.NEXT_PUBLIC_ETHERSCAN_API_KEY }}
+            NEXT_PUBLIC_IPFS_ENDPOINTS=https://ipfs.io/ipfs,https://api-staging.pwn.xyz/ipfs,https://gateway.pinata.cloud/ipfs,https://dweb.link/ipfs,https://4everland.io/ipfs
+            NEXT_PUBLIC_PREFERRED_CHAIN_ID=${{ env.PREFERRED_CHAIN_ID }}
+            NEXT_PUBLIC_ENABLED_CHAIN_IDS=${{ env.ENABLED_CHAIN_IDS }}
+          upsert: true
+
+      - name: Build
+        run: ${{ env.BUILD_COMMAND }}
+
+      - name: Deploy to Cloudflare
+        id: deploy-cloudflare
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          command: pages deploy out --project-name=pwn-voting-ui --branch=${{ env.BRANCH_NAME }} --commit-hash=${{ github.sha }}
+
+      - name: Add comment to PR with deployed URL
+        if: github.event_name == 'pull_request'
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          message: |
+            Deployed on <${{ steps.deploy-cloudflare.outputs.pages-deployment-alias-url }}>!
+          comment-tag: execution
+
+      # TODO make this work!
+      # - name: Deploy to IPFS  
+      #   if: ${{ env.BRANCH_NAME }} == 'master'
+      #   uses: web3-storage/add-to-web3@v3
+      #   id: deploy-ipfs
+      #   with:
+      #     path_to_add: '.output/public'
+      #     proof: './delegation.car'
+      #     secret_key: ${{ secrets.WEB3_STORAGE_KEY }}
+
+      # - name: Update DNSLink
+      #   if: ${{ env.BRANCH_NAME }} == 'master'
+      #   env:
+      #     CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      #     CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+      #     RECORD_DOMAIN: "pwn.xyz"
+      #     RECORD_NAME: "_dnslink.staking"
+      #   uses: PabiGamito/cloudflare-update-dnslink@master
+      #   with:
+      #     cid: ${{ steps.deploy-ipfs.outputs.cid }}
+
+        

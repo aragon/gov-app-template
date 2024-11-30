@@ -4,12 +4,14 @@ import { TokenVotingPluginAbi } from "../artifacts/TokenVoting.sol";
 import { Proposal, VoteCastEvent } from "../utils/types";
 import { usePublicClient } from "wagmi";
 import { PUB_TOKEN_VOTING_PLUGIN_ADDRESS } from "@/constants";
+import { useChainIdTypesafe } from "@/utils/chains";
 
 const event = getAbiItem({ abi: TokenVotingPluginAbi, name: "VoteCast" });
 
 export function useProposalVoteList(proposalId: number, proposal: Proposal | null) {
   const publicClient = usePublicClient();
   const [proposalLogs, setLogs] = useState<VoteCastEvent[]>([]);
+  const chainId = useChainIdTypesafe();
 
   async function getLogs() {
     // TODO do we need some kind of if here?
@@ -17,7 +19,7 @@ export function useProposalVoteList(proposalId: number, proposal: Proposal | nul
     if (!publicClient) return;
 
     const logs = await publicClient.getLogs({
-      address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
+      address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS[chainId],
       event: event,
       args: {
         proposalId: BigInt(proposalId),
@@ -32,7 +34,7 @@ export function useProposalVoteList(proposalId: number, proposal: Proposal | nul
 
   useEffect(() => {
     getLogs();
-  }, [proposalId, proposal?.parameters?.snapshotEpoch]);
+  }, [proposalId, proposal?.parameters?.snapshotEpoch, chainId]);
 
   return proposalLogs;
 }

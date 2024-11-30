@@ -1,11 +1,13 @@
-import { PUB_CHAIN, PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
+import { PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
 import { useReadContracts } from "wagmi";
 import { OptimisticTokenVotingPluginAbi } from "../artifacts/OptimisticTokenVotingPlugin.sol";
 import { useEffect, useState } from "react";
+import { useChainIdTypesafe } from "@/utils/chains";
 
 export function useGovernanceSettings() {
   const [minVetoRatio, setMinVetoRatio] = useState<number>();
   const [minDuration, setMinDuration] = useState<bigint>();
+  const chainId = useChainIdTypesafe();
 
   const {
     data: contractReads,
@@ -15,14 +17,14 @@ export function useGovernanceSettings() {
   } = useReadContracts({
     contracts: [
       {
-        chainId: PUB_CHAIN.id,
-        address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
+        chainId,
+        address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS[chainId],
         abi: OptimisticTokenVotingPluginAbi,
         functionName: "minDuration",
       },
       {
-        chainId: PUB_CHAIN.id,
-        address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
+        chainId,
+        address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS[chainId],
         abi: OptimisticTokenVotingPluginAbi,
         functionName: "minVetoRatio",
       },
@@ -43,7 +45,7 @@ export function useGovernanceSettings() {
 
     setMinDuration(contractReads[0].result);
     setMinVetoRatio(contractReads[1].result);
-  }, [contractReads?.[0]?.status, contractReads?.[1]?.status]);
+  }, [contractReads?.[0]?.result, contractReads?.[1]?.result]);
 
   return {
     minDuration,

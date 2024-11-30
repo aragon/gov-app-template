@@ -1,14 +1,18 @@
 import { EPOCH_CLOCK_ABI } from "@/artifacts/PWNEpochClock.sol";
 import { PUB_PWN_EPOCH_CLOCK_ADDRESS } from "@/constants";
+import { useChainIdTypesafe } from "@/utils/chains";
 import { useReadContract } from "wagmi";
 
 export const SECONDS_IN_EPOCH = 2_419_200 as const;
 
 export function useEpochs() {
+  const chainId = useChainIdTypesafe();
+
   const { data: initialEpochTimestamp, isLoading: isLoadingInitialEpochTimestamp } = useReadContract({
     abi: EPOCH_CLOCK_ABI,
-    address: PUB_PWN_EPOCH_CLOCK_ADDRESS,
+    address: PUB_PWN_EPOCH_CLOCK_ADDRESS[chainId],
     functionName: "INITIAL_EPOCH_TIMESTAMP",
+    chainId,
   });
 
   const formatEpochDate = (timestamp: number) => {

@@ -1,14 +1,18 @@
 import { erc20Abi } from "viem";
 import { useReadContract } from "wagmi";
 import { PUB_TOKEN_ADDRESS } from "@/constants";
+import { useChainIdTypesafe } from "@/utils/chains";
 
 export function useToken() {
+  const chainId = useChainIdTypesafe();
+
   const {
     data: tokenSupply,
     isError: isError1,
     isLoading: isLoading1,
   } = useReadContract({
-    address: PUB_TOKEN_ADDRESS,
+    chainId,
+    address: PUB_TOKEN_ADDRESS[chainId],
     abi: erc20Abi,
     functionName: "totalSupply",
   });
@@ -18,13 +22,13 @@ export function useToken() {
     isError: isError2,
     isLoading: isLoading2,
   } = useReadContract({
-    address: PUB_TOKEN_ADDRESS,
+    address: PUB_TOKEN_ADDRESS[chainId],
     abi: erc20Abi,
     functionName: "symbol",
   });
 
   return {
-    address: PUB_TOKEN_ADDRESS,
+    address: PUB_TOKEN_ADDRESS[chainId],
     tokenSupply,
     symbol: tokenSymbol,
     status: {

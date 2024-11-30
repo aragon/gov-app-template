@@ -1,5 +1,5 @@
 import { Address, BaseError, ContractFunctionRevertedError, Hex, PublicClient, keccak256, parseAbi, toHex } from "viem";
-import { PUB_CHAIN } from "@/constants";
+import { getCurrentViemChain } from "./chains";
 
 const proxyAbi = parseAbi([
   "function implementation() external view returns (address)",
@@ -17,7 +17,7 @@ export function isProxyContract(publicClient: PublicClient, contractAddress: Add
       abi: proxyAbi,
       functionName: "implementation",
       args: [],
-      chain: PUB_CHAIN,
+      chain: getCurrentViemChain(),
     })
     .then(() => true)
     .catch((e: any) => {

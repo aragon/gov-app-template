@@ -5,7 +5,6 @@ import { type AbiFunction } from "abitype";
 import { If } from "@/components/if";
 import { InputParameter } from "./input-parameter";
 import { type InputValue } from "@/utils/input-values";
-import { PUB_CHAIN } from "@/constants";
 
 interface IFunctionParamsFormProps {
   functionAbi?: AbiFunction;
@@ -19,7 +18,7 @@ export const FunctionParamsForm = ({
   onActionCleared,
   onSubmit,
 }: IFunctionParamsFormProps) => {
-  const coinName = PUB_CHAIN.nativeCurrency.symbol;
+  const coinName = "ETH";
   const [inputValues, setInputValues] = useState<InputValue[]>([]);
   const [value, setValue] = useState<string>("");
 

@@ -2,17 +2,19 @@ import { Address } from "viem";
 import { useState, useEffect } from "react";
 import { useBalance, useAccount, useReadContracts } from "wagmi";
 import { TokenVotingPluginAbi } from "../artifacts/TokenVoting.sol";
-import { PUB_CHAIN, PUB_TOKEN_VOTING_PLUGIN_ADDRESS } from "@/constants";
+import { PUB_TOKEN_VOTING_PLUGIN_ADDRESS } from "@/constants";
 import { ADDRESS_ZERO } from "@/utils/evm";
+import { useChainIdTypesafe } from "@/utils/chains";
 
 export function useCanCreateProposal() {
   const { address } = useAccount();
   const [minProposerVotingPower, setMinProposerVotingPower] = useState<bigint>();
   const [votingToken, setVotingToken] = useState<Address>();
+  const chainId = useChainIdTypesafe();
   const { data: balance } = useBalance({
     address,
     token: votingToken,
-    chainId: PUB_CHAIN.id,
+    chainId,
     query: {
       enabled: !!votingToken && votingToken !== ADDRESS_ZERO && !!address,
     },
@@ -21,14 +23,14 @@ export function useCanCreateProposal() {
   const { data: contractReads } = useReadContracts({
     contracts: [
       {
-        chainId: PUB_CHAIN.id,
-        address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
+        chainId,
+        address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS[chainId],
         abi: TokenVotingPluginAbi,
         functionName: "minProposerVotingPower",
       },
       {
-        chainId: PUB_CHAIN.id,
-        address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
+        chainId,
+        address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS[chainId],
         abi: TokenVotingPluginAbi,
         functionName: "getVotingToken",
       },
@@ -40,7 +42,7 @@ export function useCanCreateProposal() {
 
     setMinProposerVotingPower(contractReads[0].result as bigint);
     setVotingToken(contractReads[1].result as Address);
-  }, [contractReads?.[0]?.status, contractReads?.[1]?.status]);
+  }, [contractReads?.[0]?.result, contractReads?.[1]?.result]);
 
   if (!address) return false;
   else if (!minProposerVotingPower) return true;

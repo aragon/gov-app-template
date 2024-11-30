@@ -2,21 +2,23 @@ import { useState } from "react";
 import { useReadContract } from "wagmi";
 import { OptimisticTokenVotingPluginAbi } from "../artifacts/OptimisticTokenVotingPlugin.sol";
 import { useRouter } from "next/router";
-import { PUB_CHAIN, PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
+import { PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
 import { useTransactionManager } from "@/hooks/useTransactionManager";
+import { useChainIdTypesafe } from "@/utils/chains";
 
 export function useProposalExecute(index: number) {
   const { reload } = useRouter();
   const [isExecuting, setIsExecuting] = useState(false);
+  const chainId = useChainIdTypesafe();
 
   const {
     data: canExecute,
     isError: isCanVoteError,
     isLoading: isCanVoteLoading,
   } = useReadContract({
-    address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
+    address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS[chainId],
     abi: OptimisticTokenVotingPluginAbi,
-    chainId: PUB_CHAIN.id,
+    chainId,
     functionName: "canExecute",
     args: [index ? BigInt(index) : BigInt("0")],
   });
@@ -40,9 +42,9 @@ export function useProposalExecute(index: number) {
     setIsExecuting(true);
 
     writeContract({
-      chainId: PUB_CHAIN.id,
+      chainId,
       abi: OptimisticTokenVotingPluginAbi,
-      address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
+      address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS[chainId],
       functionName: "execute",
       args: [BigInt(index)],
     });

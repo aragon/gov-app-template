@@ -20,6 +20,7 @@ import { PUB_TOKEN_SYMBOL, PUB_TOKEN_VOTING_PLUGIN_ADDRESS } from "@/constants";
 import { useProposalVoteList } from "../hooks/useProposalVoteList";
 import { usePastSupply } from "../hooks/usePastSupply";
 import { useProposalRewards } from "@/hooks/useProposalRewards";
+import { useChainIdTypesafe } from "@/utils/chains";
 
 const ABSTAIN_VALUE = 1;
 const VOTE_YES_VALUE = 2;
@@ -32,6 +33,7 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
   const votes = useProposalVoteList(proposalIdx, proposal);
   const { symbol: tokenSymbol } = useToken();
   const [showVotingModal, setShowVotingModal] = useState(false);
+  const chainId = useChainIdTypesafe();
   const { executeProposal, canExecute, isConfirming: isConfirmingExecution } = useProposalExecute(proposalIdx);
 
   const pastSupply = usePastSupply(proposal?.parameters.snapshotEpoch);
@@ -66,7 +68,7 @@ export default function ProposalDetail({ index: proposalIdx }: { index: number }
     };
   }
 
-  const { proposalRewardsResult } = useProposalRewards(PUB_TOKEN_VOTING_PLUGIN_ADDRESS, BigInt(proposalIdx));
+  const { proposalRewardsResult } = useProposalRewards(PUB_TOKEN_VOTING_PLUGIN_ADDRESS[chainId], BigInt(proposalIdx));
 
   const onVote = (voteOption: number | null) => {
     switch (voteOption) {

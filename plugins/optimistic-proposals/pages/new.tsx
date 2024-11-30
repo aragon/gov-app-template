@@ -6,7 +6,7 @@ import { MainSection } from "@/components/layout/main-section";
 import { useAccount } from "wagmi";
 import { useCanCreateProposal } from "../hooks/useCanCreateProposal";
 import { MissingContentView } from "@/components/MissingContentView";
-import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { useAppKit } from "@reown/appkit/react";
 import { Address } from "viem";
 import { NewActionDialog, NewActionType } from "@/components/dialogs/NewActionDialog";
 import { AddActionCard } from "@/components/cards/AddActionCard";
@@ -144,7 +144,7 @@ export default function Create() {
                 Add links to external resources
               </p>
             </div>
-            <div className="flex flex-col gap-y-4  border border-neutral-100 bg-neutral-0 p-4">
+            <div className="flex flex-col gap-y-4 border border-neutral-100 bg-neutral-0 p-4">
               <If lengthOf={resources} is={0}>
                 <p className="text-sm font-normal leading-normal text-neutral-500 md:text-base">
                   There are no resources yet. Click the button below to add the first one.
@@ -283,7 +283,7 @@ const PlaceHolderOr = ({
   canCreate: boolean | undefined;
   children: ReactNode;
 }) => {
-  const { open } = useWeb3Modal();
+  const { open } = useAppKit();
   return (
     <If true={!selfAddress || !isConnected}>
       <Then>

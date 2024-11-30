@@ -1,23 +1,44 @@
-import { polygon, mainnet, sepolia, holesky, arbitrum, polygonMumbai, Chain } from "@wagmi/core/chains";
+import { config } from "@/context/Web3Modal";
+import { AppKitNetwork } from "@reown/appkit/networks";
+import { Chain, mainnet, sepolia } from "@wagmi/core/chains";
+import { mainnet as mainnetAppKit, sepolia as sepoliaAppKit } from "@reown/appkit/networks";
+import { useChainId } from "wagmi";
+import { getChainId } from "wagmi/actions";
 
-const chainNames = ["mainnet", "polygon", "sepolia", "holesky", "mumbai", "arbitrum"] as const;
-export type ChainName = (typeof chainNames)[number];
+export const ALLOWED_CHAIN_IDS: [1, 11155111] = [1, 11155111];
+export type ChainId = (typeof ALLOWED_CHAIN_IDS)[number];
+export type ChainName = "mainnet" | "sepolia";
 
-export function getChain(chainName: ChainName): Chain {
-  switch (chainName) {
-    case "mainnet":
+export function getViemChain(chainId: ChainId): Chain {
+  switch (chainId) {
+    case 1:
       return mainnet;
-    case "polygon":
-      return polygon;
-    case "arbitrum":
-      return arbitrum;
-    case "sepolia":
+    case 11155111:
       return sepolia;
-    case "holesky":
-      return holesky;
-    case "mumbai":
-      return polygonMumbai;
     default:
-      throw new Error("Unknown chain");
+      throw new Error(`Unknown chain: ${chainId} in getViemChain.`);
   }
+}
+
+export function getAppKitChain(chainId: ChainId): AppKitNetwork {
+  switch (chainId) {
+    case 1:
+      return mainnetAppKit;
+    case 11155111:
+      return sepoliaAppKit;
+    default:
+      throw new Error(`Unknown chain: ${chainId} in getAppKitChain.`);
+  }
+}
+
+export function useChainIdTypesafe() {
+  return useChainId() as ChainId;
+}
+
+export function getChainIdTypesafe() {
+  return getChainId(config) as ChainId;
+}
+
+export function getCurrentViemChain() {
+  return getViemChain(getChainIdTypesafe());
 }

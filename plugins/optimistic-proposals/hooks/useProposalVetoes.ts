@@ -4,6 +4,7 @@ import { OptimisticTokenVotingPluginAbi } from "@/plugins/optimistic-proposals/a
 import { VetoCastEvent } from "@/plugins/optimistic-proposals/utils/types";
 import { usePublicClient } from "wagmi";
 import { PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
+import { useChainIdTypesafe } from "@/utils/chains";
 
 const event = getAbiItem({
   abi: OptimisticTokenVotingPluginAbi,
@@ -13,13 +14,14 @@ const event = getAbiItem({
 export function useProposalVetoes(proposalId?: bigint) {
   const publicClient = usePublicClient();
   const [proposalLogs, setLogs] = useState<VetoCastEvent[]>([]);
+  const chainId = useChainIdTypesafe();
 
   useEffect(() => {
     if (proposalId === undefined || !publicClient) return;
 
     publicClient
       .getLogs({
-        address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
+        address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS[chainId],
         event: event,
         args: {
           proposalId,
@@ -31,7 +33,7 @@ export function useProposalVetoes(proposalId?: bigint) {
         const newLogs = logs.flatMap((log) => log.args as VetoCastEvent);
         if (newLogs.length > proposalLogs.length) setLogs(newLogs);
       });
-  }, [proposalId, publicClient?.chain.id]);
+  }, [proposalId, chainId]);
 
   return proposalLogs;
 }

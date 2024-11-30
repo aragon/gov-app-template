@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { ProposalMetadata, RawAction } from "@/utils/types";
 import { useAlerts } from "@/context/Alerts";
-import { PUB_APP_NAME, PUB_CHAIN, PUB_TOKEN_VOTING_PLUGIN_ADDRESS, PUB_PROJECT_URL } from "@/constants";
+import { PUB_TOKEN_VOTING_PLUGIN_ADDRESS } from "@/constants";
 import { uploadToWeb3Storage } from "@/utils/ipfs";
 import { TokenVotingPluginAbi } from "../artifacts/TokenVoting.sol";
 import { URL_PATTERN } from "@/utils/input-values";
@@ -11,6 +11,7 @@ import { VotingMode } from "../utils/types";
 import { useTransactionManager } from "@/hooks/useTransactionManager";
 import { useGovernanceSettings } from "./useGovernanceSettings";
 import { useBlock } from "wagmi";
+import { useChainIdTypesafe } from "@/utils/chains";
 
 const UrlRegex = new RegExp(URL_PATTERN);
 
@@ -29,6 +30,7 @@ export function useCreateProposal() {
   const { data: blockInfo } = useBlock({
     blockTag: "latest",
   });
+  const chainId = useChainIdTypesafe();
 
   useEffect(() => {
     if (!minDuration || duration !== undefined) {
@@ -110,9 +112,9 @@ export function useCreateProposal() {
       const endDate = blockInfo?.timestamp + BigInt(duration * 86400) + BigInt(10 * 3600);
 
       createProposalWrite({
-        chainId: PUB_CHAIN.id,
+        chainId,
         abi: TokenVotingPluginAbi,
-        address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
+        address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS[chainId],
         functionName: "createProposal",
         args: [toHex(ipfsPin), actions, BigInt(0), startDate, endDate, VotingMode.Standard],
       });

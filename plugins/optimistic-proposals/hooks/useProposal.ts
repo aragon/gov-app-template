@@ -7,10 +7,11 @@ import {
   type OptimisticProposalParameters,
   type OptimisticProposalResultType,
 } from "@/plugins/optimistic-proposals/utils/types";
-import { PUB_CHAIN, PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
+import { PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
 import { useMetadata } from "@/hooks/useMetadata";
 import { OptimisticTokenVotingPluginAbi } from "../artifacts/OptimisticTokenVotingPlugin.sol";
 import { parseProposalId } from "../utils/proposal-id";
+import { useChainIdTypesafe } from "@/utils/chains";
 
 type ProposalCreatedLogResponse = {
   args: {
@@ -34,6 +35,7 @@ export function useProposal(proposalId?: bigint, autoRefresh = false) {
   const [proposalCreationEvent, setProposalCreationEvent] = useState<ProposalCreatedLogResponse["args"]>();
   const [metadataUri, setMetadataUri] = useState<string>();
   const { data: blockNumber } = useBlockNumber({ watch: true });
+  const chainId = useChainIdTypesafe();
 
   // Proposal onchain data
   const {
@@ -42,18 +44,18 @@ export function useProposal(proposalId?: bigint, autoRefresh = false) {
     fetchStatus: proposalFetchStatus,
     refetch: proposalRefetch,
   } = useReadContract({
-    address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
+    address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS[chainId],
     abi: OptimisticTokenVotingPluginAbi,
     functionName: "getProposal",
     args: [proposalId ?? BigInt(0)],
-    chainId: PUB_CHAIN.id,
+    chainId,
   });
 
   const proposalData = decodeProposalResultData(proposalResult);
 
   useEffect(() => {
     if (autoRefresh) proposalRefetch();
-  }, [blockNumber]);
+  }, [blockNumber, chainId]);
 
   // Creation event
   useEffect(() => {
@@ -61,7 +63,7 @@ export function useProposal(proposalId?: bigint, autoRefresh = false) {
 
     publicClient
       .getLogs({
-        address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
+        address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS[chainId],
         event: ProposalCreatedEvent,
         args: {
           proposalId: BigInt(proposalId),
@@ -82,7 +84,7 @@ export function useProposal(proposalId?: bigint, autoRefresh = false) {
       .catch((err) => {
         console.error("Could not fetch the proposal details", err);
       });
-  }, [proposalId, !!proposalData, publicClient?.chain.id]);
+  }, [proposalId, !!proposalData, chainId]);
 
   // JSON metadata
   const {

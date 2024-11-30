@@ -4,11 +4,13 @@ import { useUserCanVeto } from "@/plugins/optimistic-proposals/hooks/useUserCanV
 import { OptimisticTokenVotingPluginAbi } from "@/plugins/optimistic-proposals/artifacts/OptimisticTokenVotingPlugin.sol";
 import { PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
 import { useTransactionManager } from "@/hooks/useTransactionManager";
+import { useChainIdTypesafe } from "@/utils/chains";
 
 export function useProposalVeto(proposalIndex: number) {
   const { proposal, status: proposalFetchStatus, refetch: refetchProposal } = useProposal(BigInt(proposalIndex), true);
   const vetoes = useProposalVetoes(BigInt(proposalIndex));
   const { canVeto, refetch: refetchCanVeto } = useUserCanVeto(BigInt(proposalIndex));
+  const chainId = useChainIdTypesafe();
 
   const {
     writeContract,
@@ -27,9 +29,10 @@ export function useProposalVeto(proposalIndex: number) {
   const vetoProposal = () => {
     writeContract({
       abi: OptimisticTokenVotingPluginAbi,
-      address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
+      address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS[chainId],
       functionName: "veto",
       args: [BigInt(proposalIndex) ?? BigInt(0)],
+      chainId,
     });
   };
 
