@@ -1,7 +1,7 @@
 import { keccak256, toHex } from "viem";
 import { useState, useEffect } from "react";
 import { useAccount, useReadContract } from "wagmi";
-import { DaoAbi } from "@/artifacts/DAO.sol";
+import { DAO_ABI } from "@/artifacts/DAO.sol";
 import { PUB_DAO_ADDRESS, PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
 import { ADDRESS_ZERO } from "@/utils/evm";
 import { useChainIdTypesafe } from "@/utils/chains";
@@ -21,7 +21,7 @@ export function useCanCreateProposal() {
   } = useReadContract({
     chainId,
     address: PUB_DAO_ADDRESS[chainId],
-    abi: DaoAbi,
+    abi: DAO_ABI,
     functionName: "hasPermission",
     // where, who, permissionId, data
     args: [
