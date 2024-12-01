@@ -11,7 +11,7 @@ export const PUB_DAO_ADDRESS = {
 } as const satisfies ContractAddressRegistry;
 
 export const PUB_TOKEN_ADDRESS = {
-  [1]: "0x1D9e1fB11491CA43496c9F4612aAB6530956BC0c",
+  [1]: "0x683b463672e3F11eE36dc64Ae8970241F5fb6726",
   [11155111]: "0xBF7105C7f1cB7CB556Ad2754636f8C8D9707029e",
 } as const satisfies ContractAddressRegistry;
 
@@ -21,12 +21,12 @@ export const PUB_STEWARD_SAFE_MULTISIG_ADDRESS = {
 } as const satisfies ContractAddressRegistry;
 
 export const PUB_PWN_TOKEN_ADDRESS = {
-  [1]: "0x1D9e1fB11491CA43496c9F4612aAB6530956BC0c",
+  [1]: "0x420690e3C226398De46b2c467AD4547870391Ba3",
   [11155111]: "0x0FE826395b1971d80A94543613E56a8b2fDF3d11",
 } as const satisfies ContractAddressRegistry;
 
 export const PUB_PWN_EPOCH_CLOCK_ADDRESS = {
-  [1]: "0xb9962f81Ad51Df9fcfd14400fB0A10E665b7cF11",
+  [1]: "0x65EA4fdc09900f1f1E1aa911a90f4eFEF1BACfCb",
   [11155111]: "0x19e3293196aee99BB3080f28B9D3b4ea7F232b8d",
 } as const satisfies ContractAddressRegistry;
 
