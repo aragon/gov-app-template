@@ -31,12 +31,12 @@ export const PUB_PWN_EPOCH_CLOCK_ADDRESS = {
 } as const satisfies ContractAddressRegistry;
 
 export const PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS = {
-  [1]: "0x184cd2BF7D33B93FE28E442076bD1B8cC459B0BF",
+  [1]: "0x05E50fE39C5E4d6caab8648BA327d0a0e9E923bb",
   [11155111]: "0x017c1EBb09340a00Af1861C96bcaAD0Ddd37AC18",
 } as const satisfies ContractAddressRegistry;
 
 export const PUB_TOKEN_VOTING_PLUGIN_ADDRESS = {
-  [1]: "0xA1ffde96122F3Cb1937869dDCA73dD8D2A98D63e",
+  [1]: "0x1cd32eC9160aFC5B2EaD9A522244580F29a2959b",
   [11155111]: "0xED79E70122E06bB036EB6668e772FaCE4566a4cC",
 } as const satisfies ContractAddressRegistry;
 
