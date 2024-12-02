@@ -31,7 +31,7 @@ createWeb3Modal({
   wagmiConfig: config,
   projectId: PUB_WALLET_CONNECT_PROJECT_ID,
   enableAnalytics: false, // Optional - defaults to your Cloud configuration
-  enableOnramp: true, // Optional
+  enableOnramp: false, // Optional
   themeMode: "light",
   allWallets: "SHOW",
   featuredWalletIds: [
