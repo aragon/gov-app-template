@@ -1,12 +1,35 @@
-const DEFAULT_MESSAGE = "The link you followed refers to a resource that doesn't exist";
+import { EmptyState } from "@aragon/ods";
+import router from "next/router";
+import React from "react";
 
-export function NotFound({ message }: { message?: string }) {
-  return (
-    <div className="mx-auto w-full max-w-screen-xl px-16 py-6">
-      <section className="w-screen min-w-full max-w-full">
-        <h3 className="pr-4 text-3xl font-semibold text-neutral-700">Not found</h3>
-        <p>{message ?? DEFAULT_MESSAGE}</p>
-      </section>
-    </div>
-  );
+interface INotFoundProps {
+  title?: string;
+  message?: string;
+  cta?: {
+    label: string;
+    path: string;
+  };
 }
+
+export const NotFound: React.FC<INotFoundProps> = ({
+  message = "We couldn't find the page that you're looking for.",
+  title = "Page not found",
+  cta = { label: "Go back", path: "/" },
+}) => {
+  return (
+    <main className="flex h-full flex-1 justify-center py-24">
+      <EmptyState
+        heading={title}
+        objectIllustration={{ object: "NOT_FOUND" }}
+        description={message}
+        primaryButton={{
+          label: cta.label,
+          className: "!rounded-full",
+          onClick: () => {
+            router.replace(cta.path);
+          },
+        }}
+      />
+    </main>
+  );
+};
