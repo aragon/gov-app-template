@@ -1,3 +1,9 @@
+/**
+ * Decodes a camel case string by adding spaces between words and capitalizing the first letter of each word.
+ *
+ * @param input - The camel case string to decode.
+ * @returns The decoded string.
+ */
 export function decodeCamelCase(input?: string): string {
   if (!input || typeof input !== "string") return "";
 
