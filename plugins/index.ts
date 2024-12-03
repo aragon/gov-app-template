@@ -7,7 +7,8 @@ import {
   PUB_LOCK_TO_VOTE_PLUGIN_ADDRESS,
   PUB_OPT_MULTISIG_PLUGIN_ADDRESS,
 } from "@/constants";
-import { IconType } from "@aragon/ods";
+import { type IconType } from "@aragon/ods";
+import { zeroAddress } from "viem";
 
 type PluginItem = {
   /** The URL fragment after /plugins */
@@ -69,5 +70,33 @@ export const plugins: PluginItem[] = [
     title: "Members",
     // icon: IconType.BLOCKCHAIN_BLOCKCHAIN,
     pluginAddress: PUB_DELEGATION_WALL_CONTRACT_ADDRESS,
+  },
+  {
+    id: "stake",
+    folderName: "stake",
+    title: "Stake",
+    // icon: IconType.BLOCKCHAIN_BLOCKCHAIN,
+    pluginAddress: PUB_DELEGATION_WALL_CONTRACT_ADDRESS,
+  },
+  {
+    id: "gauge-voting",
+    folderName: "gauge-voting",
+    title: "Gauges",
+    // icon: IconType.BLOCKCHAIN_BLOCKCHAIN,
+    pluginAddress: PUB_DELEGATION_WALL_CONTRACT_ADDRESS,
+  },
+  {
+    id: "gauge-multisig",
+    folderName: "gauge-multisig",
+    title: "Gauge Multisig",
+    // icon: IconType.BLOCKCHAIN_BLOCKCHAIN,
+    pluginAddress: PUB_DELEGATION_WALL_CONTRACT_ADDRESS,
+  },
+  {
+    id: "community",
+    folderName: "snapshot-voting",
+    title: "Proposals",
+    //icon: IconType.APP_PROPOSALS,
+    pluginAddress: zeroAddress,
   },
 ];

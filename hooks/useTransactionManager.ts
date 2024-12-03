@@ -6,6 +6,8 @@ export type TxLifecycleParams = {
   onSuccessMessage?: string;
   onSuccessDescription?: string;
   onSuccess?: () => any;
+  onDeclineMessage?: string;
+  onDeclineDescription?: string;
   onErrorMessage?: string;
   onErrorDescription?: string;
   onError?: () => any;
@@ -22,13 +24,13 @@ export function useTransactionManager(params: TxLifecycleParams) {
       return;
     } else if (status === "error") {
       if (error?.message?.startsWith("User rejected the request")) {
-        addAlert("The transaction signature was declined", {
-          description: "Nothing has been sent to the network",
+        addAlert(params.onDeclineMessage ?? "Transaction declined", {
+          description: params.onDeclineDescription ?? "Nothing has been sent to the network",
           timeout: 4 * 1000,
         });
       } else {
         console.error(error);
-        addAlert(params.onErrorMessage || "Could not fulfill the transaction", {
+        addAlert(params.onErrorMessage ?? "Could not fulfill the transaction", {
           type: "error",
           description: params.onErrorDescription,
         });
@@ -53,8 +55,8 @@ export function useTransactionManager(params: TxLifecycleParams) {
       return;
     }
 
-    addAlert(params.onSuccessMessage || "Transaction fulfilled", {
-      description: params.onSuccessDescription || "The transaction has been validated on the network",
+    addAlert(params.onSuccessMessage ?? "Transaction fulfilled", {
+      description: params.onSuccessDescription ?? "The transaction has been validated on the network",
       type: "success",
       txHash: hash,
     });

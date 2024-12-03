@@ -1,6 +1,6 @@
-import { IApprovalThresholdResult, IButtonProps, ProposalType } from "@aragon/ods";
-import { Address, Hex, AbiFunction } from "viem";
-import { IVotesDataListVariant } from "@/components/proposalVoting/votesDataList/votesDataListItemStructure";
+import { type IApprovalThresholdResult, type IButtonProps, type ProposalType } from "@aragon/ods";
+import { type Address, type Hex, type AbiFunction } from "viem";
+import { type IVotesDataListVariant } from "@/components/proposalVoting/votesDataList/votesDataListItemStructure";
 
 // General types
 type JsonLiteral = string | number | boolean;
@@ -95,4 +95,34 @@ export interface ITransformedStage<TType extends ProposalType = ProposalType> {
   providerId?: string;
   result?: TType extends "approvalThreshold" ? IBreakdownApprovalThresholdResult : IBreakdownMajorityVotingResult;
   details?: IVotingStageDetails;
+}
+
+export interface IPaginatedResponse<T> {
+  data: T[];
+  pagination: {
+    page: number;
+    pages: number;
+    limit: number;
+    total: number;
+  };
+}
+
+export interface IInfinitePaginatedResponse<T> {
+  data: T[];
+  pagination: {
+    page: number;
+    limit: number;
+    count: number;
+  };
+}
+
+export interface IFetchPaginatedParams {
+  page?: number;
+  limit?: number;
+}
+
+export interface IError {
+  error: {
+    message: string;
+  };
 }
