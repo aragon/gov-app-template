@@ -1,4 +1,4 @@
-= Overview
+= Governance App Template
 
 The Governance App Template is a customizable, extensible host UI designed to simplify the creation and management of applications build atop Aragon OSx. It uses modular pages that represent different aspects of your DAO’s governance to help you rapidly create and adapt your UI to the unique needs of your organization.
 
