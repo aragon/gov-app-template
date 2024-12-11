@@ -1,2 +1,5 @@
 * xref:index.adoc[Overview]
-* xref:how-it-works/index.adoc[How it works]
+* xref:installation.adoc[Installation]
+* xref:example-modules.adoc[Example Modules]
+* xref:encrypted-proposal.adoc[Encrypted Proposals]
+* xref:adding-your-own-plugin.adoc[Adding Your Own Plugin]

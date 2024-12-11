@@ -1,0 +1,42 @@
+# Installation
+
+## **Prerequisites**
+
+- link:https://bun.sh/[Bun] must be installed.
+
+## **Steps**
+// :source-highlighter: coderay
+
+// [source,shell]
+// ----
+//     bash
+//     Copy code
+//     git clone https://github.com/aragon/gov-app-template.git
+//     cd gov-app-template
+// --------
+
+
+1. *Clone the Repository:*
++
+[source,shell]
+----
+    bash
+    Copy code
+    git clone https://github.com/aragon/gov-app-template.git
+    cd gov-app-template
+----
++  
+
+
+2. *Install Dependencies and Run Dev Server:*
++
+[source,shell]
+----
+    bash
+    Copy code
+    bun install
+    bun dev
+----
++  
+
+Your development server should now be running locally. Visit the provided URL to see the Governance App Template in action.

@@ -1,0 +1,13 @@
+= Adding Your Own Plugin
+
+xref:osx-contracts::core/plugins.adoc[Plugins] are used to extend Aragon OSx with novel governance logic. For instance, you might introduce a new voting mechanism, integrate an off-chain oracle, or use quadratic voting.
+
+== Working With OSx Primitives:
+
+The Governance App Template is designed to work seamlessly with Aragon OSx primitives—like the `IProposal` or `IMajorityVoting` contract interfaces—so you can focus on creativity rather than dealing with boilerplate integration code.
+
+== Steps
+
+1. **Duplicate a Plugin Directory:** In `/plugins`, choose an existing plugin that’s closest to what you want to build and duplicate it.
+2. **Rename Your Plugin:** Give it a meaningful, unique name.
+3. **Register the Plugin:** Open `index.tsx` in `/plugins` and add an entry for your new plugin. This ensures it’s recognized and rendered by the app.

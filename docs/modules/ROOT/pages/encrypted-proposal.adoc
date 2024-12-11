@@ -1,0 +1,34 @@
+= Encrypted Proposals
+
+
+For proposals requiring privacy until their execution, the Governance App Template allows for encrypted proposals that use symmetric and asymmetric keys. This ensures sensitive details remain confidential until a proposal is finalized.
+
+== Data to be encrypted
+
+- **Human readable metadata**, explaining why the proposal should be approved
+- The *actions to execute* if the proposal passes
+
+== Encryption Steps
+
+1. A user signs a static payload using his/her wallet. The resulting hash is used as a 256-bit private key to generate an ephemeral, in-memory key pair
+2. One of the multisig members generates a random symmetric key and uses it to encrypt the metadata and the actions
+3. The member fetches the public keys corresponding to the current Security Council members
+4. For each member's public key, he uses it to encrypt the key from step (1)
+5. This generates a payload with:
+    - The (symmetrically) encrypted metadata and proposals
+    - The (asymmetrically) encrypted keys that only each member can recover
+6. The payload is pinned on IPFS
+- The IPFS URI is published as the proposal metadata
+- The hash of the unencrypted metadata is also published as part of the proposal
+
+image::readme-encryption-flow.png[align="center"]
+
+
+== Decryption Steps
+
+1. One of the multisig members fetches the proposal, along with the pinned IPFS metadata
+2. The member signs the same predefined payload to generate the in-memory key pair
+3. The user locates the key that was encrypted for his/her wallet
+4. He then uses it as the symmetric key to decrypt the metadata and the proposal actions
+
+image::readme-decryption-flow.png[align="center"]

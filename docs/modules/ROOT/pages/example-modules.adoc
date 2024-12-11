@@ -1,0 +1,30 @@
+= Example Modules
+
+These example illustrate how to compose modular governance flows on Aragon OSx with the App Template. Each module shows a different pattern—ranging from optimistic governance to multisig councils—so you can learn from them and adapt their logic to your own DAO’s needs.
+
+- You might use these modules as-is for quick setup.
+- Or, treat them as starting points, customizing their code or adding entirely new modules of your own design.
+- The idea is flexibility: each module demonstrates how you can add different governance mechanisms without rewriting the entire system.
+
+== Example Modules
+
+1. **Multisig Council**
+    
+    A specific council can create and approve proposals before sending them on to the community for ratification. 
+    
+2. **Proposals for Community Review**
+    
+    Uses an optimistic governance model, where proposals pass automatically unless a certain threshold of token holders veto them within a specified timeframe.
+    
+3. **Security Council Module (with encryption)**
+    
+    Highlights an urgent, time-critical decision-making flow. It includes an encryption scheme for proposals that remain confidential until execution. A supermajority of a designated Security Council can quickly approve and execute these actions
+    
+4. **Members with Delegation and Profiles**
+    
+    This module provides an example of how to display and manage delegates. It lets delegates create profiles and allows token holders to choose whom to trust.
+    
+
+== Next Steps
+
+Once you’ve explored these examples, consider modifying them or adding entirely new sections to the app. The Governance App Template is designed to be modular, so integrating your custom governance logic should be straightforward.
