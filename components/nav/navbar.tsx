@@ -46,16 +46,16 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="font-screener sticky top-0 z-[var(--hub-navbar-z-index)] flex h-20 w-full select-none items-center justify-center bg-neutral-0">
-        <div className="m-auto flex h-[90%] w-[97%] max-w-[100%] items-center justify-between gap-2 px-4 md:gap-8 lg:h-[95%]">
+      <nav className="font-screener sticky top-0 z-[var(--hub-navbar-z-index)] flex h-20 w-full select-none items-center justify-center bg-neutral-0 p-6">
+        <div className="m-auto flex h-[90%] w-[100%] max-w-[100%] items-center justify-between gap-2 md:gap-8 lg:h-[95%]">
           <Link
             href="/#/community-voting"
             className={classNames(
-              "flex items-center gap-x-5 py-2",
+              "flex items-center gap-x-5 pt-1.5",
               "outline-none focus:outline-none focus-visible:ring focus-visible:ring-primary focus-visible:ring-offset" // focus styles
             )}
           >
-            <img src={PUB_PROJECT_LOGO} height={24} className="shrink-0" alt={`${PUB_APP_NAME} logo`} />
+            <img src={PUB_PROJECT_LOGO} width={73} height={40} className="shrink-0" alt={`${PUB_APP_NAME} logo`} />
           </Link>
           <ul className="mr-auto hidden gap-x-8 md:flex">
             {navLinks.map(({ id, name, path, isExternal = false }) => (
