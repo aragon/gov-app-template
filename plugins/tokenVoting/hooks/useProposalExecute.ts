@@ -4,6 +4,7 @@ import { TokenVotingAbi } from "../artifacts/TokenVoting.sol";
 import { useRouter } from "next/router";
 import { PUB_CHAIN, PUB_TOKEN_VOTING_PLUGIN_ADDRESS } from "@/constants";
 import { useTransactionManager } from "@/hooks/useTransactionManager";
+import { DaoAbi } from "@/artifacts/DAO.sol";
 
 export function useProposalExecute(proposalId: number) {
   const { reload } = useRouter();
@@ -41,7 +42,7 @@ export function useProposalExecute(proposalId: number) {
 
     writeContract({
       chainId: PUB_CHAIN.id,
-      abi: TokenVotingAbi,
+      abi: TokenVotingAbi.concat(DaoAbi as any),
       address: PUB_TOKEN_VOTING_PLUGIN_ADDRESS,
       functionName: "execute",
       args: [BigInt(proposalId)],

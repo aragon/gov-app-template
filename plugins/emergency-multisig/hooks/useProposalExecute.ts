@@ -8,6 +8,7 @@ import { toHex } from "viem";
 import { useProposal } from "./useProposal";
 import { getContentCid, uploadToPinata } from "@/utils/ipfs";
 import { useTransactionManager } from "@/hooks/useTransactionManager";
+import { DaoAbi } from "@/artifacts/DAO.sol";
 
 export function useProposalExecute(proposalId: string) {
   const { push } = useRouter();
@@ -66,7 +67,7 @@ export function useProposalExecute(proposalId: string) {
 
         writeContract({
           chainId: PUB_CHAIN.id,
-          abi: EmergencyMultisigPluginAbi,
+          abi: EmergencyMultisigPluginAbi.concat(DaoAbi as any),
           address: PUB_EMERGENCY_MULTISIG_PLUGIN_ADDRESS,
           functionName: "execute",
           args: [BigInt(proposalId), toHex(expectedMetadataUri), proposal.actions],

@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { PUB_CHAIN, PUB_LOCK_TO_VOTE_PLUGIN_ADDRESS } from "@/constants";
 import { LockToVetoPluginAbi } from "../artifacts/LockToVetoPlugin.sol";
 import { useTransactionManager } from "@/hooks/useTransactionManager";
+import { DaoAbi } from "@/artifacts/DAO.sol";
 
 export function useProposalExecute(proposalIdx: number) {
   const { reload } = useRouter();
@@ -41,7 +42,7 @@ export function useProposalExecute(proposalIdx: number) {
 
     writeContract({
       chainId: PUB_CHAIN.id,
-      abi: LockToVetoPluginAbi,
+      abi: LockToVetoPluginAbi.concat(DaoAbi as any),
       address: PUB_LOCK_TO_VOTE_PLUGIN_ADDRESS,
       functionName: "execute",
       args: [BigInt(proposalIdx)],

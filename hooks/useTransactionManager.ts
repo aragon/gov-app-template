@@ -28,9 +28,16 @@ export function useTransactionManager(params: TxLifecycleParams) {
         });
       } else {
         console.error(error);
+        let description = "The proposal may contain actions with invalid operations";
+        if (error?.toString()) {
+          const found = error.toString().match(/ror: ActionFailed\(uint256 index\)\n\s+\(([0-9]+)\)/);
+          if (found && found[1] && typeof parseInt(found[1]) === "number") {
+            description = `Action ${parseInt(found[1]) + 1} failed to complete successfully`;
+          }
+        }
         addAlert(params.onErrorMessage || "Could not fulfill the transaction", {
           type: "error",
-          description: params.onErrorDescription,
+          description,
         });
       }
 

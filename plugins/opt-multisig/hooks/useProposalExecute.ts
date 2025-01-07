@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { PUB_CHAIN, PUB_OPT_MULTISIG_PLUGIN_ADDRESS } from "@/constants";
 import { OptimisticMultisigPluginAbi } from "../artifacts/OptimisticMultisigPlugin";
 import { useTransactionManager } from "@/hooks/useTransactionManager";
+import { DaoAbi } from "@/artifacts/DAO.sol";
 
 export function useProposalExecute(proposalId: string) {
   const { push } = useRouter();
@@ -43,7 +44,7 @@ export function useProposalExecute(proposalId: string) {
 
     writeContract({
       chainId: PUB_CHAIN.id,
-      abi: OptimisticMultisigPluginAbi,
+      abi: OptimisticMultisigPluginAbi.concat(DaoAbi as any),
       address: PUB_OPT_MULTISIG_PLUGIN_ADDRESS,
       functionName: "execute",
       args: [BigInt(proposalId)],

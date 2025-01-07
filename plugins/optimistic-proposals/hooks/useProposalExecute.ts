@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { PUB_CHAIN, PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS } from "@/constants";
 import { useProposalId } from "./useProposalId";
 import { useTransactionManager } from "@/hooks/useTransactionManager";
+import { DaoAbi } from "@/artifacts/DAO.sol";
 
 export function useProposalExecute(index: number) {
   const { reload } = useRouter();
@@ -45,7 +46,7 @@ export function useProposalExecute(index: number) {
 
     writeContract({
       chainId: PUB_CHAIN.id,
-      abi: OptimisticTokenVotingPluginAbi,
+      abi: OptimisticTokenVotingPluginAbi.concat(DaoAbi as any),
       address: PUB_DUAL_GOVERNANCE_PLUGIN_ADDRESS,
       functionName: "execute",
       args: [BigInt(proposalId)],
